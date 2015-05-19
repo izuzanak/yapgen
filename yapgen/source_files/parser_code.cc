@@ -2955,7 +2955,6 @@ bool p_creat_descr_s::load_from_rule_char_ptr(unsigned a_length,char *a_data)
 {/*{{{*/\
   /*c_error_PARSER_CREATE_RULES_SYNTAX_ERROR*/\
   /*old_input_idx*/\
-  cassert(0);\
 \
   return false;\
 }/*}}}*/
@@ -3063,7 +3062,6 @@ bool p_creat_descr_s::load_from_rule_char_ptr(unsigned a_length,char *a_data)
 
           /*c_error_PARSER_CREATE_RULES_DUPLICATE_TERMINAL*/
           /*old_input_idx*/
-          cassert(0);
 
           return false;
         }
@@ -3099,8 +3097,6 @@ bool p_creat_descr_s::load_from_rule_char_ptr(unsigned a_length,char *a_data)
   if (terminals.used == 0)
   {
     /*c_error_PARSER_CREATE_RULES_NO_TERMINALS_DEFINED*/
-    cassert(0);
-    
     return false;
   }
 
@@ -3142,7 +3138,6 @@ bool p_creat_descr_s::load_from_rule_char_ptr(unsigned a_length,char *a_data)
 
         /*c_error_PARSER_CREATE_RULES_DUPLICATE_NONTERMINAL*/
         /*old_input_idx*/
-        cassert(0);
 
         return false;
       }
@@ -3160,8 +3155,6 @@ bool p_creat_descr_s::load_from_rule_char_ptr(unsigned a_length,char *a_data)
   if (nonterminals.used == 0)
   {
     /*c_error_PARSER_CREATE_RULES_NO_NONTERMINALS_DEFINED*/
-    cassert(0);
-    
     return false;
   }
 
@@ -3209,7 +3202,6 @@ bool p_creat_descr_s::load_from_rule_char_ptr(unsigned a_length,char *a_data)
 
             /*c_error_PARSER_CREATE_RULES_UNDEFINED_NONTERMINAL*/
             /*old_input_idx*/
-            cassert(0);
 
             return false;
           }
@@ -3251,7 +3243,6 @@ bool p_creat_descr_s::load_from_rule_char_ptr(unsigned a_length,char *a_data)
 
               /*c_error_PARSER_CREATE_RULES_UNDEFINED_TERMINAL*/
               /*old_input_idx*/
-              cassert(0);
 
               return false;
             }
@@ -3269,7 +3260,6 @@ bool p_creat_descr_s::load_from_rule_char_ptr(unsigned a_length,char *a_data)
 
               /*c_error_PARSER_CREATE_RULES_UNDEFINED_NONTERMINAL*/
               /*old_input_idx*/
-              cassert(0);
 
               return false;
             }
@@ -3336,7 +3326,6 @@ bool p_creat_descr_s::load_from_rule_char_ptr(unsigned a_length,char *a_data)
 
             /*c_error_PARSER_CREATE_RULES_DUPLICATE_RULE*/
             /*rule_head_index*/
-            cassert(0);
 
             return false;
           }
@@ -3358,8 +3347,6 @@ bool p_creat_descr_s::load_from_rule_char_ptr(unsigned a_length,char *a_data)
   if (rules.used == 0)
   {
     /*c_error_PARSER_CREATE_RULES_NO_RULES_DEFINED*/
-    cassert(0);
-    
     return false;
   }
 
@@ -3400,8 +3387,6 @@ bool p_creat_descr_s::find_key_terminals(unsigned &end_terminal,ui_array_s &skip
         if (end_terminal != c_idx_not_exist)
         {
           /*c_error_PARSER_CREATE_MULTIPLE_PARSE_END_TERMINALS*/
-          cassert(0);
-          
           return false;
         }
 
@@ -3437,7 +3422,6 @@ bool p_creat_descr_s::create_final_automata_new(final_automata_s &final_automata
 
         /*c_error_PARSER_CREATE_TERMINAL_REGULAR_EXPRESSION_PARSE_ERROR*/
         /*terminals[t_idx].source_pos*/
-        cassert(0);
 
         return false;
       }
@@ -3837,8 +3821,6 @@ bool p_creat_descr_s::create_lalr_table(p_lalr_table_s &lalr_table)
           if (value != c_idx_not_exist)
           {
             /*c_error_PARSER_CREATE_SLR1_PARSE_TABLE_CONFLICT*/
-            cassert(0);
-            
             return false;
           }
 
@@ -3909,8 +3891,6 @@ bool p_creat_descr_s::create_lalr_table(p_lalr_table_s &lalr_table)
                   if (value != c_idx_not_exist)
                   {
                     /*c_error_PARSER_CREATE_SLR1_PARSE_TABLE_CONFLICT*/
-                    cassert(0);
-                    
                     return false;
                   }
 
@@ -3924,8 +3904,6 @@ bool p_creat_descr_s::create_lalr_table(p_lalr_table_s &lalr_table)
                   if (value == c_idx_not_exist)
                   {
                     /*c_error_PARSER_CREATE_CANNOT_RESOLVE_RULE_HEAD_FOR_SHIFT_ACTION*/
-                    cassert(0);
-                    
                     return false;
                   }
                 }
@@ -3951,11 +3929,6 @@ methods p_rule_descr_s
 // -- p_rule_descrs_s --
 @begin
 methods p_rule_descrs_s
-@end
-
-// -- error_s --
-@begin
-   methods error_s
 @end
 
 // -- parser_s --
@@ -3984,8 +3957,6 @@ bool parser_s::create_from_rule_string(string_s &rule_string)
     // FIXME TODO test if error was not reported yet
 
     /*c_error_PARSER_CREATE_UNSPECIFIED_ERROR*/
-    cassert(0);
-
     return false;
   }
 
@@ -4004,8 +3975,6 @@ bool parser_s::create_from_rule_string(string_s &rule_string)
     // FIXME TODO test if error was not reported yet
     
     /*c_error_PARSER_CREATE_UNSPECIFIED_ERROR*/
-    cassert(0);
-
     return false;
   }
 

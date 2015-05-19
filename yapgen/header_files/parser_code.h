@@ -518,21 +518,6 @@ struct
 array<p_rule_descr_s> p_rule_descrs_s;
 @end
 
-// -- error_s --
-@begin
-   struct
-   <
-   unsigned:type
-   ui_array_s:params
-   >
-
-   additions
-{
-   static inline error_s *create(unsigned a_type);
-}
-   error_s;
-@end
-
 // -- parser_s --
 @begin
 struct
@@ -872,20 +857,6 @@ inlines p_rule_descr_s
 @begin
 inlines p_rule_descrs_s
 @end
-
-// -- error_s --
-@begin
-   inlines error_s
-@end
-
-inline error_s *error_s::create(unsigned a_type)
-{
-  error_s *error = (error_s *)cmalloc(sizeof(error_s));
-  error->init();
-  error->type = a_type;
-
-  return error;
-}
 
 // -- parser_s --
 @begin

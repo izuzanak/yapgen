@@ -38,7 +38,7 @@ bool parser_run_s::parse_source_string(string_s &a_source_string)
   if (lua_state == NULL)
   {
     /*c_error_PARSER_LUA_NEW_STATE_ERROR*/
-    cassert(0);
+    return false;
   }
 
   // - open lua libraries -
@@ -51,7 +51,7 @@ bool parser_run_s::parse_source_string(string_s &a_source_string)
     lua_close(lua_state);
 
     /*c_error_PARSER_LUA_DO_INIT_CODE_ERROR*/
-    cassert(0);
+    return false;
   }
 
   // - vychozi nastaveni lalr_stavoveho zasobniku -
@@ -81,7 +81,6 @@ bool parser_run_s::parse_source_string(string_s &a_source_string)
 
         /*c_error_PARSER_PARSE_UNRECOGNIZED_TERMINAL*/
         /*old_input_idx*/
-        cassert(0);
 
         return false;
       }
@@ -103,7 +102,6 @@ bool parser_run_s::parse_source_string(string_s &a_source_string)
 
       /*c_error_PARSER_PARSE_SYNTAX_ERROR*/
       /*old_input_idx*/
-      cassert(0);
 
       return false;
     }
@@ -135,7 +133,7 @@ bool parser_run_s::parse_source_string(string_s &a_source_string)
         lua_close(lua_state);
 
         /*c_error_PARSER_LUA_DO_RULE_CODE_ERROR*/
-        cassert(0);
+        return false;
       }
 
       p_rule_descr_s &rule_descr = rule_descrs[parse_action];
