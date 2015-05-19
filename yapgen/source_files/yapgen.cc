@@ -131,27 +131,42 @@ int main(int argc,char **argv)
   //  }
   //}
 
-  // -- preklad zdrojoveho souboru programu --
-  //if (arg_file_idxs[c_arg_source])
-  //{
-  //  if (!str.load_text_file(argv[arg_file_idxs[c_arg_source]]))
-  //  {
-  //    fprintf(stderr,"main: --source: Cannot load source text\n");
-  //  }
-  //  else
-  //  {
-  //    if (!parser_exist)
-  //    {
-  //      fprintf(stderr,"main: --source: Parser doesnt exist\n");
-  //    }
-  //    else
-  //    {
-  //      parser.parse_source_string(str);
-  //    }
+  // -- execute source code --
+  if (arg_file_idxs[c_arg_source])
+  {
+    if (!str.load_text_file(argv[arg_file_idxs[c_arg_source]]))
+    {
+      fprintf(stderr,"main: --source: Cannot load source text\n");
+    }
+    else
+    {
+      if (!parser_exist)
+      {
+        fprintf(stderr,"main: --source: Parser doesnt exist\n");
+      }
+      else
+      {
+        parser_run_s parser_run;
+        parser_run.init();
 
-  //    str.clear();
-  //  }
-  //}
+        if (!parser_run.create_from_parser(parser))
+        {
+          fprintf(stderr,"main: --source: Cannot create parser run for parser\n");
+        }
+        else
+        {
+          if (!parser_run.parse_source_string(str))
+          {
+            fprintf(stderr,"main: --source: Error while parsing source\n");
+          }
+        }
+
+        parser_run.clear();
+      }
+
+      str.clear();
+    }
+  }
 
   // -- uvolneni prekladace z pameti --
   if (parser_exist)

@@ -3,7 +3,7 @@
 #define __YAPGEN_H
 
 @begin
-include "parser_code.h"
+include "parser_run.h"
 @end
 
 /*!
