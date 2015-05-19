@@ -12,6 +12,38 @@ include "struct.h"
 methods bc_array_s
 @end
 
+void bc_array_s::replace(string_s &a_src,string_s &a_old_str,string_s &a_new_str)
+{/*{{{*/
+  clear();
+
+  unsigned idx = 0;
+  do
+  {
+    unsigned old_idx = idx;
+    idx = a_src.get_idx(idx,a_old_str.size - 1,a_old_str.data);
+
+    if (idx == c_idx_not_exist)
+    {
+      idx = a_src.size - 1;
+    }
+
+    // - append part of original string to buffer -
+    append(idx - old_idx,a_src.data + old_idx);
+
+    if (idx >= a_src.size - 1)
+    {
+      break;
+    }
+
+    // - append new string to buffer -
+    append(a_new_str.size - 1,a_new_str.data);
+
+    // - jump over substring -
+    idx += a_old_str.size - 1;
+  }
+  while(true);
+}/*}}}*/
+
 // -- bi_array_s --
 @begin
 methods bi_array_s

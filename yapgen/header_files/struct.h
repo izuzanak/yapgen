@@ -21,6 +21,9 @@ additions
 
   // - retrieve data from end of buffer -
   inline void from_end(unsigned a_count,char *a_trg,bool a_order_bytes);
+
+  // - replace olod strings by new strings -
+  void replace(string_s &a_src,string_s &a_old_str,string_s &a_new_str);
 }
 
 bc_array_s;

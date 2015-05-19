@@ -2942,6 +2942,15 @@ bool p_creat_descr_s::load_from_rule_char_ptr(unsigned a_length,char *a_data)
   unsigned input_length = a_length;
   unsigned ret_term;
 
+  // - create slash right curly bracket string -
+  string_s slash_rc_br_str;
+  slash_rc_br_str.data = (char *)"\\}";
+  slash_rc_br_str.size = 3;
+
+  string_s rc_br_str;
+  rc_br_str.data = (char *)"}";
+  rc_br_str.size = 2;
+
 #define LOAD_FROM_RULE_CHAR_PTR_SYNTAX_ERROR() \
 {/*{{{*/\
   /*c_error_PARSER_CREATE_RULES_SYNTAX_ERROR*/\
@@ -2974,7 +2983,18 @@ bool p_creat_descr_s::load_from_rule_char_ptr(unsigned a_length,char *a_data)
     if ((ret_term = rule_file_fa.recognize(a_data,input_idx,input_length)) == rt_code)
     {
       // - retrieve init semantic code -
-      init_code.set(input_idx - old_input_idx - 2,a_data + old_input_idx + 1);
+      string_s source = {input_idx - old_input_idx - 1,a_data + old_input_idx + 1};
+
+      // - replace "\\}" by "}" -
+      bc_array_s buffer;
+      buffer.init();
+      buffer.replace(source,slash_rc_br_str,rc_br_str);
+      buffer.push('\0');
+
+      // - store init semantic code -
+      init_code.clear();
+      init_code.data = buffer.data;
+      init_code.size = buffer.used;
       break;
     }
 
@@ -3147,7 +3167,7 @@ bool p_creat_descr_s::load_from_rule_char_ptr(unsigned a_length,char *a_data)
 
   // - zpracovani pravidel -
   {
-    unsigned rule_head_index = 0;
+    //unsigned rule_head_index = 0;
     unsigned rule_state = 0;
     p_rule_s new_rule;
     new_rule.init();
@@ -3194,7 +3214,7 @@ bool p_creat_descr_s::load_from_rule_char_ptr(unsigned a_length,char *a_data)
             return false;
           }
 
-          rule_head_index = old_input_idx;
+          //rule_head_index = old_input_idx;
           new_rule.head = terminals.used + idx;
           rule_state = 1;
         }
@@ -3292,9 +3312,22 @@ bool p_creat_descr_s::load_from_rule_char_ptr(unsigned a_length,char *a_data)
             LOAD_FROM_RULE_CHAR_PTR_SYNTAX_ERROR();
           }
 
-          // - retrieve rule semantic codes -
-          rule_codes.push_blank();
-          rule_codes.last().set(input_idx - old_input_idx - 2,a_data + old_input_idx + 1);
+          {
+            // - retrieve rule semantic code -
+            string_s source = {input_idx - old_input_idx - 1,a_data + old_input_idx + 1};
+
+            // - replace "\\}" by "}" -
+            bc_array_s buffer;
+            buffer.init();
+            buffer.replace(source,slash_rc_br_str,rc_br_str);
+            buffer.push('\0');
+
+            // - store rule semantic code -
+            rule_codes.push_clear();
+            string_s &rule_code = rule_codes.last();
+            rule_code.data = buffer.data;
+            rule_code.size = buffer.used;
+          }
 
           // - ERROR -
           if (rules.get_idx(new_rule) != c_idx_not_exist)
