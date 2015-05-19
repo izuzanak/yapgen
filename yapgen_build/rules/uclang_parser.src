@@ -1,0 +1,190 @@
+
+import File;
+import Serial;
+import Led;
+
+public class Test
+{
+  public Test()
+  {
+  }
+}
+
+public class SecondTest extends Test
+{
+  public SecondTest()
+  {
+  }
+}
+
+private public class Main
+{/*{{{*/
+  public static c_EnableDebugMsg = 0;
+  public static c_DebugMsgFile = File.stderr;
+
+  public abstract class Shape
+  {/*{{{*/
+    public static TypeCount = 0;
+    public static SHAPE_TYPE_NONE = TypeCount++;
+    public static SHAPE_TYPE_RECT = TypeCount++;
+    public static SHAPE_TYPE_CIRC = TypeCount++;
+
+    public Type;
+
+    public abstract GetVolume();
+
+    public /*Shape*/GetType()
+    {/*{{{*/
+      Main.DebugMsg("Main::Shape::GetType()\n");
+
+      return Type;
+    }/*}}}*/
+  }/*}}}*/
+
+  public class Rectangle extends Shape
+  {/*{{{*/
+    private SideA = 0.0;
+    private SideB = 0.0;
+
+    public /*Rectangle*/Rectangle()
+    {/*{{{*/
+      Main.DebugMsg("Main::Rectangle::Rectangle()\n");
+
+      Type = SHAPE_TYPE_RECT;
+    }/*}}}*/
+
+    public /*Rectangle*/Rectangle(a_SideA,a_SideB)
+    {/*{{{*/
+      Main.DebugMsg("Main::Rectangle::Rectangle(a_SideA,a_SideB)\n");
+
+      Rectangle();
+
+      SideA = a_SideA;
+      SideB = a_SideB;
+    }/*}}}*/
+
+    public /*Rectangle*/GetVolume()
+    {/*{{{*/
+      Main.DebugMsg("Main::Rectangle::GetVolume()\n");
+
+      return SideA * SideB;
+    }/*}}}*/
+  }/*}}}*/
+
+  public class Circle extends Shape
+  {/*{{{*/
+    private Radius = 0.0;
+
+    public /*Circle*/Circle()
+    {/*{{{*/
+      Main.DebugMsg("Main::Circle::Circle()\n");
+
+      Type = SHAPE_TYPE_CIRC;
+    }/*}}}*/
+
+    public /*Circle*/Circle(a_Radius)
+    {/*{{{*/
+      Main.DebugMsg("Main::Circle::Circle(a_Radius)\n");
+
+      Circle();
+
+      Radius = a_Radius;
+    }/*}}}*/
+
+    public /*Circle*/GetVolume()
+    {/*{{{*/
+      Main.DebugMsg("Main::Circle::GetVolume()\n");
+
+      return 3.14159265358979323844*Radius*Radius;
+    }/*}}}*/
+  }/*}}}*/
+
+  public static /*Main*/DebugMsg(a_Message)
+  {/*{{{*/
+    if (c_EnableDebugMsg) c_DebugMsgFile.write(a_Message);
+  }/*}}}*/
+
+  public /*Main*/Main()
+  {/*{{{*/
+    Main.DebugMsg("Main::Main()\n");
+
+    rect = new Rectangle(2.0,2.0);
+    circ = new Circle(2.0);
+
+    ["rect.GetType():   ",rect.GetType(),"\n"].print();
+    ["circ.GetType():   ",circ.GetType(),"\n"].print();
+
+    ["rect.GetVolume(): ",rect.GetVolume(),"\n"].print();
+    ["circ.GetVolume(): ",circ.GetVolume(),"\n"].print();
+
+    arr = new Blank[10];
+    c_idx = 0;
+    do {
+      if (c_idx % 2 == 0)
+      {
+        arr[c_idx] = new Rectangle(2.0,2.0);
+      }
+      else {
+        arr[c_idx] = new Circle(2.0);
+      }
+
+      ["arr[",c_idx,"].GetType():   ",arr[c_idx].GetType(),"\n"].print();
+      ["arr[",c_idx,"].GetVolume(): ",arr[c_idx].GetVolume(),"\n"].print();
+    } while(++c_idx < arr.length());
+
+    x = x > 1 ? 10 : 0;
+
+    x = arr[10];
+
+    //x = arr[::];
+    //x = arr[::10];
+    //x = arr[:10:];
+    //x = arr[:10:10];
+    //x = arr[10::];
+    x = arr[10::10];
+    //x = arr[:10:];
+    //x = arr[10:10:10];
+
+    value = 1;
+    switch (value)
+    {
+      case 0:
+        "Zero\n".print();
+      case 1:
+        {
+          "One\n".print();
+          switch (value)
+          {
+            case 0:
+              "Zero\n".print();
+            case 1:
+              "One\n".print();
+            case 2:
+              "Two\n".print();
+            case 3:
+              "Three\n".print();
+            default:
+              "Unknown\n".print();
+          }
+        }
+      case 2:
+        "Two\n".print();
+      case 3:
+        "Three\n".print();
+      default:
+        "Unknown\n".print();
+    }
+
+    x = 10;
+  }/*}}}*/
+
+  public static /*Main*/main(args)
+  {/*{{{*/
+    Main.DebugMsg("Main::main(args)\n");
+
+    test(a,b,c);
+
+    new Main();
+  }/*}}}*/
+}/*}}}*/
+
