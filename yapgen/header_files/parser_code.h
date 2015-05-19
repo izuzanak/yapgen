@@ -67,6 +67,9 @@ enum
   c_reduce_null_3
 };
 
+// generated parser reduce base
+const unsigned c_lalr_table_reduce_base = 0x80000000;
+
 // rozkladove konstanty
 const unsigned c_reg_rule_cnt = 17;
 const unsigned reg_rule_head_idxs[c_reg_rule_cnt] = {17, 18, 18, 19, 19, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, };
