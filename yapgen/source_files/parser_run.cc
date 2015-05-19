@@ -31,6 +31,18 @@ bool parser_run_s::parse_source_string(string_s &a_source_string)
   final_automata_s &final_automata = parser.final_automata;
   p_lalr_table_s &lalr_table = parser.lalr_table;
 
+  // - create and initialize lua state -
+  lua_State *lua_state = luaL_newstate();
+
+  // FIXME TODO process error ...
+  cassert(lua_state != NULL);
+
+  // - open lua libraries -
+  luaL_openlibs(lua_state);
+
+  // - run init semantic code -
+  luaL_dostring(lua_state,parser.init_code.data);
+
   // - vychozi nastaveni lalr_stavoveho zasobniku -
   lalr_stack.used = 0;
   lalr_stack.push(0,0,0);
@@ -53,6 +65,9 @@ bool parser_run_s::parse_source_string(string_s &a_source_string)
       // - ERROR -
       if (ret_term == c_idx_not_exist)
       {
+        // - close lua state -
+        lua_close(lua_state);
+
         /*c_error_PARSER_PARSE_UNRECOGNIZED_TERMINAL*/
         /*old_input_idx*/
         cassert(0);
@@ -72,6 +87,9 @@ bool parser_run_s::parse_source_string(string_s &a_source_string)
     // - ERROR -
     if (parse_action == c_idx_not_exist)
     {
+      // - close lua state -
+      lua_close(lua_state);
+
       /*c_error_PARSER_PARSE_SYNTAX_ERROR*/
       /*old_input_idx*/
       cassert(0);
@@ -99,8 +117,8 @@ bool parser_run_s::parse_source_string(string_s &a_source_string)
     {
       parse_action -= c_lalr_table_reduce_base;
 
-      // FIXME debug output
-      //fprintf(stderr,"parse_action: %u\n",parse_action);
+      // - run rule semantic code -
+      luaL_dostring(lua_state,parser.rule_codes[parse_action].data);
 
       p_rule_descr_s &rule_descr = rule_descrs[parse_action];
 
@@ -115,6 +133,9 @@ bool parser_run_s::parse_source_string(string_s &a_source_string)
     }
   }
   while(1);
+
+  // - close lua state -
+  lua_close(lua_state);
 
   return true;
 }/*}}}*/

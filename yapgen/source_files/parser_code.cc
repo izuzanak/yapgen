@@ -2967,12 +2967,14 @@ bool p_creat_descr_s::load_from_rule_char_ptr(unsigned a_length,char *a_data)
     }
   }
 
-  // - skip semantic code -
+  // - find init semantic code -
   while(1)
   {
     old_input_idx = input_idx;
     if ((ret_term = rule_file_fa.recognize(a_data,input_idx,input_length)) == rt_code)
     {
+      // - retrieve init semantic code -
+      init_code.set(input_idx - old_input_idx - 2,a_data + old_input_idx + 1);
       break;
     }
 
@@ -3290,7 +3292,9 @@ bool p_creat_descr_s::load_from_rule_char_ptr(unsigned a_length,char *a_data)
             LOAD_FROM_RULE_CHAR_PTR_SYNTAX_ERROR();
           }
 
-          // - ignore semantic code -
+          // - retrieve rule semantic codes -
+          rule_codes.push_blank();
+          rule_codes.last().set(input_idx - old_input_idx - 2,a_data + old_input_idx + 1);
 
           // - ERROR -
           if (rules.get_idx(new_rule) != c_idx_not_exist)
@@ -3966,6 +3970,12 @@ bool parser_s::create_from_rule_string(string_s &rule_string)
 
     return false;
   }
+
+  // - retrieve init semantic code -
+  init_code.swap(creat_descr.init_code);
+
+  // - retrieve rule semantic codes -
+  rule_codes.swap(creat_descr.rule_codes);
 
   // - vytvoreni popisu pravidel parseru -
   {

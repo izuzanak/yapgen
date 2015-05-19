@@ -6,6 +6,18 @@
 include "parser_code.h"
 @end
 
+#ifdef __cplusplus
+  extern "C" {
+#endif
+
+#include <lua5.2/lua.h>
+#include <lua5.2/lualib.h>
+#include <lua5.2/lauxlib.h>
+
+#ifdef __cplusplus
+  }
+#endif
+
 /*
  * definition of generated structures
  */
@@ -35,6 +47,4 @@ inlines parser_run_s
 @end
 
 #endif
-
-
 

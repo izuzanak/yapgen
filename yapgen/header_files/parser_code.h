@@ -450,6 +450,8 @@ struct
     p_terminals_s:terminals
     p_nonterminals_s:nonterminals
     p_rules_s:rules
+    string_s:init_code
+    string_array_s:rule_codes
     p_first_sets_s:firsts
     p_first_rules_sets_s:first_rules
     p_follow_sets_s:follows
@@ -523,6 +525,8 @@ struct
     ui_array_s:skip_terminals
     p_rule_descrs_s:rule_descrs
     final_automata_s:final_automata
+    string_s:init_code
+    string_array_s:rule_codes
     p_lalr_table_s:lalr_table
     >
 
