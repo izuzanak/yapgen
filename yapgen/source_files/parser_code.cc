@@ -3953,6 +3953,11 @@ methods p_rule_descr_s
 methods p_rule_descrs_s
 @end
 
+// -- error_s --
+@begin
+   methods error_s
+@end
+
 // -- parser_s --
 @begin
 methods parser_s

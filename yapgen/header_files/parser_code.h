@@ -40,6 +40,9 @@ enum
   c_error_PARSER_PARSE_SYNTAX_ERROR,
   c_error_PARSER_PARSE_STATE_OUTSIDE_OF_REDUCE_CALLBACK,
   c_error_PARSER_PARSE_STATE_INDEX_EXCEEDS_RULE_BODY_SIZE,
+  c_error_PARSER_LUA_NEW_STATE_ERROR,
+  c_error_PARSER_LUA_DO_INIT_CODE_ERROR,
+  c_error_PARSER_LUA_DO_RULE_CODE_ERROR,
 };
 
 /*
@@ -515,6 +518,21 @@ struct
 array<p_rule_descr_s> p_rule_descrs_s;
 @end
 
+// -- error_s --
+@begin
+   struct
+   <
+   unsigned:type
+   ui_array_s:params
+   >
+
+   additions
+{
+   static inline error_s *create(unsigned a_type);
+}
+   error_s;
+@end
+
 // -- parser_s --
 @begin
 struct
@@ -854,6 +872,20 @@ inlines p_rule_descr_s
 @begin
 inlines p_rule_descrs_s
 @end
+
+// -- error_s --
+@begin
+   inlines error_s
+@end
+
+inline error_s *error_s::create(unsigned a_type)
+{
+  error_s *error = (error_s *)cmalloc(sizeof(error_s));
+  error->init();
+  error->type = a_type;
+
+  return error;
+}
 
 // -- parser_s --
 @begin

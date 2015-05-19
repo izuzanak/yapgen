@@ -3,8 +3,8 @@
 init_code:
 {
   arr = {"First","Second"\};
-  table.insert(arr,"Third")
-  table.insert(arr,"Fourth")
+  table.insert(arr,"Third");
+  table.insert(arr,"Fourth");
   print("arr: " .. table.concat(arr,","));
 }
 
