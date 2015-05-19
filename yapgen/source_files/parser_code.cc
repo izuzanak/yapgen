@@ -2944,9 +2944,9 @@ bool p_creat_descr_s::load_from_rule_char_ptr(unsigned a_length,char *a_data)
 
 #define LOAD_FROM_RULE_CHAR_PTR_SYNTAX_ERROR() \
 {/*{{{*/\
-  interpreter_thread_s &it = *((interpreter_thread_s *)it_ptr);\
-  exception_s *new_exception = exception_s::throw_exception(it,c_error_PARSER_CREATE_RULES_SYNTAX_ERROR,0,(location_s *)it.blank_location);\
-  new_exception->params.push(old_input_idx);\
+  /*c_error_PARSER_CREATE_RULES_SYNTAX_ERROR*/\
+  /*old_input_idx*/\
+  cassert(0);\
 \
   return false;\
 }/*}}}*/
@@ -3039,9 +3039,9 @@ bool p_creat_descr_s::load_from_rule_char_ptr(unsigned a_length,char *a_data)
         {
           new_terminal.clear();
 
-          interpreter_thread_s &it = *((interpreter_thread_s *)it_ptr);
-          exception_s *new_exception = exception_s::throw_exception(it,c_error_PARSER_CREATE_RULES_DUPLICATE_TERMINAL,0,(location_s *)it.blank_location);
-          new_exception->params.push(old_input_idx);
+          /*c_error_PARSER_CREATE_RULES_DUPLICATE_TERMINAL*/
+          /*old_input_idx*/
+          cassert(0);
 
           return false;
         }
@@ -3076,8 +3076,8 @@ bool p_creat_descr_s::load_from_rule_char_ptr(unsigned a_length,char *a_data)
   // - ERROR -
   if (terminals.used == 0)
   {
-    interpreter_thread_s &it = *((interpreter_thread_s *)it_ptr);
-    exception_s::throw_exception(it,c_error_PARSER_CREATE_RULES_NO_TERMINALS_DEFINED,0,(location_s *)it.blank_location);
+    /*c_error_PARSER_CREATE_RULES_NO_TERMINALS_DEFINED*/
+    cassert(0);
     
     return false;
   }
@@ -3118,9 +3118,9 @@ bool p_creat_descr_s::load_from_rule_char_ptr(unsigned a_length,char *a_data)
       {
         new_nonterminal.clear();
 
-        interpreter_thread_s &it = *((interpreter_thread_s *)it_ptr);
-        exception_s *new_exception = exception_s::throw_exception(it,c_error_PARSER_CREATE_RULES_DUPLICATE_NONTERMINAL,0,(location_s *)it.blank_location);
-        new_exception->params.push(old_input_idx);
+        /*c_error_PARSER_CREATE_RULES_DUPLICATE_NONTERMINAL*/
+        /*old_input_idx*/
+        cassert(0);
 
         return false;
       }
@@ -3137,8 +3137,8 @@ bool p_creat_descr_s::load_from_rule_char_ptr(unsigned a_length,char *a_data)
   // - ERROR -
   if (nonterminals.used == 0)
   {
-    interpreter_thread_s &it = *((interpreter_thread_s *)it_ptr);
-    exception_s::throw_exception(it,c_error_PARSER_CREATE_RULES_NO_NONTERMINALS_DEFINED,0,(location_s *)it.blank_location);
+    /*c_error_PARSER_CREATE_RULES_NO_NONTERMINALS_DEFINED*/
+    cassert(0);
     
     return false;
   }
@@ -3185,9 +3185,9 @@ bool p_creat_descr_s::load_from_rule_char_ptr(unsigned a_length,char *a_data)
           {
             new_rule.clear();
 
-            interpreter_thread_s &it = *((interpreter_thread_s *)it_ptr);
-            exception_s *new_exception = exception_s::throw_exception(it,c_error_PARSER_CREATE_RULES_UNDEFINED_NONTERMINAL,0,(location_s *)it.blank_location);
-            new_exception->params.push(old_input_idx);
+            /*c_error_PARSER_CREATE_RULES_UNDEFINED_NONTERMINAL*/
+            /*old_input_idx*/
+            cassert(0);
 
             return false;
           }
@@ -3227,9 +3227,9 @@ bool p_creat_descr_s::load_from_rule_char_ptr(unsigned a_length,char *a_data)
             {
               new_rule.clear();
 
-              interpreter_thread_s &it = *((interpreter_thread_s *)it_ptr);
-              exception_s *new_exception = exception_s::throw_exception(it,c_error_PARSER_CREATE_RULES_UNDEFINED_TERMINAL,0,(location_s *)it.blank_location);
-              new_exception->params.push(old_input_idx);
+              /*c_error_PARSER_CREATE_RULES_UNDEFINED_TERMINAL*/
+              /*old_input_idx*/
+              cassert(0);
 
               return false;
             }
@@ -3245,9 +3245,9 @@ bool p_creat_descr_s::load_from_rule_char_ptr(unsigned a_length,char *a_data)
             {
               new_rule.clear();
 
-              interpreter_thread_s &it = *((interpreter_thread_s *)it_ptr);
-              exception_s *new_exception = exception_s::throw_exception(it,c_error_PARSER_CREATE_RULES_UNDEFINED_NONTERMINAL,0,(location_s *)it.blank_location);
-              new_exception->params.push(old_input_idx);
+              /*c_error_PARSER_CREATE_RULES_UNDEFINED_NONTERMINAL*/
+              /*old_input_idx*/
+              cassert(0);
 
               return false;
             }
@@ -3297,9 +3297,9 @@ bool p_creat_descr_s::load_from_rule_char_ptr(unsigned a_length,char *a_data)
           {
             new_rule.clear();
 
-            interpreter_thread_s &it = *((interpreter_thread_s *)it_ptr);
-            exception_s *new_exception = exception_s::throw_exception(it,c_error_PARSER_CREATE_RULES_DUPLICATE_RULE,0,(location_s *)it.blank_location);
-            new_exception->params.push(rule_head_index);
+            /*c_error_PARSER_CREATE_RULES_DUPLICATE_RULE*/
+            /*rule_head_index*/
+            cassert(0);
 
             return false;
           }
@@ -3320,8 +3320,8 @@ bool p_creat_descr_s::load_from_rule_char_ptr(unsigned a_length,char *a_data)
   // - ERROR -
   if (rules.used == 0)
   {
-    interpreter_thread_s &it = *((interpreter_thread_s *)it_ptr);
-    exception_s::throw_exception(it,c_error_PARSER_CREATE_RULES_NO_RULES_DEFINED,0,(location_s *)it.blank_location);
+    /*c_error_PARSER_CREATE_RULES_NO_RULES_DEFINED*/
+    cassert(0);
     
     return false;
   }
@@ -3362,8 +3362,8 @@ bool p_creat_descr_s::find_key_terminals(unsigned &end_terminal,ui_array_s &skip
         // - ERROR -
         if (end_terminal != c_idx_not_exist)
         {
-          interpreter_thread_s &it = *((interpreter_thread_s *)it_ptr);
-          exception_s::throw_exception(it,c_error_PARSER_CREATE_MULTIPLE_PARSE_END_TERMINALS,0,(location_s *)it.blank_location);
+          /*c_error_PARSER_CREATE_MULTIPLE_PARSE_END_TERMINALS*/
+          cassert(0);
           
           return false;
         }
@@ -3398,9 +3398,9 @@ bool p_creat_descr_s::create_final_automata_new(final_automata_s &final_automata
         reg_parser.clear();
         states_array.clear();
 
-        interpreter_thread_s &it = *((interpreter_thread_s *)it_ptr);
-        exception_s *new_exception = exception_s::throw_exception(it,c_error_PARSER_CREATE_TERMINAL_REGULAR_EXPRESSION_PARSE_ERROR,0,(location_s *)it.blank_location);
-        new_exception->params.push(terminals[t_idx].source_pos);
+        /*c_error_PARSER_CREATE_TERMINAL_REGULAR_EXPRESSION_PARSE_ERROR*/
+        /*terminals[t_idx].source_pos*/
+        cassert(0);
 
         return false;
       }
@@ -3799,8 +3799,8 @@ bool p_creat_descr_s::create_lalr_table(p_lalr_table_s &lalr_table)
           // - ERROR -
           if (value != c_idx_not_exist)
           {
-            interpreter_thread_s &it = *((interpreter_thread_s *)it_ptr);
-            exception_s::throw_exception(it,c_error_PARSER_CREATE_SLR1_PARSE_TABLE_CONFLICT,0,(location_s *)it.blank_location);
+            /*c_error_PARSER_CREATE_SLR1_PARSE_TABLE_CONFLICT*/
+            cassert(0);
             
             return false;
           }
@@ -3871,8 +3871,8 @@ bool p_creat_descr_s::create_lalr_table(p_lalr_table_s &lalr_table)
                   // - ERROR -
                   if (value != c_idx_not_exist)
                   {
-                    interpreter_thread_s &it = *((interpreter_thread_s *)it_ptr);
-                    exception_s::throw_exception(it,c_error_PARSER_CREATE_SLR1_PARSE_TABLE_CONFLICT,0,(location_s *)it.blank_location);
+                    /*c_error_PARSER_CREATE_SLR1_PARSE_TABLE_CONFLICT*/
+                    cassert(0);
                     
                     return false;
                   }
@@ -3886,8 +3886,8 @@ bool p_creat_descr_s::create_lalr_table(p_lalr_table_s &lalr_table)
                   // - ERROR -
                   if (value == c_idx_not_exist)
                   {
-                    interpreter_thread_s &it = *((interpreter_thread_s *)it_ptr);
-                    exception_s::throw_exception(it,c_error_PARSER_CREATE_CANNOT_RESOLVE_RULE_HEAD_FOR_SHIFT_ACTION,0,(location_s *)it.blank_location);
+                    /*c_error_PARSER_CREATE_CANNOT_RESOLVE_RULE_HEAD_FOR_SHIFT_ACTION*/
+                    cassert(0);
                     
                     return false;
                   }
@@ -3939,13 +3939,10 @@ bool parser_s::create_from_rule_string(string_s &rule_string)
   {
     creat_descr.clear();
 
-    interpreter_thread_s &it = *((interpreter_thread_s *)it_ptr);
+    // FIXME TODO test if error was not reported yet
 
-    // - throw exception if not thrown yet -
-    if (it.exception_location == it.blank_location)
-    {
-      exception_s::throw_exception(it,c_error_PARSER_CREATE_UNSPECIFIED_ERROR,0,(location_s *)it.blank_location);
-    }
+    /*c_error_PARSER_CREATE_UNSPECIFIED_ERROR*/
+    cassert(0);
 
     return false;
   }
@@ -3962,13 +3959,10 @@ bool parser_s::create_from_rule_string(string_s &rule_string)
   {
     creat_descr.clear();
 
-    interpreter_thread_s &it = *((interpreter_thread_s *)it_ptr);
-
-    // - throw exception if not thrown yet -
-    if (it.exception_location == it.blank_location)
-    {
-      exception_s::throw_exception(it,c_error_PARSER_CREATE_UNSPECIFIED_ERROR,0,(location_s *)it.blank_location);
-    }
+    // FIXME TODO test if error was not reported yet
+    
+    /*c_error_PARSER_CREATE_UNSPECIFIED_ERROR*/
+    cassert(0);
 
     return false;
   }

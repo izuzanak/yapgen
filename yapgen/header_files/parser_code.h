@@ -3,7 +3,7 @@
 #define __PARSER_CODE_H
 
 @begin
-include "script_parser.h"
+include "struct.h"
 @end
 
 // - basic constants and definitions -
