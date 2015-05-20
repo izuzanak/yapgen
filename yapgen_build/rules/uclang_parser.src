@@ -6,7 +6,7 @@ private public class Main
 {/*{{{*/
   static public main(argv)
   {
-    return 0;
+    return "String" + a + b + c;
   }
 }/*}}}*/
 

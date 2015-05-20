@@ -4,6 +4,45 @@ include "parser_run.h"
 @end
 
 /*
+ * global lua function callbacks
+ */
+
+int rule_body(lua_State *lua_state)
+{/*{{{*/
+  
+  // - retrieve parser run pointer -
+  lua_getglobal(lua_state,"_parser_run");
+  parser_run_s &parser_run = *((parser_run_s *)lua_touserdata(lua_state,-1));
+
+  // - retrieve index -
+  unsigned index = lua_tonumber(lua_state,1);
+
+  parser_s &parser = *((parser_s *)parser_run.parser_ptr);
+  string_s &source_string = *((string_s *)parser_run.source_string_ptr);
+
+  unsigned rule_body_size = parser.rule_descrs[parser_run.parse_action].body_size;
+
+  // - ERROR -
+  cassert(index < rule_body_size);
+
+  // - retrieve lalr stack element -
+  lalr_stack_s &lalr_stack = parser_run.lalr_stack;
+  lalr_stack_element_s &lse = lalr_stack[lalr_stack.used - rule_body_size + index];
+  unsigned data_end = lse.terminal_end - lse.terminal_start;
+  char *data = source_string.data + lse.terminal_start;
+
+  // - retrieve rule body string -
+  char tmp_char = data[data_end];
+  data[data_end] = '\0';
+
+  // - push result to lua stack -
+  lua_pushstring(lua_state,data);
+  data[data_end] = tmp_char;
+
+  return 1;
+}/*}}}*/
+
+/*
  * methods of generated structures
  */
 
@@ -44,6 +83,14 @@ bool parser_run_s::parse_source_string(string_s &a_source_string)
   // - open lua libraries -
   luaL_openlibs(lua_state);
 
+  // - set global _parser_run -
+  lua_pushlightuserdata(lua_state,this);
+  lua_setglobal(lua_state,"_parser_run");
+
+  // - set global rule_body -
+  lua_pushcfunction(lua_state,rule_body);
+  lua_setglobal(lua_state,"rule_body");
+
   // - ERROR -
   if (luaL_dostring(lua_state,parser.init_code.data))
   {
@@ -53,6 +100,9 @@ bool parser_run_s::parse_source_string(string_s &a_source_string)
     /*c_error_PARSER_LUA_DO_INIT_CODE_ERROR*/
     return false;
   }
+
+  // - set source string pointer -
+  source_string_ptr = &a_source_string;
 
   // - vychozi nastaveni lalr_stavoveho zasobniku -
   lalr_stack.used = 0;
@@ -92,7 +142,7 @@ bool parser_run_s::parse_source_string(string_s &a_source_string)
     }
 
     // - nalezeni akce v tabulce akci -
-    unsigned parse_action = lalr_table.value(ret_term,lalr_stack.last().lalr_state);
+    parse_action = lalr_table.value(ret_term,lalr_stack.last().lalr_state);
 
     // - ERROR -
     if (parse_action == c_idx_not_exist)

@@ -19,6 +19,12 @@ include "parser_code.h"
 #endif
 
 /*
+ * global lua function callbacks
+ */
+
+int rule_body(lua_State *lua_state);
+
+/*
  * definition of generated structures
  */
 
@@ -27,7 +33,9 @@ include "parser_code.h"
 struct
     <
     pointer:parser_ptr
+    pointer:source_string_ptr
     lalr_stack_s:lalr_stack
+    unsigned:parse_action
     >
     additions
 {

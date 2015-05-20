@@ -2,17 +2,13 @@
 
 init_code:
 {
-  gen_parse_tree = 1;
+  gen_parse_tree = 0;
   node_idx = 0;
   this_idx = 0;
   node_stack = {\};
   tmp_str = "";
 
   tabs = {\};
-
-  function rule_body(a_pos)
-    return "---"..a_pos.."----";
-  end
 
   if gen_parse_tree == 1 then
     print("digraph tree {");
@@ -2257,7 +2253,7 @@ rules:
    {
       if gen_parse_tree == 1 then
          value = rule_body(0);
-         print("   node_"..node_idx.." [label = \"const: \\\""..string.sub(value,1,string.len(value) - 2).."\\\"\"]");
+         print("   node_"..node_idx.." [label = \"const: \\\""..string.sub(value,2,string.len(value) - 1).."\\\"\"]");
          table.insert(node_stack,node_idx);
          node_idx = node_idx + 1;
       else
