@@ -2,7 +2,7 @@
 
 init_code:
 {
-  gen_parse_tree = 0;
+  gen_parse_tree = 1;
   node_idx = 0;
   this_idx = 0;
   node_stack = {\};
@@ -228,7 +228,7 @@ rules:
    <end_check> -> <program> _END_ ->> {}
    <end_check> -> _END_ ->> {}
 
-   <program> -> <import_list> ->> 
+   <program> -> <import_list> ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -243,7 +243,7 @@ rules:
    }
 
    $ -- import list --
-   <import_list> -> <import> <import_list> ->> 
+   <import_list> -> <import> <import_list> ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -254,7 +254,7 @@ rules:
          table.insert(node_stack,this_idx);
       end
    }
-   <import_list> -> <top_class_list> ->> 
+   <import_list> -> <top_class_list> ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -278,7 +278,7 @@ rules:
    }
 
    $ -- modifiers definition --
-   <def_modifier> -> public ->> 
+   <def_modifier> -> public ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -289,7 +289,7 @@ rules:
          print(table.concat(tabs,"").."modifier public");
       end
    }
-   <def_modifier> -> private ->> 
+   <def_modifier> -> private ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -300,7 +300,7 @@ rules:
          print(table.concat(tabs,"").."modifier private");
       end
    }
-   <def_modifier> -> static ->> 
+   <def_modifier> -> static ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -311,7 +311,7 @@ rules:
          print(table.concat(tabs,"").."modifier static");
       end
    }
-   <def_modifier> -> abstract ->> 
+   <def_modifier> -> abstract ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -322,7 +322,7 @@ rules:
          print(table.concat(tabs,"").."modifier abstract");
       end
    }
-   <def_modifier> -> final ->> 
+   <def_modifier> -> final ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -333,7 +333,7 @@ rules:
          print(table.concat(tabs,"").."modifier final");
       end
    }
-   <def_modifier> -> parallel ->> 
+   <def_modifier> -> parallel ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -369,7 +369,7 @@ rules:
    }
 
    $ -- top class definition --
-   <top_class> -> <def_modifier> <top_class> ->> 
+   <top_class> -> <def_modifier> <top_class> ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -380,7 +380,7 @@ rules:
          table.insert(node_stack,this_idx);
       end
    }
-   <top_class> -> <class_def> ->> 
+   <top_class> -> <class_def> ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -392,7 +392,7 @@ rules:
    }
 
    $ -- class definition --
-   <class_def> -> <class_name> <class_extends> <class_parts> ->> 
+   <class_def> -> <class_name> <class_extends> <class_parts> ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -408,7 +408,7 @@ rules:
       end
    }
 
-   <class_name> -> class id ->> 
+   <class_name> -> class id ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -421,7 +421,7 @@ rules:
       end
    }
 
-   <class_extends> -> extends id lc_br ->> 
+   <class_extends> -> extends id lc_br ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -432,7 +432,7 @@ rules:
          print(table.concat(tabs,"").."class extends: \""..rule_body(1).."\"");
       end
    }
-   <class_extends> -> lc_br ->> 
+   <class_extends> -> lc_br ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -442,7 +442,7 @@ rules:
       end
    }
 
-   <class_parts> -> <class_part_modifiers> <class_parts> ->> 
+   <class_parts> -> <class_part_modifiers> <class_parts> ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -453,7 +453,7 @@ rules:
          table.insert(node_stack,this_idx);
       end
    }
-   <class_parts> -> rc_br ->> 
+   <class_parts> -> rc_br ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -463,7 +463,7 @@ rules:
       end
    }
 
-   <class_part_modifiers> -> <def_modifier> <class_part_modifiers> ->> 
+   <class_part_modifiers> -> <def_modifier> <class_part_modifiers> ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -474,7 +474,7 @@ rules:
          table.insert(node_stack,this_idx);
       end
    }
-   <class_part_modifiers> -> <class_part> ->> 
+   <class_part_modifiers> -> <class_part> ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -485,7 +485,7 @@ rules:
       end
    }
 
-   <class_part> -> <class_element> ->> 
+   <class_part> -> <class_element> ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -495,7 +495,7 @@ rules:
          table.insert(node_stack,this_idx);
       end
    }
-   <class_part> -> <class_def> ->> 
+   <class_part> -> <class_def> ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -505,7 +505,7 @@ rules:
          table.insert(node_stack,this_idx);
       end
    }
-   <class_part> -> <method_def> ->> 
+   <class_part> -> <method_def> ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -515,8 +515,8 @@ rules:
          table.insert(node_stack,this_idx);
       end
    }
-   
-   <class_element> -> id semicolon ->> 
+
+   <class_element> -> id semicolon ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -527,7 +527,7 @@ rules:
          print(table.concat(tabs,"").."element name: \""..rule_body(0).."\"");
       end
    }
-   <class_element> -> <class_element_expression> semicolon ->> 
+   <class_element> -> <class_element_expression> semicolon ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -553,7 +553,7 @@ rules:
       end
    }
 
-   <class_element_name> -> id ->> 
+   <class_element_name> -> id ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -566,7 +566,7 @@ rules:
    }
 
    $ -- method definition --
-   <method_def> -> <method_name> <method_parameters> <method_body> ->> 
+   <method_def> -> <method_name> <method_parameters> <method_body> ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -581,7 +581,7 @@ rules:
          print(table.concat(tabs,"").."method def end");
       end
    }
-   <method_name> -> id lr_br ->> 
+   <method_name> -> id lr_br ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -594,7 +594,7 @@ rules:
       end
    }
 
-   <method_parameters> -> <method_parameter_list> rr_br ->> 
+   <method_parameters> -> <method_parameter_list> rr_br ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -606,7 +606,7 @@ rules:
          print(table.concat(tabs,"").."method parameters done");
       end
    }
-   <method_parameters> -> rr_br ->> 
+   <method_parameters> -> rr_br ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -618,7 +618,7 @@ rules:
       end
    }
 
-   <method_parameter_list> -> <method_parameter_list> comma <method_parameter> ->> 
+   <method_parameter_list> -> <method_parameter_list> comma <method_parameter> ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -629,7 +629,7 @@ rules:
          table.insert(node_stack,this_idx);
       end
    }
-   <method_parameter_list> -> <method_parameter> ->> 
+   <method_parameter_list> -> <method_parameter> ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -639,8 +639,8 @@ rules:
          table.insert(node_stack,this_idx);
       end
    }
-   
-   <method_parameter> -> id ->> 
+
+   <method_parameter> -> id ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -651,7 +651,7 @@ rules:
          print(table.concat(tabs,"").."method parameter: \""..rule_body(0).."\"");
       end
    }
-   <method_parameter> -> at id ->> 
+   <method_parameter> -> at id ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -663,7 +663,7 @@ rules:
       end
    }
 
-   <method_body> -> semicolon ->> 
+   <method_body> -> semicolon ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -674,7 +674,7 @@ rules:
          print(table.concat(tabs,"").."method body semicolon");
       end
    }
-   <method_body> -> <method_body_begin> rc_br ->> 
+   <method_body> -> <method_body_begin> rc_br ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -686,7 +686,7 @@ rules:
          print(table.concat(tabs,"").."method body empty");
       end
    }
-   <method_body> -> <method_body_begin> <command_list> rc_br ->> 
+   <method_body> -> <method_body_begin> <command_list> rc_br ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -698,7 +698,7 @@ rules:
       end
    }
 
-   <method_body_begin> -> lc_br ->> 
+   <method_body_begin> -> lc_br ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -711,7 +711,7 @@ rules:
    }
 
    $ -- command list --
-   <command_list> -> <command_list> <command> ->> 
+   <command_list> -> <command_list> <command> ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -724,7 +724,7 @@ rules:
          print(table.concat(tabs,"").."command join");
       end
    }
-   <command_list> -> <command> ->> 
+   <command_list> -> <command> ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -736,7 +736,7 @@ rules:
    }
 
    $ -- command block --
-   <command> -> <command_block> ->> 
+   <command> -> <command_block> ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -747,7 +747,7 @@ rules:
       end
    }
 
-   <command_block> -> lc_br rc_br ->> 
+   <command_block> -> lc_br rc_br ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -758,7 +758,7 @@ rules:
          print(table.concat(tabs,"").."blank command block");
       end
    }
-   <command_block> -> <command_block_begin> <command_list> rc_br ->> 
+   <command_block> -> <command_block_begin> <command_list> rc_br ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -771,7 +771,7 @@ rules:
          table.remove(tabs);
       end
    }
-   <command_block_begin> -> lc_br ->> 
+   <command_block_begin> -> lc_br ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -810,7 +810,7 @@ rules:
          print(table.concat(tabs,"").."try catch done");
       end
    }
-   <try_begin> -> try ->> 
+   <try_begin> -> try ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -834,7 +834,7 @@ rules:
    }
 
    $ -- if, if-else statement --
-   <command> -> if <condition> <if_else> ->> 
+   <command> -> if <condition> <if_else> ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -845,7 +845,7 @@ rules:
          table.insert(node_stack,this_idx);
       end
    }
-   <if_else> -> <command> ->> 
+   <if_else> -> <command> ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -857,7 +857,7 @@ rules:
          print(table.concat(tabs,"").."if statement");
       end
    }
-   <if_else> -> <command> else <command> ->> 
+   <if_else> -> <command> else <command> ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -872,7 +872,7 @@ rules:
    }
 
    $ -- while statement --
-   <command> -> <while_begin> <condition> <command> ->> 
+   <command> -> <while_begin> <condition> <command> ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -886,7 +886,7 @@ rules:
          print(table.concat(tabs,"").."while statement");
       end
    }
-   <while_begin> -> while ->> 
+   <while_begin> -> while ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -899,7 +899,7 @@ rules:
    }
 
    $ -- do-while statement --
-   <command> -> <do_while_begin> <command> while <condition> semicolon ->> 
+   <command> -> <do_while_begin> <command> while <condition> semicolon ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -913,7 +913,7 @@ rules:
          print(table.concat(tabs,"").."do while statement");
       end
    }
-   <do_while_begin> -> do ->> 
+   <do_while_begin> -> do ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -1090,7 +1090,7 @@ rules:
    }
 
    $ -- break statement --
-   <command> -> break semicolon ->> 
+   <command> -> break semicolon ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -1103,7 +1103,7 @@ rules:
    }
 
    $ -- continue statement --
-   <command> -> continue semicolon ->> 
+   <command> -> continue semicolon ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -1116,7 +1116,7 @@ rules:
    }
 
    $ -- return statement --
-   <command> -> return <expression> semicolon ->> 
+   <command> -> return <expression> semicolon ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -1130,7 +1130,7 @@ rules:
    }
 
    $ -- command exp --
-   <command> -> <expression> semicolon ->> 
+   <command> -> <expression> semicolon ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -1142,7 +1142,7 @@ rules:
    }
 
    $ -- init exp --
-   <A> -> <array_elements> re_br ->> 
+   <A> -> <array_elements> re_br ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -1154,9 +1154,9 @@ rules:
          print(table.concat(tabs,"").."elements array");
       end
    }
-   
+
    $ -- array --
-   <array_elements> -> <array_elements_begin> ->> 
+   <array_elements> -> <array_elements_begin> ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -1166,7 +1166,7 @@ rules:
          table.insert(node_stack,this_idx);
       end
    }
-   <array_elements> -> <array_elements_begin> <array_element_list> ->> 
+   <array_elements> -> <array_elements_begin> <array_element_list> ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -1178,7 +1178,7 @@ rules:
       end
    }
 
-   <array_elements_begin> -> le_br ->> 
+   <array_elements_begin> -> le_br ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -1190,7 +1190,7 @@ rules:
       end
    }
 
-   <array_element_list> -> <array_element_list> comma <exp> ->> 
+   <array_element_list> -> <array_element_list> comma <exp> ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -1203,7 +1203,7 @@ rules:
          print(table.concat(tabs,"").."array element");
       end
    }
-   <array_element_list> -> <exp> ->> 
+   <array_element_list> -> <exp> ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -1217,7 +1217,7 @@ rules:
    }
 
    $ -- condition --
-   <condition> -> lr_br <exp> rr_br ->> 
+   <condition> -> lr_br <exp> rr_br ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -1231,7 +1231,7 @@ rules:
    }
 
    $ -- expression --
-   <expression> -> <exp> ->> 
+   <expression> -> <exp> ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -1245,7 +1245,7 @@ rules:
    }
 
    $ -- exp --
-   <exp> -> <H> ->> 
+   <exp> -> <H> ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -1257,7 +1257,7 @@ rules:
    }
 
    $ -- exp operators --
-   <H> -> <H> equal <H> ->> 
+   <H> -> <H> equal <H> ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -1270,7 +1270,7 @@ rules:
          print(table.concat(tabs,"").."operator binary equal");
       end
    }
-   <H> -> <H> plus_equal <H> ->> 
+   <H> -> <H> plus_equal <H> ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -1283,7 +1283,7 @@ rules:
          print(table.concat(tabs,"").."operator binary plus_equal");
       end
    }
-   <H> -> <H> minus_equal <H> ->> 
+   <H> -> <H> minus_equal <H> ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -1296,7 +1296,7 @@ rules:
          print(table.concat(tabs,"").."operator binary minus_equal");
       end
    }
-   <H> -> <H> asterisk_equal <H> ->> 
+   <H> -> <H> asterisk_equal <H> ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -1309,7 +1309,7 @@ rules:
          print(table.concat(tabs,"").."operator binary asterisk_equal");
       end
    }
-   <H> -> <H> slash_equal <H> ->> 
+   <H> -> <H> slash_equal <H> ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -1322,7 +1322,7 @@ rules:
          print(table.concat(tabs,"").."operator binary slash_equal");
       end
    }
-   <H> -> <H> percent_equal <H> ->> 
+   <H> -> <H> percent_equal <H> ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -1335,7 +1335,7 @@ rules:
          print(table.concat(tabs,"").."operator binary percent_equal");
       end
    }
-   <H> -> <H> double_ls_br_equal <H> ->> 
+   <H> -> <H> double_ls_br_equal <H> ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -1348,7 +1348,7 @@ rules:
          print(table.concat(tabs,"").."operator binary double_ls_br_equal");
       end
    }
-   <H> -> <H> double_rs_br_equal <H> ->> 
+   <H> -> <H> double_rs_br_equal <H> ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -1361,7 +1361,7 @@ rules:
          print(table.concat(tabs,"").."operator binary double_rs_br_equal");
       end
    }
-   <H> -> <H> ampersand_equal <H> ->> 
+   <H> -> <H> ampersand_equal <H> ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -1374,7 +1374,7 @@ rules:
          print(table.concat(tabs,"").."operator binary ampersand_equal");
       end
    }
-   <H> -> <H> pipe_equal <H> ->> 
+   <H> -> <H> pipe_equal <H> ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -1387,7 +1387,7 @@ rules:
          print(table.concat(tabs,"").."operator binary pipe_equal");
       end
    }
-   <H> -> <H> circumflex_equal <H> ->> 
+   <H> -> <H> circumflex_equal <H> ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -1400,18 +1400,9 @@ rules:
          print(table.concat(tabs,"").."operator binary circumflex_equal");
       end
    }
-   <H> -> <G> ->> 
-   {
-      if gen_parse_tree == 1 then
-         this_idx = node_idx;
-         node_idx = node_idx + 1;
-         print("   node_"..this_idx.." [label = \"<exp>\"]");
-         print("   node_"..this_idx.." -> node_"..table.remove(node_stack).."");
-         table.insert(node_stack,this_idx);
-      end
-   }
+   <H> -> <G> ->> {}
 
-   <G> -> <G> double_ampersand <F> ->> 
+   <G> -> <G> double_ampersand <F> ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -1424,7 +1415,7 @@ rules:
          print(table.concat(tabs,"").."operator binary double_ampersand");
       end
    }
-   <G> -> <G> double_pipe <F> ->> 
+   <G> -> <G> double_pipe <F> ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -1437,18 +1428,9 @@ rules:
          print(table.concat(tabs,"").."operator binary double_pipe");
       end
    }
-   <G> -> <F> ->> 
-   {
-      if gen_parse_tree == 1 then
-         this_idx = node_idx;
-         node_idx = node_idx + 1;
-         print("   node_"..this_idx.." [label = \"<exp>\"]");
-         print("   node_"..this_idx.." -> node_"..table.remove(node_stack).."");
-         table.insert(node_stack,this_idx);
-      end
-   }
+   <G> -> <F> ->> {}
 
-   <F> -> <F> double_equal <E> ->> 
+   <F> -> <F> double_equal <E> ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -1461,7 +1443,7 @@ rules:
          print(table.concat(tabs,"").."operator binary double_equal");
       end
    }
-   <F> -> <F> exclamation_equal <E> ->> 
+   <F> -> <F> exclamation_equal <E> ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -1474,7 +1456,7 @@ rules:
          print(table.concat(tabs,"").."operator binary exclamation_equal");
       end
    }
-   <F> -> <F> rs_br <E> ->> 
+   <F> -> <F> rs_br <E> ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -1487,7 +1469,7 @@ rules:
          print(table.concat(tabs,"").."operator binary rs_br");
       end
    }
-   <F> -> <F> ls_br <E> ->> 
+   <F> -> <F> ls_br <E> ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -1500,7 +1482,7 @@ rules:
          print(table.concat(tabs,"").."operator binary ls_br");
       end
    }
-   <F> -> <F> rs_br_equal <E> ->> 
+   <F> -> <F> rs_br_equal <E> ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -1513,7 +1495,7 @@ rules:
          print(table.concat(tabs,"").."operator binary rs_br_equal");
       end
    }
-   <F> -> <F> ls_br_equal <E> ->> 
+   <F> -> <F> ls_br_equal <E> ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -1526,18 +1508,9 @@ rules:
          print(table.concat(tabs,"").."operator binary ls_br_equal");
       end
    }
-   <F> -> <E> ->> 
-   {
-      if gen_parse_tree == 1 then
-         this_idx = node_idx;
-         node_idx = node_idx + 1;
-         print("   node_"..this_idx.." [label = \"<exp>\"]");
-         print("   node_"..this_idx.." -> node_"..table.remove(node_stack).."");
-         table.insert(node_stack,this_idx);
-      end
-   }
+   <F> -> <E> ->> {}
 
-   <E> -> <E> ampersand <D> ->> 
+   <E> -> <E> ampersand <D> ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -1550,7 +1523,7 @@ rules:
          print(table.concat(tabs,"").."operator binary ampersand");
       end
    }
-   <E> -> <E> pipe <D> ->> 
+   <E> -> <E> pipe <D> ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -1563,7 +1536,7 @@ rules:
          print(table.concat(tabs,"").."operator binary pipe");
       end
    }
-   <E> -> <E> circumflex <D> ->> 
+   <E> -> <E> circumflex <D> ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -1576,18 +1549,9 @@ rules:
          print(table.concat(tabs,"").."operator binary circumflex");
       end
    }
-   <E> -> <D> ->> 
-   {
-      if gen_parse_tree == 1 then
-         this_idx = node_idx;
-         node_idx = node_idx + 1;
-         print("   node_"..this_idx.." [label = \"<exp>\"]");
-         print("   node_"..this_idx.." -> node_"..table.remove(node_stack).."");
-         table.insert(node_stack,this_idx);
-      end
-   }
+   <E> -> <D> ->> {}
 
-   <D> -> <D> double_rs_br <C> ->> 
+   <D> -> <D> double_rs_br <C> ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -1600,7 +1564,7 @@ rules:
          print(table.concat(tabs,"").."operator binary double_rs_br");
       end
    }
-   <D> -> <D> double_ls_br <C> ->> 
+   <D> -> <D> double_ls_br <C> ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -1613,18 +1577,9 @@ rules:
          print(table.concat(tabs,"").."operator binary double_ls_br");
       end
    }
-   <D> -> <C> ->> 
-   {
-      if gen_parse_tree == 1 then
-         this_idx = node_idx;
-         node_idx = node_idx + 1;
-         print("   node_"..this_idx.." [label = \"<exp>\"]");
-         print("   node_"..this_idx.." -> node_"..table.remove(node_stack).."");
-         table.insert(node_stack,this_idx);
-      end
-   }
+   <D> -> <C> ->> {}
 
-   <C> -> <C> plus <B> ->> 
+   <C> -> <C> plus <B> ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -1637,7 +1592,7 @@ rules:
          print(table.concat(tabs,"").."operator binary plus");
       end
    }
-   <C> -> <C> minus <B> ->> 
+   <C> -> <C> minus <B> ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -1650,18 +1605,9 @@ rules:
          print(table.concat(tabs,"").."operator binary minus");
       end
    }
-   <C> -> <B> ->> 
-   {
-      if gen_parse_tree == 1 then
-         this_idx = node_idx;
-         node_idx = node_idx + 1;
-         print("   node_"..this_idx.." [label = \"<exp>\"]");
-         print("   node_"..this_idx.." -> node_"..table.remove(node_stack).."");
-         table.insert(node_stack,this_idx);
-      end
-   }
+   <C> -> <B> ->> {}
 
-   <B> -> <B> asterisk <A> ->> 
+   <B> -> <B> asterisk <A> ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -1674,7 +1620,7 @@ rules:
          print(table.concat(tabs,"").."operator binary asterisk");
       end
    }
-   <B> -> <B> slash <A> ->> 
+   <B> -> <B> slash <A> ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -1687,7 +1633,7 @@ rules:
          print(table.concat(tabs,"").."operator binary slash");
       end
    }
-   <B> -> <B> percent <A> ->> 
+   <B> -> <B> percent <A> ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -1701,17 +1647,9 @@ rules:
       end
    }
 
-   <B> -> <A> ->> 
-   {
-      if gen_parse_tree == 1 then
-         this_idx = node_idx;
-         node_idx = node_idx + 1;
-         print("   node_"..this_idx.." [label = \"<exp>\"]");
-         print("   node_"..this_idx.." -> node_"..table.remove(node_stack).."");
-         table.insert(node_stack,this_idx);
-      end
-   }
-   <A> -> <A> double_plus ->> 
+   <B> -> <A> ->> {}
+
+   <A> -> <A> double_plus ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -1723,7 +1661,7 @@ rules:
          print(table.concat(tabs,"").."operator unary post_double_plus");
       end
    }
-   <A> -> <A> double_minus ->> 
+   <A> -> <A> double_minus ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -1735,7 +1673,7 @@ rules:
          print(table.concat(tabs,"").."operator unary post_double_minus");
       end
    }
-   <A> -> double_plus <A> ->> 
+   <A> -> double_plus <A> ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -1747,7 +1685,7 @@ rules:
          print(table.concat(tabs,"").."operator unary pre_double_plus");
       end
    }
-   <A> -> double_minus <A> ->> 
+   <A> -> double_minus <A> ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -1759,7 +1697,7 @@ rules:
          print(table.concat(tabs,"").."operator unary pre_double_minus");
       end
    }
-   <A> -> plus <A> ->> 
+   <A> -> plus <A> ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -1771,7 +1709,7 @@ rules:
          print(table.concat(tabs,"").."operator unary pre_plus");
       end
    }
-   <A> -> minus <A> ->> 
+   <A> -> minus <A> ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -1783,7 +1721,7 @@ rules:
          print(table.concat(tabs,"").."operator unary pre_minus");
       end
    }
-   <A> -> exclamation <A> ->> 
+   <A> -> exclamation <A> ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -1795,7 +1733,7 @@ rules:
          print(table.concat(tabs,"").."operator unary pre_exclamation");
       end
    }
-   <A> -> tilde <A> ->> 
+   <A> -> tilde <A> ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -1808,7 +1746,7 @@ rules:
       end
    }
 
-   <A> -> <A> le_br <item_range> re_br ->> 
+   <A> -> <A> le_br <item_range> re_br ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -1908,7 +1846,7 @@ rules:
    }
 
    $ -- exp bracket --
-   <A> -> lr_br <H> rr_br ->> 
+   <A> -> lr_br <H> rr_br ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -1920,7 +1858,7 @@ rules:
    }
 
    $ -- identifier --
-   <A> -> id ->> 
+   <A> -> id ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -1933,7 +1871,7 @@ rules:
    }
 
    $ -- this access --
-   <A> -> this ->> 
+   <A> -> this ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -1946,7 +1884,7 @@ rules:
    }
 
    $ -- new object creation --
-   <A> -> <object_class_name> <parameters> rr_br ->> 
+   <A> -> <object_class_name> <parameters> rr_br ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -1959,7 +1897,7 @@ rules:
          print(table.concat(tabs,"").."new object");
       end
    }
-   <A> -> <object_class_name> le_br <exp> re_br ->> 
+   <A> -> <object_class_name> le_br <exp> re_br ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -1974,7 +1912,7 @@ rules:
    }
 
    $ -- object class name --
-   <object_class_name> -> new id ->> 
+   <object_class_name> -> new id ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -2001,7 +1939,7 @@ rules:
    }
 
    $ -- type identification --
-   <A> -> type <A> ->> 
+   <A> -> type <A> ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -2015,7 +1953,7 @@ rules:
    }
 
    $ -- object reference copy --
-   <A> -> <A> equal_at <H> ->> 
+   <A> -> <A> equal_at <H> ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -2046,7 +1984,7 @@ rules:
    }
 
    $ -- object member --
-   <A> -> <object_member> ->> 
+   <A> -> <object_member> ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -2060,7 +1998,7 @@ rules:
    }
 
    $ -- method call --
-   <A> -> id <parameters> rr_br ->> 
+   <A> -> id <parameters> rr_br ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -2072,7 +2010,7 @@ rules:
          print(table.concat(tabs,"").."this method call: \""..rule_body(0).."\"");
       end
    }
-   <A> -> <object_member> <parameters> rr_br ->> 
+   <A> -> <object_member> <parameters> rr_br ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -2085,8 +2023,8 @@ rules:
          print(table.concat(tabs,"").."object method call");
       end
    }
-   
-   <parameters> -> <parameters_begin> ->> 
+
+   <parameters> -> <parameters_begin> ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -2098,7 +2036,7 @@ rules:
          table.remove(tabs);
       end
    }
-   <parameters> -> <parameters_begin> <parameter_list> ->> 
+   <parameters> -> <parameters_begin> <parameter_list> ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -2112,7 +2050,7 @@ rules:
       end
    }
 
-   <parameters_begin> -> lr_br ->> 
+   <parameters_begin> -> lr_br ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -2125,7 +2063,7 @@ rules:
       end
    }
 
-   <parameter_list> -> <parameter_list> comma <exp> ->> 
+   <parameter_list> -> <parameter_list> comma <exp> ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -2138,7 +2076,7 @@ rules:
          print(table.concat(tabs,"").."parameter");
       end
    }
-   <parameter_list> -> <exp> ->> 
+   <parameter_list> -> <exp> ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -2152,7 +2090,7 @@ rules:
    }
 
    $ -- object member --
-   <object_member> -> <A> dot id ->> 
+   <object_member> -> <A> dot id ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -2166,7 +2104,7 @@ rules:
    }
 
    $ -- constant values --
-   <A> -> single_char_const ->> 
+   <A> -> single_char_const ->>
    {
       if gen_parse_tree == 1 then
          print("   node_"..node_idx.." [label = \""..rule_body(0).."\"]");
@@ -2176,7 +2114,7 @@ rules:
          print(table.concat(tabs,"").."const char: \""..rule_body(0).."\"");
       end
    }
-   <A> -> octal_char_const ->> 
+   <A> -> octal_char_const ->>
    {
       if gen_parse_tree == 1 then
          print("   node_"..node_idx.." [label = \""..rule_body(0).."\"]");
@@ -2186,7 +2124,7 @@ rules:
          print(table.concat(tabs,"").."const octal char: \""..rule_body(0).."\"");
       end
    }
-   <A> -> hex_char_const ->> 
+   <A> -> hex_char_const ->>
    {
       if gen_parse_tree == 1 then
          print("   node_"..node_idx.." [label = \""..rule_body(0).."\"]");
@@ -2196,7 +2134,7 @@ rules:
          print(table.concat(tabs,"").."const hex char: \""..rule_body(0).."\"");
       end
    }
-   <A> -> backslash_char_const ->> 
+   <A> -> backslash_char_const ->>
    {
       if gen_parse_tree == 1 then
          print("   node_"..node_idx.." [label = \"'\\"..substr(rule_body(0)..1..size(rule_body(0)) - 1).."\"]");
@@ -2207,7 +2145,7 @@ rules:
       end
    }
 
-   <A> -> oct_int_const ->> 
+   <A> -> oct_int_const ->>
    {
       if gen_parse_tree == 1 then
          print("   node_"..node_idx.." [label = \"const: "..rule_body(0).."\"]");
@@ -2217,7 +2155,7 @@ rules:
          print(table.concat(tabs,"").."const oct int: \""..rule_body(0).."\"");
       end
    }
-   <A> -> dec_int_const ->> 
+   <A> -> dec_int_const ->>
    {
       if gen_parse_tree == 1 then
          print("   node_"..node_idx.." [label = \"const: "..rule_body(0).."\"]");
@@ -2227,7 +2165,7 @@ rules:
          print(table.concat(tabs,"").."const dec int: \""..rule_body(0).."\"");
       end
    }
-   <A> -> hex_int_const ->> 
+   <A> -> hex_int_const ->>
    {
       if gen_parse_tree == 1 then
          print("   node_"..node_idx.." [label = \"const: "..rule_body(0).."\"]");
@@ -2238,7 +2176,7 @@ rules:
       end
    }
 
-   <A> -> float_const ->> 
+   <A> -> float_const ->>
    {
       if gen_parse_tree == 1 then
          print("   node_"..node_idx.." [label = \"const: "..rule_body(0).."\"]");
@@ -2249,7 +2187,7 @@ rules:
       end
    }
 
-   <A> -> string_const ->> 
+   <A> -> string_const ->>
    {
       if gen_parse_tree == 1 then
          value = rule_body(0);

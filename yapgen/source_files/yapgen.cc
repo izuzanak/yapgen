@@ -99,37 +99,37 @@ int main(int argc,char **argv)
   }
 
   // -- vygenerovani a ulozeni popisu prekladace v jazyce c --
-  //if (arg_file_idxs[c_arg_parser_save_cc])
-  //{
-  //  if (!parser_exist)
-  //  {
-  //    fprintf(stderr,"main: --parser_save_cc: Parser doesnt exist\n");
-  //  }
-  //  else
-  //  {
-  //    buffer_s cc_source;
-  //    cc_source.init();
+  if (arg_file_idxs[c_arg_parser_save_cc])
+  {
+    if (!parser_exist)
+    {
+      fprintf(stderr,"main: --parser_save_cc: Parser doesnt exist\n");
+    }
+    else
+    {
+      bc_array_s cc_source;
+      cc_source.init();
 
-  //    parser.create_cc_source(cc_source);
+      parser.create_cc_source(cc_source);
 
-  //    FILE *f = fopen(argv[arg_file_idxs[c_arg_parser_save_cc]],"wb");
-  //    if (f == NULL)
-  //    {
-  //      fprintf(stderr,"main: --parser_save_cc: Cannot save parser source to file\n");
-  //    }
-  //    else
-  //    {
-  //      if (cc_source.used != 0)
-  //      {
-  //        fwrite(cc_source.data,cc_source.used,1,f);
-  //      }
+      FILE *f = fopen(argv[arg_file_idxs[c_arg_parser_save_cc]],"wb");
+      if (f == NULL)
+      {
+        fprintf(stderr,"main: --parser_save_cc: Cannot save parser source to file\n");
+      }
+      else
+      {
+        if (cc_source.used != 0)
+        {
+          fwrite(cc_source.data,cc_source.used,1,f);
+        }
 
-  //      fclose(f);
-  //    }
+        fclose(f);
+      }
 
-  //    cc_source.clear();
-  //  }
-  //}
+      cc_source.clear();
+    }
+  }
 
   // -- execute source code --
   if (arg_file_idxs[c_arg_source])

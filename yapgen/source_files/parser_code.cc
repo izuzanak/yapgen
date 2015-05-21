@@ -4016,3 +4016,13 @@ bool parser_s::create_from_rule_string(string_s &rule_string)
   return true;
 }/*}}}*/
 
+bool parser_s::create_cc_source(bc_array_s &cc_source)
+{/*{{{*/
+
+@begin
+include "cc_creator.h"
+@end
+
+  return true;
+}/*}}}*/
+
