@@ -1,0 +1,20 @@
+
+i32 test(i32 a,i32 b)
+{
+  {
+    i32 idx = 0;
+  }
+
+  volatile i32 idx = 0;
+  do {
+    idx += 10;
+  } while (++idx < 100);
+
+target:
+  goto target;
+
+  memcpy(0+1,1+2,2+3);
+
+  (a = 3) += (a = 5);
+}
+

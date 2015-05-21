@@ -1,0 +1,14 @@
+
+{
+  "user" : {
+    "name" : "Frank Sobotka",
+    "age"  : 56,
+    "sex"  : "male"
+  },
+
+  "first"  : [1,2.5,3,4],
+  "second" : 5674,
+  "third"  : 94.15,
+  "fourth" : -0.123e5
+}
+

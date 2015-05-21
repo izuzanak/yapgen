@@ -2,11 +2,9 @@
 
 init_code:
 {
-  gen_parse_tree = 1;
+  gen_parse_tree = 0;
   node_idx = 0;
-  this_idx = 0;
   node_stack = {\};
-  tmp_str = "";
 
   tabs = {\};
 
@@ -1245,16 +1243,7 @@ rules:
    }
 
    $ -- exp --
-   <exp> -> <H> ->>
-   {
-      if gen_parse_tree == 1 then
-         this_idx = node_idx;
-         node_idx = node_idx + 1;
-         print("   node_"..this_idx.." [label = \"<exp>\"]");
-         print("   node_"..this_idx.." -> node_"..table.remove(node_stack).."");
-         table.insert(node_stack,this_idx);
-      end
-   }
+   <exp> -> <H> ->> {}
 
    $ -- exp operators --
    <H> -> <H> equal <H> ->>

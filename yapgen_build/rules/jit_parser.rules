@@ -1,0 +1,647 @@
+#vim: set syntax=rules:
+
+init_code:
+{
+  tabs = {\};
+}
+
+terminals:
+   single_char_const {'\''.!'\0'.'\''}
+   octal_char_const {'\''.'\\'.<07>.(<07>+e).(<07>+e).'\''}
+   hex_char_const {'\''.'\\'.'x'.(<09>+<af>+<AF>).(<09>+<af>+<AF>+e).'\''}
+   backslash_char_const {'\''.'\\'.[abfnrtv\\?\'"].'\''}
+
+   oct_i32_const {'0'.<07>*}
+   dec_i32_const {<19>.d*}
+   hex_i32_const {'0'.[xX].(<09>+<af>+<AF>).(<09>+<af>+<AF>)*}
+
+   oct_i64_const {'0'.<07>*.[lL]}
+   dec_i64_const {<19>.d*.[lL]}
+   hex_i64_const {'0'.[xX].(<09>+<af>+<AF>).(<09>+<af>+<AF>)*.[lL]}
+
+   f32_const {((d*.((d.'.')+('.'.d)).d*)+((d*.((d.'.')+('.'.d)+d).d*).[eE].([+-]+e).d.d*)+(d.d*)).[fF]}
+   f64_const {((d*.((d.'.')+('.'.d)).d*)+((d*.((d.'.')+('.'.d)+d).d*).[eE].([+-]+e).d.d*))}
+
+   type {"i8"+"i16"+"i32"+"i64"+"u8"+"u16"+"u32"+"u64"+"f32"+"f64"}
+
+   id {('_'+l).('_'+l+d)*}
+
+   lr_br {'('}
+   rr_br {')'}
+
+   lc_br {'{'}
+   rc_br {'\}'}
+
+   le_br {'['}
+   re_br {']'}
+
+   comma {','}
+   semicolon {';'}
+
+   volatile {"volatile"}
+
+   if {"if"}
+   else {"else"}
+   do {"do"}
+   while {"while"}
+
+   break {"break"}
+   continue {"continue"}
+   return {"return"}
+   goto {"goto"}
+
+   equal {'='}
+   plus_equal {"+="}
+   minus_equal {"-="}
+   asterisk_equal {"*="}
+   slash_equal {"/="}
+   percent_equal {"%="}
+   double_ls_br_equal {"<<="}
+   double_rs_br_equal {">>="}
+   ampersand_equal {"&="}
+   pipe_equal {"|="}
+   circumflex_equal {"^="}
+   double_ampersand {"&&"}
+   double_pipe {"||"}
+   ampersand {'&'}
+   pipe {'|'}
+   circumflex {'^'}
+   double_equal {"=="}
+   exclamation_equal {"!="}
+   rs_br {'>'}
+   ls_br {'<'}
+   rs_br_equal {">="}
+   ls_br_equal {"<="}
+   double_rs_br {">>"}
+   double_ls_br {"<<"}
+   plus {'+'}
+   minus {'-'}
+   dot {'.'}
+   asterisk {'*'}
+   slash {'/'}
+   percent {'%'}
+   double_plus {"++"}
+   double_minus {"--"}
+   exclamation {'!'}
+
+   question {'?'}
+   colon {':'}
+   tilde {'~'}
+
+   _SKIP_ {w.w*}
+   _SKIP__ {'#'.!'\n'*.'\n'}
+   _SKIP___ {"//".!'\n'*.'\n'}
+   _SKIP____ {"/*".(!'*'+('*'.!'/'))*."*/"}
+   _END_ {'\0'}
+
+nonterminals:
+   <start>
+   <end_check>
+
+   <function>
+   <function_name>
+   <function_header>
+   <function_parameters>
+   <function_parameter_list>
+   <function_parameter>
+
+   <type_pointer_list>
+   <pointer>
+
+   <command_list>
+   <command>
+
+   <modifier_list>
+   <modifier>
+   <type>
+   <variable_list>
+   <pointer_list_variable>
+   <variable>
+   <variable_name>
+
+   <command_block>
+   <command_block_begin>
+
+   <if_condition>
+   <if_body>
+   <if_else>
+   <while_begin>
+   <while_condition>
+   <do_while_begin>
+   <do_while_pre_cond>
+
+   <condition>
+   <expression>
+
+   <exp>
+
+   <cond_condition>
+   <cond_true>
+
+   <parameters>
+   <parameters_begin>
+   <parameter_list>
+
+   <H>
+   <G>
+   <F>
+   <E>
+   <D>
+   <C>
+   <B>
+   <A>
+
+rules:
+   <start> -> <end_check> ->> {}
+
+   <end_check> -> <function> _END_ ->> {}
+   <end_check> -> _END_ ->> {}
+
+   $ -- function --
+   <function> -> <function_header> lc_br <command_list> rc_br ->>
+   {
+      table.remove(tabs);
+   }
+
+   <function_header> -> <function_name> lr_br <function_parameters> ->>
+   {
+      table.remove(tabs);
+      print(table.concat(tabs,"").."function");
+   }
+
+   <function_name> -> <type_pointer_list> id ->>
+   {
+      print(table.concat(tabs,"").."function name \""..rule_body(1).."\"");
+      table.insert(tabs," f  ");
+      table.insert(tabs," p  ");
+   }
+
+   $ - function parameters -
+   <function_parameters> -> rr_br ->> {}
+   <function_parameters> -> <function_parameter_list> rr_br ->> {}
+
+   <function_parameter_list> -> <function_parameter_list> comma <function_parameter> ->> {}
+   <function_parameter_list> -> <function_parameter> ->> {}
+
+   <function_parameter> -> <type_pointer_list> id ->>
+   {
+      print(table.concat(tabs,"").."fun parameter \""..rule_body(1).."\"");
+   }
+
+   $ - type pointer list -
+   <type_pointer_list> -> <type_pointer_list> <pointer> ->> {}
+   <type_pointer_list> -> type ->>
+   {
+      print(table.concat(tabs,"").."type \""..rule_body(0).."\"");
+   }
+
+   <pointer> -> asterisk ->>
+   {
+      print(table.concat(tabs,"").."pointer");
+   }
+
+   $ -- command list --
+   <command_list> -> <command_list> <command> ->> {}
+   <command_list> -> <command> ->> {}
+
+   $ -- declaration --
+   <command> -> <modifier_list> semicolon ->>
+   {
+      print(table.concat(tabs,"").."declaration end");
+   }
+
+   <modifier_list> -> <modifier> <modifier_list> ->> {}
+   <modifier_list> -> <type> <variable_list> ->> {}
+
+   <modifier> -> volatile ->>
+   {
+      print(table.concat(tabs,"").."modifier volatile");
+   }
+
+   <type> -> type ->>
+   {
+      print(table.concat(tabs,"").."type \""..rule_body(0).."\"");
+   }
+
+   <variable_list> -> <pointer_list_variable> comma <variable_list> ->> {}
+   <variable_list> -> <pointer_list_variable> ->> {}
+
+   <pointer_list_variable> -> <pointer> <pointer_list_variable> ->> {}
+   <pointer_list_variable> -> <variable> ->> {}
+
+   <variable> -> <variable_name> ->>
+   {
+      print(table.concat(tabs,"").."declare");
+   }
+   <variable> -> <variable_name> equal <exp> ->>
+   {
+      print(table.concat(tabs,"").."declare expression");
+   }
+   <variable> -> <variable_name> le_br <exp> re_br ->>
+   {
+      print(table.concat(tabs,"").."declare array");
+   }
+
+   <variable_name> -> id ->>
+   {
+      print(table.concat(tabs,"").."variable \""..rule_body(0).."\"");
+   }
+
+   $ -- command block --
+   <command> -> <command_block> ->> {}
+
+   <command_block> -> lc_br rc_br ->> {}
+   <command_block> -> <command_block_begin> <command_list> rc_br ->>
+   {
+      table.remove(tabs);
+      print(table.concat(tabs,"").."command block done");
+   }
+   <command_block_begin> -> lc_br ->>
+   {
+      print(table.concat(tabs,"").."command block begin");
+      table.insert(tabs," b  ");
+   }
+
+   $ -- if, if-else statement --
+   <command> -> <if_condition> <if_body> ->> {}
+   <if_condition> -> if <condition> ->>
+   {
+      print(table.concat(tabs,"").."if condition");
+   }
+   <if_body> -> <command> ->>
+   {
+      print(table.concat(tabs,"").."if statement");
+   }
+   <if_body> -> <if_else> <command> ->>
+   {
+      print(table.concat(tabs,"").."if else statement");
+   }
+   <if_else> -> <command> else ->>
+   {
+      print(table.concat(tabs,"").."if else");
+   }
+
+   $ -- while statement --
+   <command> -> <while_begin> <while_condition> <command> ->>
+   {
+      print(table.concat(tabs,"").."while statement");
+   }
+   <while_begin> -> while ->>
+   {
+      print(table.concat(tabs,"").."while begin");
+   }
+   <while_condition> -> <condition> ->>
+   {
+      print(table.concat(tabs,"").."while condition");
+   }
+
+   $ -- do-while statement --
+   <command> -> <do_while_begin> <command> <do_while_pre_cond> <condition> semicolon ->>
+   {
+      print(table.concat(tabs,"").."do while statement");
+   }
+   <do_while_begin> -> do ->>
+   {
+      print(table.concat(tabs,"").."do while begin");
+   }
+   <do_while_pre_cond> -> while ->>
+   {
+      print(table.concat(tabs,"").."do while pre condition");
+   }
+
+   $ -- break statement --
+   <command> -> break semicolon ->>
+   {
+      print(table.concat(tabs,"").."break");
+   }
+
+   $ -- continue statement --
+   <command> -> continue semicolon ->>
+   {
+      print(table.concat(tabs,"").."continue");
+   }
+
+   $ -- return statement --
+   <command> -> return <exp> semicolon ->>
+   {
+      print(table.concat(tabs,"").."return");
+   }
+
+   $ -- command exp --
+   <command> -> <expression> semicolon ->> {}
+
+   $ -- label --
+   <command> -> id colon ->>
+   {
+      print(table.concat(tabs,"").."label "..rule_body(0).."");
+   }
+
+   $ -- goto --
+   <command> -> goto id semicolon ->>
+   {
+      print(table.concat(tabs,"").."goto "..rule_body(1).."");
+   }
+
+   $ -- condition --
+   <condition> -> lr_br <exp> rr_br ->> {}
+
+   $ -- expression --
+   <expression> -> <exp> ->>
+   {
+      print(table.concat(tabs,"").."expression");
+   }
+
+   $ -- exp --
+   <exp> -> <H> ->> {}
+
+   $ -- exp operators --
+   <H> -> <H> equal <H> ->>
+   {
+      print(table.concat(tabs,"").."operator binary equal");
+   }
+   <H> -> <H> plus_equal <H> ->>
+   {
+      print(table.concat(tabs,"").."operator binary plus_equal");
+   }
+   <H> -> <H> minus_equal <H> ->>
+   {
+      print(table.concat(tabs,"").."operator binary minus_equal");
+   }
+   <H> -> <H> asterisk_equal <H> ->>
+   {
+      print(table.concat(tabs,"").."operator binary asterisk_equal");
+   }
+   <H> -> <H> slash_equal <H> ->>
+   {
+      print(table.concat(tabs,"").."operator binary slash_equal");
+   }
+   <H> -> <H> percent_equal <H> ->>
+   {
+      print(table.concat(tabs,"").."operator binary percent_equal");
+   }
+   <H> -> <H> double_ls_br_equal <H> ->>
+   {
+      print(table.concat(tabs,"").."operator binary double_ls_br_equal");
+   }
+   <H> -> <H> double_rs_br_equal <H> ->>
+   {
+      print(table.concat(tabs,"").."operator binary double_rs_br_equal");
+   }
+   <H> -> <H> ampersand_equal <H> ->>
+   {
+      print(table.concat(tabs,"").."operator binary ampersand_equal");
+   }
+   <H> -> <H> pipe_equal <H> ->>
+   {
+      print(table.concat(tabs,"").."operator binary pipe_equal");
+   }
+   <H> -> <H> circumflex_equal <H> ->>
+   {
+      print(table.concat(tabs,"").."operator binary circumflex_equal");
+   }
+   <H> -> <G> ->> {}
+
+   <G> -> <G> double_ampersand <F> ->>
+   {
+      print(table.concat(tabs,"").."operator binary double_ampersand");
+   }
+   <G> -> <G> double_pipe <F> ->>
+   {
+      print(table.concat(tabs,"").."operator binary double_pipe");
+   }
+   <G> -> <F> ->> {}
+
+   <F> -> <F> double_equal <E> ->>
+   {
+      print(table.concat(tabs,"").."operator binary double_equal");
+   }
+   <F> -> <F> exclamation_equal <E> ->>
+   {
+      print(table.concat(tabs,"").."operator binary exclamation_equal");
+   }
+   <F> -> <F> rs_br <E> ->>
+   {
+      print(table.concat(tabs,"").."operator binary rs_br");
+   }
+   <F> -> <F> ls_br <E> ->>
+   {
+      print(table.concat(tabs,"").."operator binary ls_br");
+   }
+   <F> -> <F> rs_br_equal <E> ->>
+   {
+      print(table.concat(tabs,"").."operator binary rs_br_equal");
+   }
+   <F> -> <F> ls_br_equal <E> ->>
+   {
+      print(table.concat(tabs,"").."operator binary ls_br_equal");
+   }
+   <F> -> <E> ->> {}
+
+   <E> -> <E> ampersand <D> ->>
+   {
+      print(table.concat(tabs,"").."operator binary ampersand");
+   }
+   <E> -> <E> pipe <D> ->>
+   {
+      print(table.concat(tabs,"").."operator binary pipe");
+   }
+   <E> -> <E> circumflex <D> ->>
+   {
+      print(table.concat(tabs,"").."operator binary circumflex");
+   }
+   <E> -> <D> ->> {}
+
+   <D> -> <D> double_rs_br <C> ->>
+   {
+      print(table.concat(tabs,"").."operator binary double_rs_br");
+   }
+   <D> -> <D> double_ls_br <C> ->>
+   {
+      print(table.concat(tabs,"").."operator binary double_ls_br");
+   }
+   <D> -> <C> ->> {}
+
+   <C> -> <C> plus <B> ->>
+   {
+      print(table.concat(tabs,"").."operator binary plus");
+   }
+   <C> -> <C> minus <B> ->>
+   {
+      print(table.concat(tabs,"").."operator binary minus");
+   }
+   <C> -> <B> ->> {}
+
+   <B> -> <B> asterisk <A> ->>
+   {
+      print(table.concat(tabs,"").."operator binary asterisk");
+   }
+   <B> -> <B> slash <A> ->>
+   {
+      print(table.concat(tabs,"").."operator binary slash");
+   }
+   <B> -> <B> percent <A> ->>
+   {
+      print(table.concat(tabs,"").."operator binary percent");
+   }
+
+   <B> -> <A> ->> {}
+   <A> -> <A> double_plus ->>
+   {
+      print(table.concat(tabs,"").."operator unary post_double_plus");
+   }
+   <A> -> <A> double_minus ->>
+   {
+      print(table.concat(tabs,"").."operator unary post_double_minus");
+   }
+   <A> -> double_plus <A> ->>
+   {
+      print(table.concat(tabs,"").."operator unary pre_double_plus");
+   }
+   <A> -> double_minus <A> ->>
+   {
+      print(table.concat(tabs,"").."operator unary pre_double_minus");
+   }
+   <A> -> plus <A> ->>
+   {
+      print(table.concat(tabs,"").."operator unary pre_plus");
+   }
+   <A> -> minus <A> ->>
+   {
+      print(table.concat(tabs,"").."operator unary pre_minus");
+   }
+   <A> -> exclamation <A> ->>
+   {
+      print(table.concat(tabs,"").."operator unary pre_exclamation");
+   }
+   <A> -> tilde <A> ->>
+   {
+      print(table.concat(tabs,"").."operator unary pre_tilde");
+   }
+   <A> -> asterisk <A> ->>
+   {
+      print(table.concat(tabs,"").."operator unary pre_asterisk");
+   }
+   <A> -> ampersand <A> ->>
+   {
+      print(table.concat(tabs,"").."operator unary pre_ampersand");
+   }
+
+   <A> -> <A> le_br <H> re_br ->>
+   {
+      print(table.concat(tabs,"").."operator binary le_br_re_br");
+   }
+
+   $ -- type cast --
+   <A> -> lr_br <type_pointer_list> rr_br <A> ->>
+   {
+      print(table.concat(tabs,"").."cast");
+   }
+
+   $ -- exp bracket --
+   <A> -> lr_br <H> rr_br ->> {}
+
+   $ -- identifier --
+   <A> -> id ->>
+   {
+      print(table.concat(tabs,"").."identifier \""..rule_body(0).."\"");
+   }
+
+   $ -- conditional expression --
+   <H> -> <cond_condition> <cond_true> <exp> ->>
+   {
+      print(table.concat(tabs,"").."conditional expression");
+   }
+
+   <cond_condition> -> <H> question ->>
+   {
+      print(table.concat(tabs,"").."conditional condition");
+   }
+
+   <cond_true> -> <exp> colon ->>
+   {
+      print(table.concat(tabs,"").."conditional true");
+   }
+
+   $ -- function call --
+   <A> -> id <parameters> rr_br ->>
+   {
+      print(table.concat(tabs,"").."function call: \""..rule_body(0).."\"");
+   }
+
+   <parameters> -> <parameters_begin> ->>
+   {
+      table.remove(tabs);
+   }
+   <parameters> -> <parameters_begin> <parameter_list> ->>
+   {
+      table.remove(tabs);
+   }
+
+   <parameters_begin> -> lr_br ->>
+   {
+      print(table.concat(tabs,"").."parameters begin");
+      table.insert(tabs," p  ");
+   }
+
+   <parameter_list> -> <parameter_list> comma <exp> ->>
+   {
+      print(table.concat(tabs,"").."parameter");
+   }
+   <parameter_list> -> <exp> ->>
+   {
+      print(table.concat(tabs,"").."parameter");
+   }
+
+   $ -- constant values --
+   <A> -> single_char_const ->>
+   {
+      print(table.concat(tabs,"").."const char \""..rule_body(0).."\"");
+   }
+   <A> -> octal_char_const ->>
+   {
+      print(table.concat(tabs,"").."const octal char \""..rule_body(0).."\"");
+   }
+   <A> -> hex_char_const ->>
+   {
+      print(table.concat(tabs,"").."const hex char \""..rule_body(0).."\"");
+   }
+   <A> -> backslash_char_const ->>
+   {
+      print(table.concat(tabs,"").."const backslash char \""..rule_body(0).."\"");
+   }
+
+   <A> -> oct_i32_const ->>
+   {
+      print(table.concat(tabs,"").."const oct i32 \""..rule_body(0).."\"");
+   }
+   <A> -> dec_i32_const ->>
+   {
+      print(table.concat(tabs,"").."const dec i32 \""..rule_body(0).."\"");
+   }
+   <A> -> hex_i32_const ->>
+   {
+      print(table.concat(tabs,"").."const hex i32 \""..rule_body(0).."\"");
+   }
+
+   <A> -> oct_i64_const ->>
+   {
+      print(table.concat(tabs,"").."const oct i64 \""..rule_body(0).."\"");
+   }
+   <A> -> dec_i64_const ->>
+   {
+      print(table.concat(tabs,"").."const dec i64 \""..rule_body(0).."\"");
+   }
+   <A> -> hex_i64_const ->>
+   {
+      print(table.concat(tabs,"").."const hex i64 \""..rule_body(0).."\"");
+   }
+
+   <A> -> f32_const ->>
+   {
+      print(table.concat(tabs,"").."const f32 \""..rule_body(0).."\"");
+   }
+   <A> -> f64_const ->>
+   {
+      print(table.concat(tabs,"").."const f64 \""..rule_body(0).."\"");
+   }
+

@@ -1,0 +1,59 @@
+#vim: set syntax=rules:
+
+init_code: {}
+
+terminals:
+
+   i8  {"i8"}  
+   i16 {"i16"}
+   i32 {"i32"}
+   i64 {"i64"}
+   u8  {"u8"}
+   u16 {"u16"}
+   u32 {"u32"}
+   u64 {"u64"}
+   f32 {"f32"}
+   f64 {"f64"}
+
+   $ JIT_TYPE_SBYTE
+   $ JIT_TYPE_SHORT
+   $ JIT_TYPE_INT
+   $ JIT_TYPE_LONG
+   $ JIT_TYPE_UBYTE
+   $ JIT_TYPE_USHORT
+   $ JIT_TYPE_UINT
+   $ JIT_TYPE_ULONG
+   $ JIT_TYPE_FLOAT32
+   $ JIT_TYPE_FLOAT64
+
+   $ !!! FIXME comment this terminal before production
+   _SKIP_ {w.w*}
+   _END_ {'\0'}
+
+nonterminals:
+   <start>
+   <end_check>
+   <type_list>
+   <type>
+
+rules:
+   <start> -> <end_check> ->> {}
+
+   $ !!! FIXME comment these two rules before production
+   <end_check> -> <type_list> _END_ ->> {}
+   <end_check> -> _END_ ->> {}
+
+   <type_list> -> <type> <type_list> ->> {}
+   <type_list> -> <type> ->> {}
+
+   <type> -> i8 ->> {print("i8");}
+   <type> -> i16 ->> {print("i16");}
+   <type> -> i32 ->> {print("i32");}
+   <type> -> i64 ->> {print("i64");}
+   <type> -> u8 ->> {print("u8");}
+   <type> -> u16 ->> {print("u16");}
+   <type> -> u32 ->> {print("u32");}
+   <type> -> u64 ->> {print("u64");}
+   <type> -> f32 ->> {print("f32");}
+   <type> -> f64 ->> {print("f64");}
+

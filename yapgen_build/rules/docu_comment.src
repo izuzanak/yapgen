@@ -1,0 +1,40 @@
+///<
+/// Description of something placed after it.
+
+/*!
+ * \brief Brief description of something.
+ *
+ * Paragraph widely describing something.
+ *
+ * Another paragraph describing something.
+ *
+ * \param test Description of member/parameter test.
+ * \return Description of function return value.
+ */
+
+/// \brief Brief description of something.
+///
+/// Detailed description of something.
+///
+/// \file test.ucl
+/// \class Main.Test.Runner
+/// \method Main.Test.Runner.stop#4.test
+/// \var Main.Test.Runner.size
+
+#!
+#! \brief Brief description of something.
+#!
+#! Detailed description of something.
+#!
+    
+/**
+  \brief Brief description of something.
+
+  Detailed description of something.
+ 
+  \file test.ucl
+  \class Main.Test.Runner
+  \method Main.Test.Runner.stop#125
+  \var Main.Test.Runner.size
+*/
+
