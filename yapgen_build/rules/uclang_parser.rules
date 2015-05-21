@@ -2126,7 +2126,8 @@ rules:
    <A> -> backslash_char_const ->>
    {
       if gen_parse_tree == 1 then
-         print("   node_"..node_idx.." [label = \"'\\"..substr(rule_body(0)..1..size(rule_body(0)) - 1).."\"]");
+         value = rule_body(0);
+         print("   node_"..node_idx.." [label = \"'\\"..string.sub(value,2,string.len(value)).."\"]");
          table.insert(node_stack,node_idx);
          node_idx = node_idx + 1;
       else

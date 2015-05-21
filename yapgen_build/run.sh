@@ -30,5 +30,9 @@
 
 # - string_format -
 #echo "string_format.rules" 1>&2
-./yapgen --parser_descr rules/string_format.rules --source rules/string_format.src
+#./yapgen --parser_descr rules/string_format.rules --source rules/string_format.src
+
+# - demo_exp -
+#echo "demo_exp.rules" 1>&2
+./yapgen --parser_descr rules/demo_exp.rules --source rules/demo_exp.src
 
