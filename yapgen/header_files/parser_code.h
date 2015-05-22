@@ -19,9 +19,7 @@ const unsigned short reg_char_letter = c_base_char_cnt + 2; // 'l' {'a' - 'z','A
 // - PARSER error identifiers -
 enum
 {
-  c_error_FINAL_AUTOMATA_REGULAR_EXPRESSIONS_EMPTY = 0,
-  c_error_FINAL_AUTOMATA_REGULAR_EXPRESSION_NOT_STRING,
-  c_error_FINAL_AUTOMATA_REGULAR_EXPRESSION_PARSE_ERROR,
+  c_error_NONE = 0,
   c_error_PARSER_CREATE_UNSPECIFIED_ERROR,
   c_error_PARSER_CREATE_RULES_SYNTAX_ERROR,
   c_error_PARSER_CREATE_RULES_DUPLICATE_TERMINAL,
@@ -38,8 +36,6 @@ enum
   c_error_PARSER_CREATE_CANNOT_RESOLVE_RULE_HEAD_FOR_SHIFT_ACTION,
   c_error_PARSER_PARSE_UNRECOGNIZED_TERMINAL,
   c_error_PARSER_PARSE_SYNTAX_ERROR,
-  c_error_PARSER_PARSE_STATE_OUTSIDE_OF_REDUCE_CALLBACK,
-  c_error_PARSER_PARSE_STATE_INDEX_EXCEEDS_RULE_BODY_SIZE,
   c_error_PARSER_LUA_NEW_STATE_ERROR,
   c_error_PARSER_LUA_DO_INIT_CODE_ERROR,
   c_error_PARSER_LUA_DO_RULE_CODE_ERROR,
@@ -447,7 +443,7 @@ p_lalr_table_s;
 @begin
 struct
     <
-    pointer:it_ptr
+    pointer:parser_ptr
     final_automata_s:rule_file_fa
     final_automata_s:key_terminals_fa
     p_terminals_s:terminals
@@ -518,11 +514,20 @@ struct
 array<p_rule_descr_s> p_rule_descrs_s;
 @end
 
+// -- error_s --
+@begin
+   struct
+   <
+   unsigned:type
+   ui_array_s:params
+   >
+   error_s;
+@end
+
 // -- parser_s --
 @begin
 struct
     <
-    pointer:it_ptr
     unsigned:terminal_cnt
     unsigned:end_terminal
     ui_array_s:skip_terminals
@@ -531,16 +536,25 @@ struct
     string_s:init_code
     string_array_s:rule_codes
     p_lalr_table_s:lalr_table
+    error_s:error
     >
 
     additions
 {
   bool create_from_rule_string(string_s &rule_string);
+  bool print_error(string_s &rule_string);
   bool create_cc_source(bc_array_s &cc_source);
 }
 
 parser_s;
 @end
+
+/*
+ * definitions of global functions
+ */
+
+void print_error_show_line(string_s &source_string,unsigned begin);
+void print_error_line(string_s &source_string,unsigned char_pos);
 
 /*
  * inline methods of generated structures
@@ -857,6 +871,11 @@ inlines p_rule_descr_s
 // -- p_rule_descrs_s --
 @begin
 inlines p_rule_descrs_s
+@end
+
+// -- error_s --
+@begin
+   inlines error_s
 @end
 
 // -- parser_s --

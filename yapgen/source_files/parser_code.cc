@@ -2953,8 +2953,9 @@ bool p_creat_descr_s::load_from_rule_char_ptr(unsigned a_length,char *a_data)
 
 #define LOAD_FROM_RULE_CHAR_PTR_SYNTAX_ERROR() \
 {/*{{{*/\
-  /*c_error_PARSER_CREATE_RULES_SYNTAX_ERROR*/\
-  /*old_input_idx*/\
+  error_s &error = ((parser_s *)parser_ptr)->error;\
+  error.type = c_error_PARSER_CREATE_RULES_SYNTAX_ERROR;\
+  error.params.push(old_input_idx);\
 \
   return false;\
 }/*}}}*/
@@ -3060,8 +3061,9 @@ bool p_creat_descr_s::load_from_rule_char_ptr(unsigned a_length,char *a_data)
         {
           new_terminal.clear();
 
-          /*c_error_PARSER_CREATE_RULES_DUPLICATE_TERMINAL*/
-          /*old_input_idx*/
+          error_s &error = ((parser_s *)parser_ptr)->error;
+          error.type = c_error_PARSER_CREATE_RULES_DUPLICATE_TERMINAL;
+          error.params.push(old_input_idx);
 
           return false;
         }
@@ -3096,7 +3098,8 @@ bool p_creat_descr_s::load_from_rule_char_ptr(unsigned a_length,char *a_data)
   // - ERROR -
   if (terminals.used == 0)
   {
-    /*c_error_PARSER_CREATE_RULES_NO_TERMINALS_DEFINED*/
+    error_s &error = ((parser_s *)parser_ptr)->error;
+    error.type = c_error_PARSER_CREATE_RULES_NO_TERMINALS_DEFINED;
     return false;
   }
 
@@ -3136,8 +3139,9 @@ bool p_creat_descr_s::load_from_rule_char_ptr(unsigned a_length,char *a_data)
       {
         new_nonterminal.clear();
 
-        /*c_error_PARSER_CREATE_RULES_DUPLICATE_NONTERMINAL*/
-        /*old_input_idx*/
+        error_s &error = ((parser_s *)parser_ptr)->error;
+        error.type = c_error_PARSER_CREATE_RULES_DUPLICATE_NONTERMINAL;
+        error.params.push(old_input_idx);
 
         return false;
       }
@@ -3154,13 +3158,14 @@ bool p_creat_descr_s::load_from_rule_char_ptr(unsigned a_length,char *a_data)
   // - ERROR -
   if (nonterminals.used == 0)
   {
-    /*c_error_PARSER_CREATE_RULES_NO_NONTERMINALS_DEFINED*/
+    error_s &error = ((parser_s *)parser_ptr)->error;
+    error.type = c_error_PARSER_CREATE_RULES_NO_NONTERMINALS_DEFINED;
     return false;
   }
 
   // - zpracovani pravidel -
   {
-    //unsigned rule_head_index = 0;
+    unsigned rule_head_index = 0;
     unsigned rule_state = 0;
     p_rule_s new_rule;
     new_rule.init();
@@ -3200,13 +3205,14 @@ bool p_creat_descr_s::load_from_rule_char_ptr(unsigned a_length,char *a_data)
           {
             new_rule.clear();
 
-            /*c_error_PARSER_CREATE_RULES_UNDEFINED_NONTERMINAL*/
-            /*old_input_idx*/
+            error_s &error = ((parser_s *)parser_ptr)->error;
+            error.type = c_error_PARSER_CREATE_RULES_UNDEFINED_NONTERMINAL;
+            error.params.push(old_input_idx);
 
             return false;
           }
 
-          //rule_head_index = old_input_idx;
+          rule_head_index = old_input_idx;
           new_rule.head = terminals.used + idx;
           rule_state = 1;
         }
@@ -3241,8 +3247,9 @@ bool p_creat_descr_s::load_from_rule_char_ptr(unsigned a_length,char *a_data)
             {
               new_rule.clear();
 
-              /*c_error_PARSER_CREATE_RULES_UNDEFINED_TERMINAL*/
-              /*old_input_idx*/
+              error_s &error = ((parser_s *)parser_ptr)->error;
+              error.type = c_error_PARSER_CREATE_RULES_UNDEFINED_TERMINAL;
+              error.params.push(old_input_idx);
 
               return false;
             }
@@ -3258,8 +3265,9 @@ bool p_creat_descr_s::load_from_rule_char_ptr(unsigned a_length,char *a_data)
             {
               new_rule.clear();
 
-              /*c_error_PARSER_CREATE_RULES_UNDEFINED_NONTERMINAL*/
-              /*old_input_idx*/
+              error_s &error = ((parser_s *)parser_ptr)->error;
+              error.type = c_error_PARSER_CREATE_RULES_UNDEFINED_NONTERMINAL;
+              error.params.push(old_input_idx);
 
               return false;
             }
@@ -3324,8 +3332,9 @@ bool p_creat_descr_s::load_from_rule_char_ptr(unsigned a_length,char *a_data)
           {
             new_rule.clear();
 
-            /*c_error_PARSER_CREATE_RULES_DUPLICATE_RULE*/
-            /*rule_head_index*/
+            error_s &error = ((parser_s *)parser_ptr)->error;
+            error.type = c_error_PARSER_CREATE_RULES_DUPLICATE_RULE;
+            error.params.push(rule_head_index);
 
             return false;
           }
@@ -3346,7 +3355,8 @@ bool p_creat_descr_s::load_from_rule_char_ptr(unsigned a_length,char *a_data)
   // - ERROR -
   if (rules.used == 0)
   {
-    /*c_error_PARSER_CREATE_RULES_NO_RULES_DEFINED*/
+    error_s &error = ((parser_s *)parser_ptr)->error;
+    error.type = c_error_PARSER_CREATE_RULES_NO_RULES_DEFINED;
     return false;
   }
 
@@ -3386,7 +3396,8 @@ bool p_creat_descr_s::find_key_terminals(unsigned &end_terminal,ui_array_s &skip
         // - ERROR -
         if (end_terminal != c_idx_not_exist)
         {
-          /*c_error_PARSER_CREATE_MULTIPLE_PARSE_END_TERMINALS*/
+          error_s &error = ((parser_s *)parser_ptr)->error;
+          error.type = c_error_PARSER_CREATE_MULTIPLE_PARSE_END_TERMINALS;
           return false;
         }
 
@@ -3420,8 +3431,9 @@ bool p_creat_descr_s::create_final_automata_new(final_automata_s &final_automata
         reg_parser.clear();
         states_array.clear();
 
-        /*c_error_PARSER_CREATE_TERMINAL_REGULAR_EXPRESSION_PARSE_ERROR*/
-        /*terminals[t_idx].source_pos*/
+        error_s &error = ((parser_s *)parser_ptr)->error;
+        error.type = c_error_PARSER_CREATE_TERMINAL_REGULAR_EXPRESSION_PARSE_ERROR;
+        error.params.push(terminals[t_idx].source_pos);
 
         return false;
       }
@@ -3820,7 +3832,8 @@ bool p_creat_descr_s::create_lalr_table(p_lalr_table_s &lalr_table)
           // - ERROR -
           if (value != c_idx_not_exist)
           {
-            /*c_error_PARSER_CREATE_SLR1_PARSE_TABLE_CONFLICT*/
+            error_s &error = ((parser_s *)parser_ptr)->error;
+            error.type = c_error_PARSER_CREATE_SLR1_PARSE_TABLE_CONFLICT;
             return false;
           }
 
@@ -3890,7 +3903,8 @@ bool p_creat_descr_s::create_lalr_table(p_lalr_table_s &lalr_table)
                   // - ERROR -
                   if (value != c_idx_not_exist)
                   {
-                    /*c_error_PARSER_CREATE_SLR1_PARSE_TABLE_CONFLICT*/
+                    error_s &error = ((parser_s *)parser_ptr)->error;
+                    error.type = c_error_PARSER_CREATE_SLR1_PARSE_TABLE_CONFLICT;
                     return false;
                   }
 
@@ -3903,7 +3917,8 @@ bool p_creat_descr_s::create_lalr_table(p_lalr_table_s &lalr_table)
                   // - ERROR -
                   if (value == c_idx_not_exist)
                   {
-                    /*c_error_PARSER_CREATE_CANNOT_RESOLVE_RULE_HEAD_FOR_SHIFT_ACTION*/
+                    error_s &error = ((parser_s *)parser_ptr)->error;
+                    error.type = c_error_PARSER_CREATE_CANNOT_RESOLVE_RULE_HEAD_FOR_SHIFT_ACTION;
                     return false;
                   }
                 }
@@ -3931,6 +3946,11 @@ methods p_rule_descr_s
 methods p_rule_descrs_s
 @end
 
+// -- error_s --
+@begin
+   methods error_s
+@end
+
 // -- parser_s --
 @begin
 methods parser_s
@@ -3940,11 +3960,15 @@ bool parser_s::create_from_rule_string(string_s &rule_string)
 {/*{{{*/
   clear();
 
+  // - initialize parser error -
+  error.type = c_error_NONE;
+
+  // - create parser creation description -
   p_creat_descr_s creat_descr;
   creat_descr.init();
 
   // - set interpreter thread pointer -
-  creat_descr.it_ptr = it_ptr;
+  creat_descr.parser_ptr = this;
 
   // - nacteni konecnych automatu vyuzivanych ke zpracovani souboru pravidel -
   creat_descr.load_final_automata_set_new();
@@ -3954,9 +3978,12 @@ bool parser_s::create_from_rule_string(string_s &rule_string)
   {
     creat_descr.clear();
 
-    // FIXME TODO test if error was not reported yet
+    // - test if error was not reported yet -
+    if (error.type == c_error_NONE)
+    {
+      error.type = c_error_PARSER_CREATE_UNSPECIFIED_ERROR;
+    }
 
-    /*c_error_PARSER_CREATE_UNSPECIFIED_ERROR*/
     return false;
   }
 
@@ -3972,9 +3999,12 @@ bool parser_s::create_from_rule_string(string_s &rule_string)
   {
     creat_descr.clear();
 
-    // FIXME TODO test if error was not reported yet
+    // - test if error was not reported yet -
+    if (error.type == c_error_NONE)
+    {
+      error.type = c_error_PARSER_CREATE_UNSPECIFIED_ERROR;
+    }
     
-    /*c_error_PARSER_CREATE_UNSPECIFIED_ERROR*/
     return false;
   }
 
@@ -4016,6 +4046,113 @@ bool parser_s::create_from_rule_string(string_s &rule_string)
   return true;
 }/*}}}*/
 
+bool parser_s::print_error(string_s &rule_string)
+{/*{{{*/
+  switch (error.type)
+  {
+  case c_error_PARSER_CREATE_UNSPECIFIED_ERROR:
+    fprintf(stderr," ---------------------------------------- \n");
+    fprintf(stderr,"Exception: ERROR:\n");
+    fprintf(stderr,"\nReceived unspecified error while creating parser\n");
+    fprintf(stderr," ---------------------------------------- \n");
+    break;
+  case c_error_PARSER_CREATE_RULES_SYNTAX_ERROR:
+  case c_error_PARSER_CREATE_RULES_DUPLICATE_TERMINAL:
+  case c_error_PARSER_CREATE_RULES_DUPLICATE_NONTERMINAL:
+  case c_error_PARSER_CREATE_RULES_UNDEFINED_TERMINAL:
+  case c_error_PARSER_CREATE_RULES_UNDEFINED_NONTERMINAL:
+  case c_error_PARSER_CREATE_TERMINAL_REGULAR_EXPRESSION_PARSE_ERROR:
+  case c_error_PARSER_CREATE_RULES_DUPLICATE_RULE:
+    {
+      unsigned rules_source_pos = error.params[0];
+
+      fprintf(stderr," ---------------------------------------- \n");
+      fprintf(stderr,"Exception: ERROR:\n");
+      fprintf(stderr,"Parser rules string on line: %u\n",rule_string.get_character_line(rules_source_pos));
+
+      switch (error.type)
+      {
+      case c_error_PARSER_CREATE_RULES_SYNTAX_ERROR:
+        print_error_show_line(rule_string,rules_source_pos);
+        fprintf(stderr,"Wrong syntax of parser rules\n");
+        fprintf(stderr," ---------------------------------------- \n");
+        break;
+      case c_error_PARSER_CREATE_RULES_DUPLICATE_TERMINAL:
+        print_error_show_line(rule_string,rules_source_pos);
+        fprintf(stderr,"Duplicate terminal symbols\n");
+        fprintf(stderr," ---------------------------------------- \n");
+        break;
+      case c_error_PARSER_CREATE_RULES_DUPLICATE_NONTERMINAL:
+        print_error_show_line(rule_string,rules_source_pos);
+        fprintf(stderr,"Duplicate nonterminal symbols\n");
+        fprintf(stderr," ---------------------------------------- \n");
+        break;
+      case c_error_PARSER_CREATE_RULES_UNDEFINED_TERMINAL:
+        print_error_show_line(rule_string,rules_source_pos);
+        fprintf(stderr,"Undefined terminal symbol\n");
+        fprintf(stderr," ---------------------------------------- \n");
+        break;
+      case c_error_PARSER_CREATE_RULES_UNDEFINED_NONTERMINAL:
+        print_error_show_line(rule_string,rules_source_pos);
+        fprintf(stderr,"Undefined nonterminal symbol\n");
+        fprintf(stderr," ---------------------------------------- \n");
+        break;
+      case c_error_PARSER_CREATE_TERMINAL_REGULAR_EXPRESSION_PARSE_ERROR:
+        print_error_show_line(rule_string,rules_source_pos);
+        fprintf(stderr,"Error received while parsing regular expression of terminal symbol\n");
+        fprintf(stderr," ---------------------------------------- \n");
+        break;
+      case c_error_PARSER_CREATE_RULES_DUPLICATE_RULE:
+        print_error_line(rule_string,rules_source_pos);
+        fprintf(stderr,"\nDuplicate parser grammar rule\n");
+        fprintf(stderr," ---------------------------------------- \n");
+        break;
+      }
+    }
+    break;
+  case c_error_PARSER_CREATE_RULES_NO_TERMINALS_DEFINED:
+    fprintf(stderr," ---------------------------------------- \n");
+    fprintf(stderr,"Exception: ERROR:\n");
+    fprintf(stderr,"\nNo terminals were defined\n");
+    fprintf(stderr," ---------------------------------------- \n");
+    break;
+  case c_error_PARSER_CREATE_RULES_NO_NONTERMINALS_DEFINED:
+    fprintf(stderr," ---------------------------------------- \n");
+    fprintf(stderr,"Exception: ERROR:\n");
+    fprintf(stderr,"\nNo nonterminals were defined\n");
+    fprintf(stderr," ---------------------------------------- \n");
+    break;
+  case c_error_PARSER_CREATE_RULES_NO_RULES_DEFINED:
+    fprintf(stderr," ---------------------------------------- \n");
+    fprintf(stderr,"Exception: ERROR:\n");
+    fprintf(stderr,"\nNo parser grammar rules were defined\n");
+    fprintf(stderr," ---------------------------------------- \n");
+    break;
+  case c_error_PARSER_CREATE_MULTIPLE_PARSE_END_TERMINALS:
+    fprintf(stderr," ---------------------------------------- \n");
+    fprintf(stderr,"Exception: ERROR:\n");
+    fprintf(stderr,"\nMultiple parse end terminals were defined\n");
+    fprintf(stderr," ---------------------------------------- \n");
+    break;
+  case c_error_PARSER_CREATE_SLR1_PARSE_TABLE_CONFLICT:
+    fprintf(stderr," ---------------------------------------- \n");
+    fprintf(stderr,"Exception: ERROR:\n");
+    fprintf(stderr,"\nSLR1 parse table construction conflict\n");
+    fprintf(stderr," ---------------------------------------- \n");
+    break;
+  case c_error_PARSER_CREATE_CANNOT_RESOLVE_RULE_HEAD_FOR_SHIFT_ACTION:
+    fprintf(stderr," ---------------------------------------- \n");
+    fprintf(stderr,"Exception: ERROR:\n");
+    fprintf(stderr,"\nCannot resolve target rule head for shift action\n");
+    fprintf(stderr," ---------------------------------------- \n");
+    break;
+  default:
+    return false;
+  }
+
+  return true;
+}/*}}}*/
+
 bool parser_s::create_cc_source(bc_array_s &cc_source)
 {/*{{{*/
 
@@ -4024,5 +4161,51 @@ include "cc_creator.h"
 @end
 
   return true;
+}/*}}}*/
+
+/*
+ * global functions
+ */
+
+void print_error_show_line(string_s &source_string,unsigned begin)
+{/*{{{*/
+  debug_assert(begin < source_string.size);
+
+  // - find begin of line -
+  char *lb_ptr = source_string.data + source_string.get_character_line_begin(begin);
+  char *le_ptr = source_string.data + source_string.get_character_line_end(begin);
+
+  char tmp_char = *le_ptr;
+  *le_ptr = '\0';
+  fprintf(stderr,"%s\n",lb_ptr);
+  *le_ptr = tmp_char;
+
+  unsigned space_cnt = source_string.get_print_size_between(lb_ptr - source_string.data,begin);
+  if (space_cnt != 0)
+  {
+    unsigned idx = 0;
+    do
+    {
+      fputc(' ',stderr);
+    }
+    while(++idx < space_cnt);
+  }
+
+  fputc('^',stderr);
+  fputc('\n',stderr);
+}/*}}}*/
+
+void print_error_line(string_s &source_string,unsigned char_pos)
+{/*{{{*/
+  debug_assert(char_pos < source_string.size);
+
+  // - find begin of lines -
+  char *lb_ptr = source_string.data + source_string.get_character_line_begin(char_pos);
+  char *le_ptr = source_string.data + source_string.get_character_line_end(char_pos);
+
+  char tmp_char = *le_ptr;
+  *le_ptr = '\0';
+  fprintf(stderr,"%s\n",lb_ptr);
+  *le_ptr = tmp_char;
 }/*}}}*/
 

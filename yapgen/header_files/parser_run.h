@@ -36,11 +36,13 @@ struct
     pointer:source_string_ptr
     lalr_stack_s:lalr_stack
     unsigned:parse_action
+    error_s:error
     >
     additions
 {
-  bool create_from_parser(parser_s &a_parser);
-  bool parse_source_string(string_s &a_source_string);
+  bool create_from_parser(parser_s &parser);
+  bool parse_source_string(string_s &source_string);
+  bool print_error(string_s &source_string);
 }
 parser_run_s;
 @end

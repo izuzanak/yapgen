@@ -51,16 +51,16 @@ int rule_body(lua_State *lua_state)
 methods parser_run_s
 @end
 
-bool parser_run_s::create_from_parser(parser_s &a_parser)
+bool parser_run_s::create_from_parser(parser_s &parser)
 {/*{{{*/
   clear();
 
-  parser_ptr = &a_parser;
+  parser_ptr = &parser;
 
   return true;
 }/*}}}*/
 
-bool parser_run_s::parse_source_string(string_s &a_source_string)
+bool parser_run_s::parse_source_string(string_s &source_string)
 {/*{{{*/
   parser_s &parser = *((parser_s *)parser_ptr);
 
@@ -76,7 +76,7 @@ bool parser_run_s::parse_source_string(string_s &a_source_string)
   // - ERROR -
   if (lua_state == NULL)
   {
-    /*c_error_PARSER_LUA_NEW_STATE_ERROR*/
+    error.type = c_error_PARSER_LUA_NEW_STATE_ERROR;
     return false;
   }
 
@@ -97,12 +97,12 @@ bool parser_run_s::parse_source_string(string_s &a_source_string)
     // - close lua state -
     lua_close(lua_state);
 
-    /*c_error_PARSER_LUA_DO_INIT_CODE_ERROR*/
+    error.type = c_error_PARSER_LUA_DO_INIT_CODE_ERROR;
     return false;
   }
 
   // - set source string pointer -
-  source_string_ptr = &a_source_string;
+  source_string_ptr = &source_string;
 
   // - vychozi nastaveni lalr_stavoveho zasobniku -
   lalr_stack.used = 0;
@@ -111,7 +111,7 @@ bool parser_run_s::parse_source_string(string_s &a_source_string)
   // - promenne popisujici stav konecneho lexikalniho automatu -
   unsigned old_input_idx = 0;
   unsigned input_idx = 0;
-  unsigned input_length = a_source_string.size - 1;
+  unsigned input_length = source_string.size - 1;
   unsigned ret_term = c_idx_not_exist;
 
   do
@@ -121,7 +121,7 @@ bool parser_run_s::parse_source_string(string_s &a_source_string)
     {
       old_input_idx = input_idx;
 
-      ret_term = final_automata.recognize(a_source_string.data,input_idx,input_length);
+      ret_term = final_automata.recognize(source_string.data,input_idx,input_length);
 
       // - ERROR -
       if (ret_term == c_idx_not_exist)
@@ -129,8 +129,8 @@ bool parser_run_s::parse_source_string(string_s &a_source_string)
         // - close lua state -
         lua_close(lua_state);
 
-        /*c_error_PARSER_PARSE_UNRECOGNIZED_TERMINAL*/
-        /*old_input_idx*/
+        error.type = c_error_PARSER_PARSE_UNRECOGNIZED_TERMINAL;
+        error.params.push(old_input_idx);
 
         return false;
       }
@@ -150,8 +150,8 @@ bool parser_run_s::parse_source_string(string_s &a_source_string)
       // - close lua state -
       lua_close(lua_state);
 
-      /*c_error_PARSER_PARSE_SYNTAX_ERROR*/
-      /*old_input_idx*/
+      error.type = c_error_PARSER_PARSE_SYNTAX_ERROR;
+      error.params.push(old_input_idx);
 
       return false;
     }
@@ -182,7 +182,8 @@ bool parser_run_s::parse_source_string(string_s &a_source_string)
         // - close lua state -
         lua_close(lua_state);
 
-        /*c_error_PARSER_LUA_DO_RULE_CODE_ERROR*/
+        error.type = c_error_PARSER_LUA_DO_RULE_CODE_ERROR;
+        error.params.push(parse_action);
         return false;
       }
 
@@ -202,6 +203,59 @@ bool parser_run_s::parse_source_string(string_s &a_source_string)
 
   // - close lua state -
   lua_close(lua_state);
+
+  return true;
+}/*}}}*/
+
+bool parser_run_s::print_error(string_s &source_string)
+{/*{{{*/
+  switch (error.type)
+  {
+  case c_error_PARSER_PARSE_UNRECOGNIZED_TERMINAL:
+  case c_error_PARSER_PARSE_SYNTAX_ERROR:
+    {
+      unsigned source_pos = error.params[0];
+
+      fprintf(stderr," ---------------------------------------- \n");
+      fprintf(stderr,"Exception: ERROR:\n");
+      fprintf(stderr,"Source string on line: %u\n",source_string.get_character_line(source_pos));
+
+      switch (error.type)
+      {
+      case c_error_PARSER_PARSE_UNRECOGNIZED_TERMINAL:
+        print_error_show_line(source_string,source_pos);
+        fprintf(stderr,"Unrecognized terminal in parsed source string\n");
+        fprintf(stderr," ---------------------------------------- \n");
+        break;
+      case c_error_PARSER_PARSE_SYNTAX_ERROR:
+        print_error_show_line(source_string,source_pos);
+        fprintf(stderr,"Syntax error in parsed source string\n");
+        fprintf(stderr," ---------------------------------------- \n");
+        break;
+      }
+    }
+    break;
+  case c_error_PARSER_LUA_NEW_STATE_ERROR:
+    fprintf(stderr," ---------------------------------------- \n");
+    fprintf(stderr,"Exception: ERROR:\n");
+    fprintf(stderr,"\nCannot create new LUA state\n");
+    fprintf(stderr," ---------------------------------------- \n");
+    break;
+  case c_error_PARSER_LUA_DO_INIT_CODE_ERROR:
+    fprintf(stderr," ---------------------------------------- \n");
+    fprintf(stderr,"Exception: ERROR:\n");
+    fprintf(stderr,"\nError while executing LUA init code\n");
+    fprintf(stderr," ---------------------------------------- \n");
+    break;
+  case c_error_PARSER_LUA_DO_RULE_CODE_ERROR:
+    fprintf(stderr," ---------------------------------------- \n");
+    fprintf(stderr,"Exception: ERROR:\n");
+    fprintf(stderr,"\nError while executing LUA code of rule %u\n",error.params[0]);
+    fprintf(stderr," ---------------------------------------- \n");
+    break;
+  default:
+    return false;
+  }
 
   return true;
 }/*}}}*/

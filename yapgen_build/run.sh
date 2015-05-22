@@ -2,7 +2,7 @@
 
 # - uclang_parser -
 #echo "uclang_parser.rules" 1>&2
-#./yapgen --parser_descr rules/uclang_parser.rules --source rules/uclang_parser.src
+./yapgen --parser_descr rules/uclang_parser.rules --source rules/uclang_parser.src
 
 # - docu_comment -
 #echo "docu_comment.rules" 1>&2
@@ -34,5 +34,5 @@
 
 # - demo_exp -
 #echo "demo_exp.rules" 1>&2
-./yapgen --parser_descr rules/demo_exp.rules --source rules/demo_exp.src
+#./yapgen --parser_descr rules/demo_exp.rules --source rules/demo_exp.src
 

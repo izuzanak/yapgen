@@ -87,7 +87,7 @@ int main(int argc,char **argv)
     {
       if (!parser.create_from_rule_string(str))
       {
-        fprintf(stderr,"main: --parser_descr: Cannot create parser description from file\n");
+        parser.print_error(str);
       }
       else
       {
@@ -157,7 +157,7 @@ int main(int argc,char **argv)
         {
           if (!parser_run.parse_source_string(str))
           {
-            fprintf(stderr,"main: --source: Error while parsing source\n");
+            parser_run.print_error(str);
           }
         }
 
@@ -169,10 +169,7 @@ int main(int argc,char **argv)
   }
 
   // -- uvolneni prekladace z pameti --
-  if (parser_exist)
-  {
-    parser.clear();
-  }
+  parser.clear();
 
   return 0;
 }/*}}}*/

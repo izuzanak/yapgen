@@ -61,8 +61,8 @@ PACKET_ACK         {'\x06'}
 #### Grammar rules
 
 Example of basic grammar rules. Identifiers closed in angle (sharp) brackets
-eg. `<command>` identifies nonterminal symbols of grammar, and identifiers
-without brackets eg. `if` refers to terminal symbols described by regular
+e.g. `<command>` identifies nonterminal symbols of grammar, and identifiers
+without brackets e.g. `if` refers to terminal symbols described by regular
 expressions.
 
 ```
