@@ -1,0 +1,36 @@
+
+init_code: {print('init_code')}
+
+terminals:
+  oct_int {'0'.<07>*}
+  dec_int {<19>.d*}
+  hex_int {'0'.[xX].(<09>+<af>+<AF>).(<09>+<af>+<AF>)*}
+
+  _SKIP_ {w.w*}
+  _END_ {'\0'}
+
+nonterminals:
+  <start>
+  <end_check>
+  <program>
+  <item_list>
+  <item>
+  <A>
+
+rules:
+  <start> -> <end_check> ->> {}
+
+  <end_check> -> <program> _END_ ->> {}
+  <end_check> -> _END_ ->> {}
+
+  <program> -> <item_list> ->> {}
+
+  <item_list> -> <item> <item_list> ->> {}
+  <item_list> -> <item> ->> {}
+
+  <item> -> <A> ->> {}
+
+  <A> -> oct_int ->> {print('constant: '..rule_body(0))}
+  <A> -> dec_int ->> {print('constant: '..rule_body(0))}
+  <A> -> hex_int ->> {print('constant: '..rule_body(0))}
+

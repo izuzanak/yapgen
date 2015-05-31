@@ -1,0 +1,15 @@
+
+init_code: {}
+
+terminals:
+  _SKIP_ {w.w*}
+  _END_ {'\0'}
+
+nonterminals:
+  <start>
+  <end_check>
+
+rules:
+   <start> -> <end_check> ->> {}
+   <end_check> -> _END_ ->> {}
+
