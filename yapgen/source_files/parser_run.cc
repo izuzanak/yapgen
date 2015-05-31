@@ -20,6 +20,9 @@ int rule_body(lua_State *lua_state)
   parser_s &parser = *((parser_s *)parser_run.parser_ptr);
   string_s &source_string = *((string_s *)parser_run.source_string_ptr);
 
+  // - ERROR -
+  cassert(parser_run.parse_action != c_idx_not_exist);
+
   unsigned rule_body_size = parser.rule_descrs[parser_run.parse_action].body_size;
 
   // - ERROR -
@@ -70,6 +73,16 @@ bool parser_run_s::parse_source_string(string_s &source_string)
   final_automata_s &final_automata = parser.final_automata;
   p_lalr_table_s &lalr_table = parser.lalr_table;
 
+  // - set source string pointer -
+  source_string_ptr = &source_string;
+
+  // - vychozi nastaveni lalr_stavoveho zasobniku -
+  lalr_stack.used = 0;
+  lalr_stack.push(0,0,0);
+
+  // - initialize parse action -
+  parse_action = c_idx_not_exist;
+
   // - create and initialize lua state -
   lua_State *lua_state = luaL_newstate();
 
@@ -100,13 +113,6 @@ bool parser_run_s::parse_source_string(string_s &source_string)
     error.type = c_error_PARSER_LUA_DO_INIT_CODE_ERROR;
     return false;
   }
-
-  // - set source string pointer -
-  source_string_ptr = &source_string;
-
-  // - vychozi nastaveni lalr_stavoveho zasobniku -
-  lalr_stack.used = 0;
-  lalr_stack.push(0,0,0);
 
   // - promenne popisujici stav konecneho lexikalniho automatu -
   unsigned old_input_idx = 0;
