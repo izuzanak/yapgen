@@ -40,5 +40,9 @@
 #echo "demo_parse.rules" 1>&2
 #./yapgen --parser_descr rules/demo_parse/1.rules --source rules/demo_parse/1.src
 #./yapgen --parser_descr rules/demo_parse/2.rules --source rules/demo_parse/2.src
-./yapgen --parser_descr rules/demo_parse/3.rules --source rules/demo_parse/3.src
+#./yapgen --parser_descr rules/demo_parse/3.rules --source rules/demo_parse/3.src
+
+# - regexp -
+#echo "demo_parse.rules" 1>&2
+./yapgen --parser_descr rules/regexp.rules --source rules/regexp.src
 
