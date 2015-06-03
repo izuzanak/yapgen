@@ -118,7 +118,7 @@ additions
 
   /*
    * \brief join all strings in array to one string
-   * \param a_string - target string to be set to cancatenated result
+   * \param a_string - target string to be set to concatenated result
    */
   void join(string_s &a_string);
 

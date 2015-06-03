@@ -15,10 +15,6 @@ const unsigned c_arg_parser_descr = 0;
 const unsigned c_arg_parser_save_cc = 1;
 const unsigned c_arg_source = 2;
 
-/*
- * rozpozna v argumentech ruzne vstupni a vystupni soubory programu
- */
-
 bool parse_arguments(int argc,char **argv,unsigned *arg_file_idxs)
 {/*{{{*/
   if (argc > 1)
@@ -57,7 +53,7 @@ int main(int argc,char **argv)
 {/*{{{*/
   unsigned arg_file_idxs[6] = {0,0,0,0,0,0};
 
-  // -- ziska indexy vst. a vystupnich souboru v argumentech programu --
+  // -- retrieve indexes of input/output files in program arguments --
   if (!parse_arguments(argc,argv,arg_file_idxs)) {
     fprintf(stderr,
         "main: bad arguments format\n"
@@ -68,7 +64,7 @@ int main(int argc,char **argv)
     exit(0);
   }
 
-  // -- promenne popisujici nacteny prekladac a docasne retezce --
+  // -- variables describing parser and temporary strings --
   bool parser_exist = false;
   parser_s parser;
   parser.init();
@@ -76,7 +72,7 @@ int main(int argc,char **argv)
   string_s str;
   str.init();
 
-  // -- vygenerovani prekladace podle jeho popisu --
+  // -- generate parser from its description --
   if (arg_file_idxs[c_arg_parser_descr])
   {
     if (!str.load_text_file(argv[arg_file_idxs[c_arg_parser_descr]]))
@@ -98,7 +94,7 @@ int main(int argc,char **argv)
     }
   }
 
-  // -- vygenerovani a ulozeni popisu prekladace v jazyce c --
+  // -- generate parser code in c/c++ language --
   if (arg_file_idxs[c_arg_parser_save_cc])
   {
     if (!parser_exist)
@@ -168,7 +164,7 @@ int main(int argc,char **argv)
     }
   }
 
-  // -- uvolneni prekladace z pameti --
+  // -- release parser from memory --
   parser.clear();
 
   return 0;

@@ -554,7 +554,7 @@ PUSH_CODE(
 "// - program entry function -\n"
 "int main(int argc,char **argv)\n"
 "{\n"
-"   // - initialize globla variables -\n"
+"   // - initialize global variables -\n"
 "   source_string_length = 0;\n"
 "   source_string = NULL;\n"
 "   lalr_stack.init();\n"

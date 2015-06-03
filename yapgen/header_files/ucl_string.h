@@ -121,7 +121,7 @@ struct string_s
 
   /*!
    * \brief convert utf32 unsigned int string to utf8 string
-   * \param a_src - pointer to source utf32 unsigned integeres
+   * \param a_src - pointer to source utf32 unsigned integers
    * \param a_trg - pointer to target utf8 characters
    * \param a_size - count of integers to be converted
    * \return count of converted characters
@@ -162,7 +162,7 @@ struct string_s
   void setf(const char *format,...);
 
   /*!
-   * \brief conctenate string of desired format
+   * \brief concatenate string of desired format
    * \param format - format as in printf functions family
    * \param ... - list of parameters demanded in format
    */

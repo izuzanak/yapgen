@@ -76,7 +76,7 @@ bool parser_run_s::parse_source_string(string_s &source_string)
   // - set source string pointer -
   source_string_ptr = &source_string;
 
-  // - vychozi nastaveni lalr_stavoveho zasobniku -
+  // - initial setup of lalr stack -
   lalr_stack.used = 0;
   lalr_stack.push(0,0,0);
 
@@ -114,7 +114,7 @@ bool parser_run_s::parse_source_string(string_s &source_string)
     return false;
   }
 
-  // - promenne popisujici stav konecneho lexikalniho automatu -
+  // - variables describing state of lexical automata -
   unsigned old_input_idx = 0;
   unsigned input_idx = 0;
   unsigned input_length = source_string.size - 1;
@@ -122,7 +122,7 @@ bool parser_run_s::parse_source_string(string_s &source_string)
 
   do
   {
-    // - rozpoznani dalsiho terminalu na vstupu -
+    // - retrieve next terminal from source string -
     while (ret_term == c_idx_not_exist)
     {
       old_input_idx = input_idx;
@@ -147,7 +147,7 @@ bool parser_run_s::parse_source_string(string_s &source_string)
       }
     }
 
-    // - nalezeni akce v tabulce akci -
+    // - retrieve action from action table -
     parse_action = lalr_table.value(ret_term,lalr_stack.last().lalr_state);
 
     // - ERROR -
@@ -165,13 +165,13 @@ bool parser_run_s::parse_source_string(string_s &source_string)
     // - akce SHIFT -
     if (parse_action < c_lalr_table_reduce_base)
     {
-      // - kdyz byl prijmut koncovy terminal ukonci rozklad -
+      // - terminate parsing if end terminal was received -
       if (ret_term == end_terminal)
       {
         break;
       }
 
-      // - vlozi na zasobnik novy stav a pozici terminalu ve zdrojovem retezci -
+      // - put new state and terminal position to parser stack -
       lalr_stack.push(parse_action,old_input_idx,input_idx);
 
       ret_term = c_idx_not_exist;
