@@ -415,7 +415,7 @@ PUSH_CODE(
   fa_states_s &states = final_automata.states;
 
   PUSH_CODE(
-"// - STATE 0 - \n"
+"// - STATE 0 -\n"
 "state_0_label:\n"
   );
   if (states[0].final != c_idx_not_exist)
@@ -440,7 +440,7 @@ PUSH_CODE(
   do
   {
     PUSH_FORMAT_CODE(
-"// - STATE %d - \n"
+"// - STATE %d -\n"
 "state_%d_label:\n"
       ,MPAR(s_idx,s_idx));
     if (states[s_idx].final != c_idx_not_exist)
