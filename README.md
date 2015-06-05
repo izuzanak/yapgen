@@ -147,6 +147,9 @@ result: 59
 
 ## Building parser generator
 
+Programming language LUA in version [5.2](http://www.lua.org/ftp/) or greater
+is needed for yapgen compilation.
+
 Container generator [`cont`](https://github.com/izuzanak/cont) is needed for
 yapgen compilation. Compile it and place binary `process` to your `PATH`
 directory.
