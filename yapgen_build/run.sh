@@ -6,7 +6,7 @@
 
 # - docu_comment -
 #echo "docu_comment.rules" 1>&2
-#./yapgen --parser_descr rules/docu_comment.rules --source rules/docu_comment.src
+./yapgen --parser_descr rules/docu_comment.rules --source rules/docu_comment.src
 
 # - docu_extract -
 #echo "docu_extract.rules" 1>&2
@@ -43,6 +43,10 @@
 #./yapgen --parser_descr rules/demo_parse/3.rules --source rules/demo_parse/3.src
 
 # - regexp -
-#echo "demo_parse.rules" 1>&2
-./yapgen --parser_descr rules/regexp.rules --source rules/regexp.src
+#echo "regexp.rules" 1>&2
+#./yapgen --parser_descr rules/regexp.rules --source rules/regexp.src
+
+# - regexp -
+#echo "packet_parser.rules" 1>&2
+#./yapgen --parser_descr rules/packet_parser.rules --source rules/packet_parser.src
 

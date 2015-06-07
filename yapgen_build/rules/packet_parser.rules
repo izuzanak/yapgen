@@ -1,0 +1,53 @@
+#vim: set syntax=rules:
+
+init_code: {}
+
+terminals:
+  $soh   {''} $0x01
+  $stx   {''} $0x02
+  $etx   {''} $0x03
+  $eot   {''} $0x04
+  $ack   {''} $0x06
+  $nak   {''} $0x15
+  $cr    {'\c'} $0x0d
+  $lf    {'\l'} $0x0a
+
+  $PACKET_ADDRESS = 0,
+  $PACKET_IDENTIFY,
+  $PACKET_ACK_COMMAND,
+  $PACKET_ACK,
+  $PACKET_NOT_ACK,
+  $PACKET_DATA,
+  $PACKET_PROG_DATA,
+  $PACKET_PROG_COMMAND,
+
+  PACKET_ADDRESS {"/?".(<09>+<az>+<AZ>)*.'!'."\x0d\x0a"}
+  PACKET_IDENTIFY {'/'.<AZ>.<AZ>.(<AZ>+<az>).<09>.(|/!\x0d|)*."\x0d\x0a"}
+  PACKET_ACK_COMMAND {'\x06'.<09>.(<09>+<az>).<09>."\x0d\x0a"}
+  PACKET_ACK {'\x06'}
+  PACKET_NOT_ACK {'\x15'}
+  PACKET_DATA {'\x02'.(((|!()/\x03\x04|*.'('.|*!()/\x03\x04|*.(('*'.|!()/\x03\x04|*)+e).')').(("\x0d\x0a")+e)).(((|!()/\x03\x04|*.'('.|*!()/\x03\x04|*.(('*'.|!()/\x03\x04|*)+e).')').(("\x0d\x0a")+e))*)).'!'."\x0d\x0a".'\x03'.(|0|+'0')}
+  PACKET_PROG_DATA {'\x02'.(("ERR ".|\x03\x04|*)+(((|!()/\x03\x04|*.'('.|*!()/\x03\x04|*.(('*'.|!()/\x03\x04|*)+e).')').(("\x0d\x0a")+e)).(((|!()/\x03\x04|*.'('.|*!()/\x03\x04|*.(('*'.|!()/\x03\x04|*)+e).')').(("\x0d\x0a")+e))*))).[\x03\x04].(|0|+'0')}
+  PACKET_PROG_COMMAND {'\x01'.(('B'.<09>.'\x03'.(|0|+'0'))+([PWRE].<09>.'\x02'.(|!()/|*.'('.|*!()/|*.(('*'.|!()/|*)+e).')').[\x04\x03].(|0|+'0')))}
+
+  $Data file: {(|!()/|*.'('.|*!()/|*.(('*'.|!()/|*)+e).')')}
+  $Data block: {(((|!()/|*.'('.|*!()/|*.(('*'.|!()/|*)+e).')').(("\x0d\x0a")+e)).(((|!()/|*.'('.|*!()/|*.(('*'.|!()/|*)+e).')').(("\x0d\x0a")+e))*))}
+
+  _END_ {'\0'}
+
+nonterminals:
+  <start>
+  <packet>
+
+rules:
+  <start> -> <packet> _END_ ->> {}
+
+  <packet> -> PACKET_ACK ->> {print("AckPkt")}
+  <packet> -> PACKET_NOT_ACK ->> {print("NackPkt")}
+  <packet> -> PACKET_ACK_COMMAND ->> {print("AckCmdPkt")}
+  <packet> -> PACKET_ADDRESS ->> {print("AdrPkt")}
+  <packet> -> PACKET_IDENTIFY ->> {print("IdentPkt")}
+  <packet> -> PACKET_PROG_COMMAND ->> {print("SohProgCmdPkt")}
+  <packet> -> PACKET_DATA ->> {print("StxDataPkt")}
+  <packet> -> PACKET_PROG_DATA ->> {print("StxProgDataPkt")}
+
