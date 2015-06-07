@@ -2,11 +2,11 @@
 
 # - uclang_parser -
 #echo "uclang_parser.rules" 1>&2
-#./yapgen --parser_descr rules/uclang_parser.rules --source rules/uclang_parser.src
+./yapgen --parser_descr rules/uclang_parser.rules --source rules/uclang_parser.src
 
 # - docu_comment -
 #echo "docu_comment.rules" 1>&2
-./yapgen --parser_descr rules/docu_comment.rules --source rules/docu_comment.src
+#./yapgen --parser_descr rules/docu_comment.rules --source rules/docu_comment.src
 
 # - docu_extract -
 #echo "docu_extract.rules" 1>&2

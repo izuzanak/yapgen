@@ -488,6 +488,7 @@ if (skip_terminals.used > 0)
 {
   PUSH_FORMAT_CODE(
 "\n"
+"         // - skipping of _SKIP_ terminals -\n"
 "         if (ret_term == %d"
     ,skip_terminals[0]);
   if (skip_terminals.used > 1)
@@ -517,6 +518,7 @@ PUSH_CODE(
 "\n"
 );
 PUSH_FORMAT_CODE(
+"         // - end on _END_ terminal -\n"
 "         if (ret_term == %d) {\n"
 "            break;\n"
 "         }\n"
@@ -532,7 +534,7 @@ PUSH_CODE(
 "      else {\n"
 "         parse_action -= c_lalr_table_reduce_base;\n"
 "\n"
-"         // - print index of reduce rule to output -\n"
+"         // - print index of reduction rule to output -\n"
 "         printf(\"%d, \",parse_action);\n"
 "\n"
 "         // - remove rule body from stack -\n"
