@@ -46,7 +46,11 @@
 #echo "regexp.rules" 1>&2
 #./yapgen --parser_descr rules/regexp.rules --source rules/regexp.src
 
-# - regexp -
+# - packet_parser -
 #echo "packet_parser.rules" 1>&2
 #./yapgen --parser_descr rules/packet_parser.rules --source rules/packet_parser.src
+
+# - container_gen -
+#echo "container_gen.rules" 1>&2
+#./yapgen --parser_descr rules/container_gen.rules --source rules/container_gen.src
 

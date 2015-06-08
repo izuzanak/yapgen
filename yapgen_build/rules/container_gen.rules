@@ -1,0 +1,146 @@
+
+init_code: {}
+
+terminals:
+   begin {"@begin"}
+   end {"@end"}
+
+   include {"include"}
+   inlines {"inlines"}
+   methods {"methods"}
+   additions {"additions"}
+   define {"define"}
+
+   basic {"basic"}
+   static {"static"}
+   dynamic {"dynamic"}
+   flushable {"flushable"}
+
+   not_generate {"not_generate:"}
+   init {"init"}
+   clear {"clear"}
+   swap {"swap"}
+   operator_equal {"operator="}
+
+   options {"options:"}
+   strict_dynamic {"strict_dynamic"}
+
+   str {'"'.!'"'*.'"'}
+   additions_body {'{'.!'\}'*.'\}'}
+   id {('_'+l).('_'+l+d)*}
+
+   ps {'<'}
+   pe {'>'}
+
+   colon {':'}
+   semicolon {';'}
+
+   _SKIP_ {w.w*}
+   __SKIP__ {'$'.!'\n'*.'\n'}
+   _END_ {'\0'}
+
+nonterminals:
+   <start>
+   <def_list>
+   <def>
+   <modifier_list>
+   <modifier>
+   <attr_list>
+   <attr>
+   <element_list>
+   <element>
+   <ng_list>
+   <ng_item>
+   <option_list>
+   <option_item>
+
+rules:
+   $0
+   <start> -> begin <def_list> end _END_ ->> {}
+
+   $1
+   <def_list> -> <def_list> <def> ->> {}
+   $2
+   <def_list> -> <def> ->> {}
+
+   $3
+   <def> -> include str ->> {print("INCLUDE: "..rule_body(1))}
+
+   $4
+   <def> -> inlines id ->> {print("INLINES: "..rule_body(1))}
+
+   $5
+   <def> -> methods id ->> {print("METHODS: "..rule_body(1))}
+
+   $6
+   <def> -> define id <modifier_list> ->> {print("DEFINE: "..rule_body(1))}
+   
+   $7
+   <modifier_list> -> <modifier_list> <modifier> ->> {}
+   $8
+   <modifier_list> -> <modifier> ->> {}
+
+   $9
+   <modifier> -> basic ->> {print("mod. BASIC")}
+   $10
+   <modifier> -> static ->> {print("mod. STATIC")}
+   $11
+   <modifier> -> dynamic ->> {print("mod. DYNAMIC")}
+   $12
+   <modifier> -> flushable ->> {print("mod. FLUSHABLE")}
+
+   $13
+   <def> -> id <attr_list> semicolon ->> {print("CONTAINER:"..rule_body(0))}
+
+   $14
+   <attr_list> -> <attr_list> <attr> ->> {}
+   $15
+   <attr_list> -> <attr> ->> {} 
+
+   $16
+   <attr> -> ps <element_list> pe ->> {}
+
+   $17
+   <element_list> -> <element_list> <element> ->> {}
+   $18
+   <element_list> -> <element> ->> {} 
+
+   $19
+   <element> -> id ->> {print("TYPE: "..rule_body(0))} 
+   $20
+   <element> -> id colon id ->> {print("TYPE AND NAME: "..rule_body(0)..":"..rule_body(2))} 
+
+   $21
+   <attr> -> not_generate <ng_list> ->> {}
+
+   $22
+   <ng_list> -> <ng_list> <ng_item> ->> {}
+   $23
+   <ng_list> -> <ng_item> ->> {}
+
+   $24
+   <ng_item> -> init ->> {print("NOT_GENERATE_INIT")}
+   $25
+   <ng_item> -> clear ->> {print("NOT_GENERATE_CLEAR")}
+   $26
+   <ng_item> -> swap ->> {print("NOT_GENERATE_SWAP")}
+   $27
+   <ng_item> -> operator_equal ->> {print("NOT_GENERATE_OPERATOR=")}
+
+   $28
+   <attr> -> options <option_list> ->> {}
+   
+   $29
+   <option_list> -> <option_list> <option_item> ->> {}
+   $30
+   <option_list> -> <option_item> ->> {}
+   
+   $31
+   <option_item> -> strict_dynamic ->> {print("OPTION_STRICT_DYNAMIC")}
+
+   $32
+   <attr> -> additions additions_body ->> {print("ADDITIONS: "..rule_body(1))}
+
+   $33
+   <attr> -> id ->> {print("NAME: "..rule_body(0))}
+
