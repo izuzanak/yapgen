@@ -712,7 +712,7 @@ else:
   assert False
 
 if configuration.compiler_type == configuration.C_COMPILER_GCC:
-  opt_build += "$(OPT) -Wall -fno-strict-aliasing "
+  opt_build += "$(OPT) -Wall "
 
   if configuration.shell_type == configuration.C_SHELL_TYPE_BASH:
     opt_link += "$(OPT) -ldl -lpthread "
