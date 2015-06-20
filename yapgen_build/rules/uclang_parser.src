@@ -2,11 +2,32 @@
 import sys;
 import containers;
 
-private public class Main
-{/*{{{*/
-  static public main(argv)
+namespace First
+{
+  namespace Second
   {
-    return "String" + a + b + c;
+    namespace Fourth {}
+
+    private public class Main
+    {
+      static public main(argv)
+      {
+        return "String" + a + b + c;
+      }
+    }
   }
-}/*}}}*/
+  using namespace Second
+  {
+    private public class Main
+    {
+      static public main(argv)
+      {
+        file = new File();
+        //file = new Sys.Data.File("hello.txt","w");
+
+        Sys.Data.File("Hello");
+      }
+    }
+  }
+}
 
