@@ -145,9 +145,11 @@ nonterminals:
 
    <namespace_def_list>
    <namespace_def>
-   <namespace_name>
+   <namespace_def_name>
    <namespace_using_name>
    <namespace_end>
+   <namespace_id_list>
+   <namespace_id>
 
    <top_class>
 
@@ -204,8 +206,6 @@ nonterminals:
    <parameter_list>
 
    <object_class_name>
-   $<namespace_id_list>
-   $<namespace_id>
 
    <object_member>
 
@@ -307,12 +307,12 @@ rules:
    }
 
    $ -- namespace definition --
-   <namespace_def> -> <namespace_name> lc_br <namespace_end> ->>
+   <namespace_def> -> <namespace_def_name> lc_br <namespace_end> ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
          node_idx = node_idx + 1;
-         print("   node_"..this_idx.." [label = \"<namespace_name> { <namespace_end>\"]");
+         print("   node_"..this_idx.." [label = \"<namespace_def_name> { <namespace_end>\"]");
          print("   node_"..this_idx.." -> node_"..table.remove(node_stack).."");
          print("   node_"..this_idx.." -> node_"..table.remove(node_stack).."");
          table.insert(node_stack,this_idx);
@@ -322,15 +322,16 @@ rules:
       end
    }
 
-   <namespace_name> -> namespace id ->>
+   <namespace_def_name> -> namespace <namespace_id_list> ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
          node_idx = node_idx + 1;
-         print("   node_"..this_idx.." [label = \"namespace "..rule_body(1).."\"]");
+         print("   node_"..this_idx.." [label = \"namespace <namespace_id_list>\"]");
+         print("   node_"..this_idx.." -> node_"..table.remove(node_stack).."");
          table.insert(node_stack,this_idx);
       else
-         print(table.concat(tabs,"").."namespace def name: \""..rule_body(1).."\"");
+         print(table.concat(tabs,"").."namespace def name");
          table.insert(tabs," n  ");
       end
    }
@@ -351,15 +352,16 @@ rules:
       end
    }
 
-   <namespace_using_name> -> using namespace id ->>
+   <namespace_using_name> -> using namespace <namespace_id_list> ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
          node_idx = node_idx + 1;
-         print("   node_"..this_idx.." [label = \"using namespace "..rule_body(2).."\"]");
+         print("   node_"..this_idx.." [label = \"using namespace <namespace_id_list>\"]");
+         print("   node_"..this_idx.." -> node_"..table.remove(node_stack).."");
          table.insert(node_stack,this_idx);
       else
-         print(table.concat(tabs,"").."namespace using name: \""..rule_body(2).."\"");
+         print(table.concat(tabs,"").."namespace using name");
          table.insert(tabs," n  ");
       end
    }
@@ -382,6 +384,41 @@ rules:
          node_idx = node_idx + 1;
          print("   node_"..this_idx.." [label = \"\}\"]");
          table.insert(node_stack,this_idx);
+      end
+   }
+
+   <namespace_id_list> -> <namespace_id_list> dot <namespace_id> ->>
+   {
+      if gen_parse_tree == 1 then
+         this_idx = node_idx;
+         node_idx = node_idx + 1;
+         print("   node_"..this_idx.." [label = \"<namespace_id_list> dot <namespace_id>\"]");
+         print("   node_"..this_idx.." -> node_"..table.remove(node_stack).."");
+         print("   node_"..this_idx.." -> node_"..table.remove(node_stack).."");
+         table.insert(node_stack,this_idx);
+      end
+   }
+
+   <namespace_id_list> -> <namespace_id> ->>
+   {
+      if gen_parse_tree == 1 then
+         this_idx = node_idx;
+         node_idx = node_idx + 1;
+         print("   node_"..this_idx.." [label = \"<namespace_id>\"]");
+         print("   node_"..this_idx.." -> node_"..table.remove(node_stack).."");
+         table.insert(node_stack,this_idx);
+      end
+   }
+
+   <namespace_id> -> id ->>
+   {
+      if gen_parse_tree == 1 then
+         this_idx = node_idx;
+         node_idx = node_idx + 1;
+         print("   node_"..this_idx.." [label = \""..rule_body(0).."\"]");
+         table.insert(node_stack,this_idx);
+      else
+         print(table.concat(tabs,"").."namespace id: \""..rule_body(0).."\"");
       end
    }
 
@@ -2010,50 +2047,6 @@ rules:
          print(table.concat(tabs,"").."object class name: \""..rule_body(1).."\"");
       end
    }
-
-   $<object_class_name> -> new <namespace_id_list> ->>
-   ${
-   $   if gen_parse_tree == 1 then
-   $      this_idx = node_idx;
-   $      node_idx = node_idx + 1;
-   $      print("   node_"..this_idx.." [label = \"new <namespace_id_list>\"]");
-   $      table.insert(node_stack,this_idx);
-   $   else
-   $      print(table.concat(tabs,"").."object class name");
-   $   end
-   $}
-
-   $<namespace_id_list> -> <namespace_id_list> dot <namespace_id> ->>
-   ${
-   $   if gen_parse_tree == 1 then
-   $      this_idx = node_idx;
-   $      node_idx = node_idx + 1;
-   $      print("   node_"..this_idx.." [label = \"<namespace_id_list> dot <namespace_id>\"]");
-   $      table.insert(node_stack,this_idx);
-   $   end
-   $}
-
-   $<namespace_id_list> -> <namespace_id> ->>
-   ${
-   $   if gen_parse_tree == 1 then
-   $      this_idx = node_idx;
-   $      node_idx = node_idx + 1;
-   $      print("   node_"..this_idx.." [label = \"<namespace_id>\"]");
-   $      table.insert(node_stack,this_idx);
-   $   end
-   $}
-
-   $<namespace_id> -> id ->>
-   ${
-   $   if gen_parse_tree == 1 then
-   $      this_idx = node_idx;
-   $      node_idx = node_idx + 1;
-   $      print("   node_"..this_idx.." [label = \""..rule_body(0).."\"]");
-   $      table.insert(node_stack,this_idx);
-   $   else
-   $      print(table.concat(tabs,"").."namespace id: \""..rule_body(0).."\"");
-   $   end
-   $}
 
    $ -- free existing object --
    <A> -> free <exp> ->>

@@ -2,7 +2,7 @@
 import sys;
 import containers;
 
-namespace First
+namespace First.Second.Third
 {
   namespace Second
   {
@@ -16,7 +16,7 @@ namespace First
       }
     }
   }
-  using namespace Second
+  using namespace First.Second.Third
   {
     private public class Main
     {
