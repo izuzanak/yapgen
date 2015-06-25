@@ -23,7 +23,7 @@ namespace First->Second->Third
       static public main(argv)
       {
         file = new File();
-        //file = new Sys->Data->File("hello.txt","w");
+        file = new Sys->Data->File("hello.txt","w");
 
         Test = First->Second->b[::];
 
