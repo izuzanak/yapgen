@@ -2,7 +2,7 @@
 import sys;
 import containers;
 
-namespace First.Second.Third
+namespace First->Second->Third
 {
   namespace Second
   {
@@ -16,14 +16,16 @@ namespace First.Second.Third
       }
     }
   }
-  using namespace First.Second.Third
+  using namespace First->Second->Third
   {
     private public class Main
     {
       static public main(argv)
       {
         file = new File();
-        //file = new Sys.Data.File("hello.txt","w");
+        //file = new Sys->Data->File("hello.txt","w");
+
+        Test = First->Second->b[::];
 
         Sys.Data.File("Hello");
       }
