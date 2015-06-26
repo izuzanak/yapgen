@@ -18,7 +18,7 @@ namespace First->Second->Third
   }
   using namespace First->Second->Third
   {
-    private public class Main
+    private public class Main extends First->Second->Test
     {
       static public main(argv)
       {
