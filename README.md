@@ -49,7 +49,7 @@ comment_sl  {"//".!'\n'*.'\n'}
 comment_ml  {"/*".(!'*'+('*'.!'/'))*."*/"}
 ```
 
-Regular expressions can be use to recognize binary data.
+Regular expressions can be used to recognize binary data.
 
 ```
 PACKET_ADDRESS     {"/?".(<09>+<az>+<AZ>)*.'!'."\x0d\x0a"}
@@ -148,9 +148,9 @@ result: 59
 ## Building parser generator
 
 Programming language LUA in version [5.2](http://www.lua.org/ftp/) or greater
-is needed for yapgen compilation.
+is required for yapgen compilation.
 
-Container generator [`cont`](https://github.com/izuzanak/cont) is needed for
+Container generator [`cont`](https://github.com/izuzanak/cont) is required for
 yapgen compilation. Compile it and place binary `process` to your `PATH`
 directory.
 
