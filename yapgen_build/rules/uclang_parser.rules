@@ -58,7 +58,7 @@ terminals:
 
    at {'@'}
    equal_at {"=@"}
-   left_arrow {"<-"}
+   left_arrow_in {"<-"+"in"}
    right_arrow {"->"}
 
    lr_br {'('}
@@ -127,6 +127,7 @@ terminals:
    question {'?'}
    colon {':'}
    tilde {'~'}
+   dollar {'$'}
 
    _SKIP_ {w.w*}
    _SKIP__ {'#'.!'\n'*.'\n'}
@@ -919,7 +920,7 @@ rules:
       end
    }
 
-   $ - try catch statement -
+   $ -- try catch statement --
    <command> -> <try_catch_block> ->>
    {
       if gen_parse_tree == 1 then
@@ -1076,7 +1077,7 @@ rules:
          print(table.concat(tabs,"").."for statement");
       end
    }
-   <for_expression> -> <for_identifier> left_arrow <exp> ->>
+   <for_expression> -> <for_identifier> left_arrow_in <exp> ->>
    {
       if gen_parse_tree == 1 then
          this_idx = node_idx;
@@ -1635,6 +1636,19 @@ rules:
          print(table.concat(tabs,"").."operator binary ls_br_equal");
       end
    }
+   <F> -> <F> left_arrow_in <E> ->>
+   {
+      if gen_parse_tree == 1 then
+         this_idx = node_idx;
+         node_idx = node_idx + 1;
+         print("   node_"..this_idx.." [label = \"<exp> in <exp>\"]");
+         print("   node_"..this_idx.." -> node_"..table.remove(node_stack).."");
+         print("   node_"..this_idx.." -> node_"..table.remove(node_stack).."");
+         table.insert(node_stack,this_idx);
+      else
+         print(table.concat(tabs,"").."presence test");
+      end
+   }
    <F> -> <E> ->> {}
 
    <E> -> <E> ampersand <D> ->>
@@ -2075,6 +2089,20 @@ rules:
          table.insert(node_stack,this_idx);
       else
          print(table.concat(tabs,"").."type identification");
+      end
+   }
+
+    $ -- convert to string --
+   <A> -> dollar <A> ->>
+   {
+      if gen_parse_tree == 1 then
+         this_idx = node_idx;
+         node_idx = node_idx + 1;
+         print("   node_"..this_idx.." [label = \"$ <exp>\"]");
+         print("   node_"..this_idx.." -> node_"..table.remove(node_stack).."");
+         table.insert(node_stack,this_idx);
+      else
+         print(table.concat(tabs,"").."convert to string");
       end
    }
 

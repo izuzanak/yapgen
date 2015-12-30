@@ -28,6 +28,24 @@ namespace First->Second->Third
         Test = First->Second->b[::];
 
         Sys.Data.File("Hello");
+
+        arr = [1,2,3,4,5];
+        for (val <- arr) {}
+        for (val in arr) {}
+
+        set = new Set([1,2,3,4,5]);
+        if (2 in set)
+        {
+          ("set %s contain value 2\n" % $set).print();
+        }
+
+        for (val <- new Range(0,100,10))
+        {
+        }
+
+        value = 10;
+        ("result: %s" % $(value + 10)).print();
+        ("arr: %s" % $arr).print();
       }
     }
   }
