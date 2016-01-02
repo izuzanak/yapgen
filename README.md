@@ -147,19 +147,30 @@ result: 59
 
 ## Building parser generator
 
-Programming language LUA in version [5.2](http://www.lua.org/ftp/) or greater
+Programming language LUA of version [5.2](http://www.lua.org/ftp/) or greater
 is required for yapgen compilation.
 
-Container generator [`cont`](https://github.com/izuzanak/cont) is required for
-yapgen compilation. Compile it and place binary `process` to your `PATH`
-directory.
+Container generator [`cont`](https://github.com/izuzanak/cont) is needed for
+compilation of parser generator. It will be automatically compiled in following
+compilation steps.
 
-Enter build directory [`yapgen_build`](https://github.com/izuzanak/yapgen/tree/master/yapgen_build)
+### Linux compilation
+
+For compilation of parser generator on Linux OS perform following steps:
+
+  * Download script [`try_yapgen.sh`](https://raw.githubusercontent.com/izuzanak/yapgen/master/yapgen_try/try_yapgen.sh).
+
 ```
-cd yapgen_build
+wget https://raw.githubusercontent.com/izuzanak/yapgen/master/yapgen_try/try_yapgen.sh
 ```
-Execute build script [`build.sh`](https://github.com/izuzanak/yapgen/blob/master/yapgen_build/build.sh)
+
+  * Check prerequisites mentioned in script.
+  * Execute script `try_yapgen.sh`.
+
 ```
-sh build.sh
+bash try_yapgen.sh
 ```
+
+It will clone two repositories `cont` and `yapgen`, and subsequently compile
+container generator and parser generator.
 
