@@ -155,7 +155,7 @@ complex regular expressions.
 Binary operator `.`.  In order to accept resulting regular expression, left
 operand and then right operand of operator must be accepted.
 
-![Concatenation graph image](sources/op_conc.png)
+![Concatenation graph image](res/intro/op_conc.png)
 
 ```
 "Hello".' '."world"
@@ -168,7 +168,7 @@ operand and then right operand of operator must be accepted.
 Binary operator `+`.  In order to accept resulting regular expression, left
 operand or right operand of operator must be accepted.
 
-![Alternative graph image](sources/op_alter.png)
+![Alternative graph image](res/intro/op_alter.png)
 
 ```
 "i8"+"i16"+"i32"+"i64"+"u8"+"u16"+"u32"+"u64"+"f32"+"f64"
@@ -182,7 +182,7 @@ Unary operator `*`. In order to accept resulting regular expression operand of
 operator must be accepted zero or n-times. Operand to which is operator applied
 is located before operator symbol.
 
-![Iteration graph image](sources/op_iter.png)
+![Iteration graph image](res/intro/op_iter.png)
 
 ```
 <19>.d*
