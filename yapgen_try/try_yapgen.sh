@@ -47,6 +47,7 @@ do
     1)             RES_NAME=demo_parse/1 ;;
     2)             RES_NAME=demo_parse/2 ;;
     3)             RES_NAME=demo_parse/3 ;;
+    demo_exp)      RES_NAME=demo_exp ;;
     jit_parser)    RES_NAME=jit_parser ;;
     jit_types)     RES_NAME=jit_types ;;
     json)          RES_NAME=json ;;

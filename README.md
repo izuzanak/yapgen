@@ -174,3 +174,15 @@ bash try_yapgen.sh
 It will clone two repositories `cont` and `yapgen`, and subsequently compile
 container generator and parser generator.
 
+### Linux example parsers
+
+Example parsers are located in directory
+[yapgen_build/rules](https://github.com/izuzanak/yapgen/tree/master/yapgen_build/rules).
+Names of parsers to be tested should be given as command line argument of
+`try_yapgen.sh` script.  List of example parsers can be found at the end of
+script `try_yapgen.sh`.
+
+```
+bash try_yapgen.sh demo_exp
+```
+
