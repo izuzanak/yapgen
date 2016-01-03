@@ -191,7 +191,7 @@ is located before operator symbol.
 
 #### Brackets in regular expressions
 
-Round brackets `()` increases priority of regular subexpression similarly as in
+Round brackets `()` increases priority of regular subexpression similarly as
 brackets in arithmetic expressions. Brackets also combines complicated regular
 subexpression to one component, to which above mentioned operators can be
 applied.
@@ -491,4 +491,14 @@ File containing set of rules of JIT language can be found
 [here](https://github.com/izuzanak/yapgen/blob/master/yapgen_build/rules/jit_parser.rules).
 This example was introduced, to show that yapgen can be used for creation of
 real parsers, not just simple toys.
+
+### Examples of generated code
+
+Generated C/C++ code of above examples can be found
+[here](https://github.com/izuzanak/yapgen/tree/master/yapgen_build/rules/demo_parse).
+There are three files for each example:
+
+1. `.rules` - file containing rules describing parser.
+2. `.src` - file containing example of parser source string.
+3. `.cc` - raw C/C++ code generated from parser description.
 
