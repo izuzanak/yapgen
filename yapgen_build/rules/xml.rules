@@ -1,0 +1,99 @@
+#vim: set syntax=rules:
+
+init_code:
+{
+  tabs = {\};
+}
+
+terminals:
+  string_apostrophes {'\''.(!'\'')*.'\''}
+  string_quotes {'"'.(!'"')*.'"'}
+
+  id {('_'+l).([_:]+l+d)*}
+
+  self_close {'/'}
+  close_tag {'/'.('_'+l).([_:]+l+d)*}
+
+  data {'>'.(!'<')*.'<'}
+
+  equal {'='}
+
+  _SKIP_ {w.w*}
+  _SKIP__ {"!--".(!'-'+("-".!'-'))*."--"}
+  _END_ {'\0'}
+
+nonterminals:
+  <start>
+  <end_check>
+
+  <element_list>
+  <element>
+
+  <attribute_list>
+  <attribute>
+
+  <open_tag>
+
+  <id>
+  <string>
+
+rules:
+  <start> -> <end_check> ->> {}
+
+  <end_check> -> <element_list> _END_ ->> {}
+  <end_check> -> _END_ ->> {}
+
+  <element_list> -> <element_list> <element> ->> {}
+  <element_list> -> <element> ->> {}
+  <element> -> <open_tag> <attribute_list> ->> {}
+
+  <element> -> close_tag ->>
+  {
+    table.remove(tabs);
+    print(table.concat(tabs,"").."close "..rule_body(0));
+  }
+
+  <element> -> data ->>
+  {
+    print(table.concat(tabs,"").."data");
+  }
+
+  <open_tag> -> <id> ->>
+  {
+    print(table.concat(tabs,"").."open");
+    table.insert(tabs," t  ");
+  }
+
+  <attribute_list> -> <attribute> <attribute_list> ->> {}
+
+  <attribute_list> -> self_close ->>
+  {
+    table.remove(tabs);
+    print(table.concat(tabs,"").."self close");
+  }
+
+  <attribute_list> -> data ->>
+  {
+    print(table.concat(tabs,"").."data "..rule_body(0));
+  }
+
+  <attribute> -> <id> equal <string> ->>
+  {
+    print(table.concat(tabs,"").."attribute");
+  }
+
+  <id> -> id ->>
+  {
+    print(table.concat(tabs,"").."identifier "..rule_body(0));
+  }
+
+  <string> -> string_apostrophes ->>
+  {
+    print(table.concat(tabs,"").."string "..rule_body(0));
+  }
+
+  <string> -> string_quotes ->>
+  {
+    print(table.concat(tabs,"").."string "..rule_body(0));
+  }
+

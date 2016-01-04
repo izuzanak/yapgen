@@ -1,0 +1,60 @@
+#vim: set syntax=rules:
+
+init_code: {}
+
+terminals:
+  string_apostrophes {'\''.(!'\'')*.'\''}
+  string_quotes {'"'.(!'"')*.'"'}
+
+  _END_ {"?>"}
+  declaration_open {"<?xml"}
+
+  version {"version"}
+  encoding {"encoding"}
+  standalone {"standalone"}
+
+  equal {'='}
+
+  _SKIP_ {w.w*}
+
+nonterminals:
+  <start>
+  <declaration>
+
+  <attribute_list>
+  <attribute>
+
+  <string>
+
+rules:
+  <start> -> <declaration> ->> {}
+
+  <declaration> -> <attribute_list> _END_ ->> {}
+  <attribute_list> -> <attribute_list> <attribute> ->> {}
+  <attribute_list> -> declaration_open ->> {}
+
+  <attribute> -> version equal <string> ->>
+  {
+    print("attr. version");
+  }
+
+  <attribute> -> encoding equal <string> ->>
+  {
+    print("attr. encoding");
+  }
+
+  <attribute> -> standalone equal <string> ->>
+  {
+    print("attr. standalone");
+  }
+
+  <string> -> string_apostrophes ->>
+  {
+    print("string "..rule_body(0));
+  }
+
+  <string> -> string_quotes ->>
+  {
+    print("string "..rule_body(0));
+  }
+

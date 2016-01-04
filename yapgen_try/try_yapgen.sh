@@ -44,18 +44,22 @@ YG_BUILD_DIR=yapgen/yapgen_build
 while true
 do
   case $1 in
-    1)             RES_NAME=demo_parse/1 ;;
-    2)             RES_NAME=demo_parse/2 ;;
-    3)             RES_NAME=demo_parse/3 ;;
-    demo_exp)      RES_NAME=demo_exp ;;
-    jit_parser)    RES_NAME=jit_parser ;;
-    jit_types)     RES_NAME=jit_types ;;
-    json)          RES_NAME=json ;;
-    pack_code)     RES_NAME=pack_code ;;
-    packet_parser) RES_NAME=packet_parser ;;
-    regexp)        RES_NAME=regexp ;;
-    string_format) RES_NAME=string_format ;;
-    uclang_parser) RES_NAME=uclang_parser ;;
+    1)               RES_NAME=demo_parse/1 ;;
+    2)               RES_NAME=demo_parse/2 ;;
+    3)               RES_NAME=demo_parse/3 ;;
+    demo_exp)        RES_NAME=demo_exp ;;
+    jit_parser)      RES_NAME=jit_parser ;;
+    jit_types)       RES_NAME=jit_types ;;
+    json)            RES_NAME=json ;;
+    pack_code)       RES_NAME=pack_code ;;
+    packet_parser)   RES_NAME=packet_parser ;;
+    regexp)          RES_NAME=regexp ;;
+    string_format)   RES_NAME=string_format ;;
+    uclang_parser)   RES_NAME=uclang_parser ;;
+    xml)             RES_NAME=xml ;;
+    xml_declaration) RES_NAME=xml_declaration ;;
+    xml_reference)   RES_NAME=xml_reference ;;
+
     *) exit ;;
   esac
 

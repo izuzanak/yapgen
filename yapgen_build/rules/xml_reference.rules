@@ -1,0 +1,46 @@
+
+#vim: set syntax=rules:
+
+init_code: {}
+
+terminals:
+  text     {!'&'.!'&'*}
+  any_ref  {'&'.!';'.!';'*.';'}
+
+  lt   {"&lt;"}
+  gt   {"&gt;"}
+  amp  {"&amp;"}
+  apos {"&apos;"}
+  quot {"&quot;"}
+
+  _END_ {'\0'}
+
+nonterminals:
+  <start>
+  <end_check>
+
+  <element_list>
+  <element>
+
+rules:
+  <start> -> <end_check> ->> {}
+
+  <end_check> -> <element_list> _END_ ->> {}
+  <end_check> -> _END_ ->> {}
+
+  <element_list> -> <element_list> <element> ->> {}
+  <element_list> -> <element> ->> {}
+
+  <element> -> text ->> { print("text"); }
+  <element> -> any_ref ->>
+  {
+    rb0 = rule_body(0);
+    print("any_ref: "..rb0:sub(2,rb0:len() - 1));
+  }
+
+  <element> -> lt ->> { print("lt"); }
+  <element> -> gt ->> { print("gt"); }
+  <element> -> amp ->> { print("amp"); }
+  <element> -> apos ->> { print("apos"); }
+  <element> -> quot ->> { print("quot"); }
+
