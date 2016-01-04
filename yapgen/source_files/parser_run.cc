@@ -244,19 +244,19 @@ bool parser_run_s::print_error(string_s &source_string)
   case c_error_PARSER_LUA_NEW_STATE_ERROR:
     fprintf(stderr," ---------------------------------------- \n");
     fprintf(stderr,"Exception: ERROR:\n");
-    fprintf(stderr,"\nCannot create new LUA state\n");
+    fprintf(stderr,"\nCannot create new Lua state\n");
     fprintf(stderr," ---------------------------------------- \n");
     break;
   case c_error_PARSER_LUA_DO_INIT_CODE_ERROR:
     fprintf(stderr," ---------------------------------------- \n");
     fprintf(stderr,"Exception: ERROR:\n");
-    fprintf(stderr,"\nError while executing LUA init code\n");
+    fprintf(stderr,"\nError while executing Lua init code\n");
     fprintf(stderr," ---------------------------------------- \n");
     break;
   case c_error_PARSER_LUA_DO_RULE_CODE_ERROR:
     fprintf(stderr," ---------------------------------------- \n");
     fprintf(stderr,"Exception: ERROR:\n");
-    fprintf(stderr,"\nError while executing LUA code of rule %u\n",error.params[0]);
+    fprintf(stderr,"\nError while executing Lua code of rule %u\n",error.params[0]);
     fprintf(stderr," ---------------------------------------- \n");
     break;
   default:

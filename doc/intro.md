@@ -8,7 +8,7 @@ parsers consisting from lexical and syntactic analyzers.
 Parser is described by one input file containing description of lexical and
 syntactic analyzers.  Lexical analyzer is denoted by set of regular
 expressions, syntactic analyzer is denoted by SLR(1) grammar and semantic rules
-of parser can be expressed by scripts, implemented in programming language LUA.
+of parser can be expressed by scripts, implemented in programming language Lua.
 From description of language is generated parser, that can be tested on input
 strings, or can be stored as source code in language C/C++.
 
@@ -220,7 +220,7 @@ Rules of grammar are denoted by following format:
 Where, `<head>` is nonterminal representing rule head. Head of rule is from
 rule body separated by characters `->`. Rule of body contains sequence of
 terminal and nonterminal symbols (`<item>`), which are from semantic code of
-rule separated by characters `->>`. Semantic code expressed in language LUA is
+rule separated by characters `->>`. Semantic code expressed in language Lua is
 enclosed in curly brackets `{}`.  When there is need to use symbol `}` in
 semantic code it should be preceded by backslash character `\}`.
 
@@ -235,7 +235,7 @@ semantic code it should be preceded by backslash character `\}`.
 ### Semantic rules of language
 
 Semantic rules of language are in phase of prototyping (gradual construction of
-parser) expressed by scripts in language LUA.
+parser) expressed by scripts in language Lua.
 
 It is possible to retrieve substring of source string, that represents n-th
 component of rule body according to which reduction was performed, by call of
@@ -443,7 +443,7 @@ result: 10
 
 Set of terminal symbols was extended by round brackets and five arithmetic
 operators. Rules of language grammar which describes arithmetic operations
-were added. Evaluation of arithmetic expressions is performed on LUA stack as
+were added. Evaluation of arithmetic expressions is performed on Lua stack as
 follows:
 
   * Initializing semantic code creates variable `s`, that represents stack of

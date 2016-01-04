@@ -147,7 +147,7 @@ result: 59
 
 ## Building parser generator
 
-Programming language LUA of version [5.2](http://www.lua.org/ftp/) or greater
+Programming language Lua of version [5.2](http://www.lua.org/ftp/) or greater
 is required for yapgen compilation.
 
 Container generator [`cont`](https://github.com/izuzanak/cont) is needed for
