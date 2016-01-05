@@ -9,10 +9,10 @@ terminals:
   string_apostrophes {'\''.(!'\'')*.'\''}
   string_quotes {'"'.(!'"')*.'"'}
 
-  id {('_'+l).([_:]+l+d)*}
+  id {('_'+l).([_:.]+l+d)*}
 
   self_close {'/'}
-  close_tag {'/'.('_'+l).([_:]+l+d)*}
+  close_tag {'/'.('_'+l).([_:.]+l+d)*}
 
   data {'>'.(!'<')*.'<'}
 
@@ -74,7 +74,7 @@ rules:
 
   <attribute_list> -> data ->>
   {
-    print(table.concat(tabs,"").."data "..rule_body(0));
+    print(table.concat(tabs,"").."data");
   }
 
   <attribute> -> <id> equal <string> ->>
