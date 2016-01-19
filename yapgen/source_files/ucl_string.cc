@@ -149,52 +149,6 @@ unsigned string_s::utf32_to_utf8(unsigned *a_src,char *a_trg,unsigned a_size)
   return t_ptr - (unsigned char *)a_trg;
 }/*}}}*/
 
-bool string_s::read_line_from_stream(FILE *a_stream)
-{/*{{{*/
-  clear();
-
-  const unsigned c_buffer_size = 256;
-  char buffer[c_buffer_size];
-
-  if (fgets(buffer,c_buffer_size,a_stream) == NULL)
-  {
-    return false;
-  }
-
-  unsigned b_str_size = strlen(buffer) + 1;
-  set(b_str_size - 1,buffer);
-
-  if (buffer[b_str_size - 2] == '\n')
-  {
-    return true;
-  }
-
-  string_s tmp_str;
-  tmp_str.init();
-
-  do
-  {
-    if (fgets(buffer,c_buffer_size,a_stream) == NULL)
-    {
-      break;
-    }
-
-    unsigned b_str_size = strlen(buffer) + 1;
-    tmp_str.conc_set(size - 1,data,b_str_size - 1,buffer);
-    swap(tmp_str);
-
-    if (buffer[b_str_size - 2] == '\n')
-    {
-      break;
-    }
-  }
-  while(1);
-
-  tmp_str.clear();
-
-  return true;
-}/*}}}*/
-
 void string_s::setf(const char *a_format,...)
 {/*{{{*/
   clear();
@@ -325,6 +279,7 @@ unsigned string_s::get_print_size_between(unsigned f_idx,unsigned s_idx)
   unsigned utf32_data[char_cnt];
 
   int utf32_cnt = utf8_to_utf32(data + f_idx,utf32_data,char_cnt);
+  if (utf32_cnt < 0) return 0;
 
   unsigned *c_ptr = utf32_data;
   unsigned *c_ptr_end = c_ptr + utf32_cnt;

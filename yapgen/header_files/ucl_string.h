@@ -135,12 +135,6 @@ struct string_s
   inline unsigned print();
 
   /*!
-   * \brief load string from given stream
-   * \param a_stream - stream from which is string loaded
-   */
-  bool read_line_from_stream(FILE *a_stream);
-
-  /*!
    * \brief load string from text file
    * \param a_file - name of file containing string text
    * \return true if string is successfully loaded
@@ -230,7 +224,6 @@ inline void string_s::create(unsigned a_length)
 {/*{{{*/
   clear();
   if (a_length == 0) return;
-
 
   data = (char *)cmalloc((a_length + 1)*sizeof(char));
 
