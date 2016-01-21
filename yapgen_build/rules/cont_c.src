@@ -1,0 +1,31 @@
+@begin
+   include "header_name.h"
+
+   array<int> bi_array_s;
+
+   define ui_array_s dynamic flushable
+
+   struct
+   <
+   unsigned:ui_first
+   pointer:ptr_second
+   >
+
+   options ( no_init no_clear no_swap no_copy )
+   options ( strict_dynamic )
+
+   additions {
+      /*!
+       * \brief return string desribing ionode_output identifier object
+       */
+      inline void ion_oid_get_info_string(string_s &string);
+   }
+
+   test_s;
+
+   inlines bi_array_s
+   inlines test_s
+
+   methods bi_array_s
+   methods test_s
+@end
