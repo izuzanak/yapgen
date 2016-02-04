@@ -54,7 +54,3 @@
 #echo "cont.rules" 1>&2
 #./yapgen --parser_descr rules/cont.rules --source rules/cont.src
 
-# - cont_c -
-#echo "cont_c.rules" 1>&2
-#./yapgen --parser_descr rules/cont_c.rules --source rules/cont_c.src
-

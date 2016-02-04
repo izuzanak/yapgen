@@ -8,29 +8,24 @@ terminals:
    include {"include"}
    inlines {"inlines"}
    methods {"methods"}
-   additions {"additions"}
    define {"define"}
+   options {"options"}
+   additions {"additions"}
 
    basic {"basic"}
    static {"static"}
    dynamic {"dynamic"}
    flushable {"flushable"}
 
-   not_generate {"not_generate:"}
-   init {"init"}
-   clear {"clear"}
-   swap {"swap"}
-   operator_equal {"operator="}
-
-   options {"options:"}
-   strict_dynamic {"strict_dynamic"}
-
    str {'"'.!'"'*.'"'}
    additions_body {'{'.!'\}'*.'\}'}
    id {('_'+l).('_'+l+d)*}
 
-   ps {'<'}
-   pe {'>'}
+   ls_br {'<'}
+   rs_br {'>'}
+
+   lr_br {'('}
+   rr_br {')'}
 
    colon {':'}
    semicolon {';'}
@@ -49,10 +44,7 @@ nonterminals:
    <attr>
    <element_list>
    <element>
-   <ng_list>
-   <ng_item>
    <option_list>
-   <option>
 
 rules:
    $0
@@ -98,7 +90,7 @@ rules:
    <attr_list> -> <attr> ->> {} 
 
    $16
-   <attr> -> ps <element_list> pe ->> {}
+   <attr> -> ls_br <element_list> rs_br ->> {}
 
    $17
    <element_list> -> <element_list> <element> ->> {}
@@ -111,36 +103,16 @@ rules:
    <element> -> id colon id ->> {print("type and name: "..rule_body(0)..":"..rule_body(2))} 
 
    $21
-   <attr> -> not_generate <ng_list> ->> {}
-
+   <attr> -> options <option_list> rr_br ->> {}
+   
    $22
-   <ng_list> -> <ng_list> <ng_item> ->> {}
+   <option_list> -> <option_list> id  ->> {print("option: "..rule_body(1))}
    $23
-   <ng_list> -> <ng_item> ->> {}
+   <option_list> -> lr_br ->> {}
 
    $24
-   <ng_item> -> init ->> {print("not_generate_init")}
-   $25
-   <ng_item> -> clear ->> {print("not_generate_clear")}
-   $26
-   <ng_item> -> swap ->> {print("not_generate_swap")}
-   $27
-   <ng_item> -> operator_equal ->> {print("not_generate_operator=")}
-
-   $28
-   <attr> -> options <option_list> ->> {}
-   
-   $29
-   <option_list> -> <option_list> <option> ->> {}
-   $30
-   <option_list> -> <option> ->> {}
-   
-   $31
-   <option> -> strict_dynamic ->> {print("option_strict_dynamic")}
-
-   $32
    <attr> -> additions additions_body ->> {print("additions: "..rule_body(1))}
 
-   $33
+   $25
    <attr> -> id ->> {print("name: "..rule_body(0))}
 

@@ -11,8 +11,8 @@
    pointer:ptr_second
    >
 
-   not_generate: init clear swap operator=
-   options: strict_dynamic
+   options ( no_init no_clear no_swap no_copy )
+   options ( strict_dynamic )
 
    additions {
       /*!
