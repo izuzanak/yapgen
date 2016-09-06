@@ -43,6 +43,9 @@ namespace First->Second->Third
         {
         }
 
+        a = 1 ? 1 : 0;
+        0 and (0 and 0 or 0) or 0 and 1;
+
         value = 10;
         ("result: %s" % $(value + 10)).print();
         ("arr: %s" % $arr).print();
