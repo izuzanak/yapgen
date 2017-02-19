@@ -39,6 +39,18 @@ namespace First->Second->Third
           ("set %s contain value 2\n" % $set).print();
         }
 
+        :(a) return 10;.call([100]);
+        x = :(a) return 10*a;;
+        x = :(a) { return 10; };
+        x = :(a,b) {
+          res = 0;
+          while (a > b)
+          {
+            res += a;
+            ++a;
+          }
+        };
+
         for (val <- new Range(0,100,10))
         {
         }
