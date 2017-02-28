@@ -4,6 +4,10 @@
 #echo "uclang_parser.rules" 1>&2
 ./yapgen --parser_descr rules/uclang_parser.rules --source rules/uclang_parser.src
 
+# - spawner -
+#echo "spawner.rules" 1>&2
+#./yapgen --parser_descr rules/spawner.rules --source rules/spawner.src
+
 # - docu_comment -
 #echo "docu_comment.rules" 1>&2
 #./yapgen --parser_descr rules/docu_comment.rules --source rules/docu_comment.src
