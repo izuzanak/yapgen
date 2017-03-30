@@ -39,6 +39,7 @@ namespace First->Second->Third
           ("set %s contain value 2\n" % $set).print();
         }
 
+        :() return 10;.call([]);
         :(a) return 10;.call([100]);
         x = :(a) return 10*a;;
         x = :(a) { return 10; };
