@@ -5,6 +5,41 @@ include "parser_code.h"
 
 // - basic constants and definitions -
 
+#define MPAR(PRM,PRM1) PRM,PRM1
+
+#define PUSH_CODE(CODE) \
+  {/*{{{*/\
+    char *string = (char *)CODE;\
+    cc_source.append(strlen(string),string);\
+  }/*}}}*/
+
+#define PUSH_FORMAT_CODE(CODE,PARAM) \
+  {/*{{{*/\
+    if ((chars_writed = snprintf(buffer,buffer_size,CODE,PARAM)) > buffer_size) {\
+      cassert(0);\
+    }\
+    cc_source.append(chars_writed,buffer);\
+  }/*}}}*/
+
+#define SUB_FORMAT(FORMAT,PARAM) \
+  {/*{{{*/\
+    if ((chars_writed = snprintf(sub_buffer,sub_buffer_size,FORMAT,PARAM)) > sub_buffer_size) {\
+      cassert(0);\
+    }\
+  }/*}}}*/
+
+#define PUSH_SPACES(SPACE_CNT) \
+  {/*{{{*/\
+    register unsigned space_cnt = SPACE_CNT;\
+    if (space_cnt != 0) {\
+      unsigned s_idx = 0;\
+      \
+      do {\
+        cc_source.push(' ');\
+      } while(++s_idx < space_cnt);\
+    }\
+  }/*}}}*/
+
 /*
  * terminals read from file describing rules
  */
@@ -4465,6 +4500,16 @@ bool parser_s::create_cc_source(bc_array_s &cc_source)
 
 @begin
 include "cc_creator.h"
+@end
+
+  return true;
+}/*}}}*/
+
+bool parser_s::create_js_source(bc_array_s &cc_source)
+{/*{{{*/
+
+@begin
+include "js_creator.h"
 @end
 
   return true;

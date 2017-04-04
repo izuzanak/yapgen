@@ -1,42 +1,7 @@
 
 /*
- * code of function generating parser in language c
+ * code of function generating parser in language C
  */
-
-#define MPAR(PRM,PRM1) PRM,PRM1
-
-#define PUSH_CODE(CODE) \
-  {\
-    char *string = (char *)CODE;\
-    cc_source.append(strlen(string),string);\
-  }
-
-#define PUSH_FORMAT_CODE(CODE,PARAM) \
-  {\
-    if ((chars_writed = snprintf(buffer,buffer_size,CODE,PARAM)) > buffer_size) {\
-      cassert(0);\
-    }\
-    cc_source.append(chars_writed,buffer);\
-  }
-
-#define SUB_FORMAT(FORMAT,PARAM) \
-  {\
-    if ((chars_writed = snprintf(sub_buffer,sub_buffer_size,FORMAT,PARAM)) > sub_buffer_size) {\
-      cassert(0);\
-    }\
-  }
-
-#define PUSH_SPACES(SPACE_CNT) \
-  {\
-    register unsigned space_cnt = SPACE_CNT;\
-    if (space_cnt != 0) {\
-      unsigned s_idx = 0;\
-      \
-      do {\
-        cc_source.push(' ');\
-      } while(++s_idx < space_cnt);\
-    }\
-  }
 
 cc_source.clear();
 
@@ -127,7 +92,8 @@ PUSH_FORMAT_CODE(
 "const unsigned c_terminal_plus_nonterminal_cnt = %d;\n"
 "const unsigned lalr_state_cnt = %d;\n"
 "\n"
-"const unsigned lalr_table[lalr_state_cnt*c_terminal_plus_nonterminal_cnt] = {\n"
+"const unsigned lalr_table[lalr_state_cnt*c_terminal_plus_nonterminal_cnt] =\n"
+"{/*{{{*/\n"
   ,MPAR(MPAR(c_lalr_table_reduce_base,lalr_table.x_size),lalr_table.y_size));
 
 {
@@ -182,7 +148,7 @@ PUSH_FORMAT_CODE(
 }
 
 PUSH_CODE(
-"};\n"
+"};/*}}}*/\n"
 "\n"
 );
 
@@ -191,14 +157,14 @@ PUSH_CODE(
 "const unsigned c_lalr_stack_size_add = 64;\n"
 "\n"
 "struct lalr_stack_element_s\n"
-"{\n"
+"{/*{{{*/\n"
 "   unsigned lalr_state;\n"
 "   unsigned terminal_start;\n"
 "   unsigned terminal_end;\n"
-"};\n"
+"};/*}}}*/\n"
 "\n"
 "struct lalr_stack_s\n"
-"{\n"
+"{/*{{{*/\n"
 "   unsigned size;\n"
 "   unsigned used;\n"
 "   lalr_stack_element_s *data;\n"
@@ -209,26 +175,26 @@ PUSH_CODE(
 "   inline void push(unsigned a_lalr_state);\n"
 "   inline void push(unsigned a_lalr_state,unsigned a_terminal_start,unsigned a_terminal_end);\n"
 "   inline lalr_stack_element_s &last();\n"
-"};\n"
+"};/*}}}*/\n"
 "\n"
 "inline void lalr_stack_s::init()\n"
-"{\n"
+"{/*{{{*/\n"
 "   size = 0;\n"
 "   used = 0;\n"
 "   data = NULL;\n"
-"}\n"
+"}/*}}}*/\n"
 "\n"
 "inline void lalr_stack_s::clear()\n"
-"{\n"
+"{/*{{{*/\n"
 "   if (data != NULL) {\n"
 "      cfree(data);\n"
 "   }\n"
 "\n"
 "   init();\n"
-"}\n"
+"}/*}}}*/\n"
 "\n"
 "void lalr_stack_s::copy_resize(unsigned a_size)\n"
-"{\n"
+"{/*{{{*/\n"
 "   assert(a_size >= used);\n"
 "\n"
 "   lalr_stack_element_s *n_data;\n"
@@ -250,10 +216,10 @@ PUSH_CODE(
 "\n"
 "   data = n_data;\n"
 "   size = a_size;\n"
-"}\n"
+"}/*}}}*/\n"
 "\n"
 "inline void lalr_stack_s::push(unsigned a_lalr_state)\n"
-"{\n"
+"{/*{{{*/\n"
 "   if (used >= size) {\n"
 "      copy_resize(size + c_lalr_stack_size_add);\n"
 "   }\n"
@@ -261,10 +227,10 @@ PUSH_CODE(
 "   lalr_stack_element_s &target = data[used++];\n"
 "\n"
 "   target.lalr_state = a_lalr_state;\n"
-"}\n"
+"}/*}}}*/\n"
 "\n"
 "inline void lalr_stack_s::push(unsigned a_lalr_state,unsigned a_terminal_start,unsigned a_terminal_end)\n"
-"{\n"
+"{/*{{{*/\n"
 "   if (used >= size) {\n"
 "      copy_resize(size + c_lalr_stack_size_add);\n"
 "   }\n"
@@ -274,13 +240,13 @@ PUSH_CODE(
 "   target.lalr_state = a_lalr_state;\n"
 "   target.terminal_start = a_terminal_start;\n"
 "   target.terminal_end = a_terminal_end;\n"
-"}\n"
+"}/*}}}*/\n"
 "\n"
 "inline lalr_stack_element_s &lalr_stack_s::last()\n"
-"{\n"
+"{/*{{{*/\n"
 "   debug_assert(used != 0);\n"
 "   return data[used - 1];\n"
-"}\n"
+"}/*}}}*/\n"
 "\n"
 );
 
@@ -297,11 +263,11 @@ PUSH_CODE(
 PUSH_CODE(
 "// - recognize next terminal - \n"
 "unsigned recognize_terminal(unsigned &input_idx)\n"
-"{\n"
+"{/*{{{*/\n"
 );
 
-#define PROCESS_STATE(STATE_IDX) \
-  {\
+#define CC_PROCESS_STATE(STATE_IDX) \
+  {/*{{{*/\
     fa_state_s &state = states[STATE_IDX];\
     ui_array_s &state_moves = final_automata.state_moves[STATE_IDX];\
     \
@@ -385,7 +351,7 @@ PUSH_CODE(
                 "\n"\
                );\
     }\
-  }
+  }/*}}}*/
 
 PUSH_CODE(
 "#define GET_NEXT_CHAR() \\\n"
@@ -434,7 +400,7 @@ PUSH_CODE(
 "\n"
 "fa_start_label:\n"
   );
-  PROCESS_STATE(0);
+  CC_PROCESS_STATE(0);
 
   unsigned s_idx = 1;
   do
@@ -455,19 +421,19 @@ PUSH_CODE(
 "   CLOSE_CHAR(c_idx_not_exist);\n"
       );
     }
-    PROCESS_STATE(s_idx);
+    CC_PROCESS_STATE(s_idx);
   }
   while(++s_idx < states.used);
 }
 PUSH_CODE(
-"}\n"
+"}/*}}}*/\n"
 "\n"
 );
 
 PUSH_CODE(
 "// - parse source string -\n"
 "void parser_parse_source_string()\n"
-"{\n"
+"{/*{{{*/\n"
 "   lalr_stack.used = 0;\n"
 "   lalr_stack.push(0);\n"
 "\n"
@@ -548,14 +514,14 @@ PUSH_CODE(
 "   } while(1);\n"
 "\n"
 "   lalr_stack.clear();\n"
-"}\n"
+"}/*}}}*/\n"
 "\n"
 );
 
 PUSH_CODE(
 "// - program entry function -\n"
 "int main(int argc,char **argv)\n"
-"{\n"
+"{/*{{{*/\n"
 "   // - initialize global variables -\n"
 "   source_string_length = 0;\n"
 "   source_string = NULL;\n"
@@ -589,7 +555,7 @@ PUSH_CODE(
 "   lalr_stack.clear();\n"
 "\n"
 "   return 0;\n"
-"}\n"
+"}/*}}}*/\n"
 "\n"
 );
 

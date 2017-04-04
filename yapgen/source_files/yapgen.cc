@@ -3,17 +3,22 @@
 include "yapgen.h"
 @end
 
-const unsigned arg_option_cnt = 3;
+const unsigned arg_option_cnt = 4;
 const char *arg_option_names[arg_option_cnt] =
 {
    "--parser_descr",
    "--parser_save_cc",
+   "--parser_save_js",
    "--source"
 };
 
-const unsigned c_arg_parser_descr = 0;
-const unsigned c_arg_parser_save_cc = 1;
-const unsigned c_arg_source = 2;
+enum
+{
+  c_arg_parser_descr = 0,
+  c_arg_parser_save_cc,
+  c_arg_parser_save_js,
+  c_arg_source,
+};
 
 bool parse_arguments(int argc,char **argv,unsigned *arg_file_idxs)
 {/*{{{*/
@@ -58,7 +63,8 @@ int main(int argc,char **argv)
     fprintf(stderr,
         "main: bad arguments format\n"
         "arguments: --parser_descr <file>   - create parser from description file\n"
-        "           --parser_save_cc <file> - save parser source in c language to file\n"
+        "           --parser_save_cc <file> - save parser source in language C to file\n"
+        "           --parser_save_js <file> - save parser source in JavaScript to file\n"
         "           --source <file>         - load and parse source file\n"
         );
     exit(0);
@@ -124,6 +130,39 @@ int main(int argc,char **argv)
       }
 
       cc_source.clear();
+    }
+  }
+
+  // -- generate parser code in JavaScript --
+  if (arg_file_idxs[c_arg_parser_save_js])
+  {
+    if (!parser_exist)
+    {
+      fprintf(stderr,"main: --parser_save_js: Parser doesnt exist\n");
+    }
+    else
+    {
+      bc_array_s js_source;
+      js_source.init();
+
+      parser.create_js_source(js_source);
+
+      FILE *f = fopen(argv[arg_file_idxs[c_arg_parser_save_js]],"wb");
+      if (f == NULL)
+      {
+        fprintf(stderr,"main: --parser_save_js: Cannot save parser source to file\n");
+      }
+      else
+      {
+        if (js_source.used != 0)
+        {
+          fwrite(js_source.data,js_source.used,1,f);
+        }
+
+        fclose(f);
+      }
+
+      js_source.clear();
     }
   }
 
