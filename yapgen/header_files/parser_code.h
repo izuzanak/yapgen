@@ -540,6 +540,7 @@ struct
   bool print_error(string_s &rule_string);
   bool create_cc_source(bc_array_s &cc_source);
   bool create_js_source(bc_array_s &cc_source);
+  bool create_rust_source(bc_array_s &cc_source);
 }
 
 parser_s;

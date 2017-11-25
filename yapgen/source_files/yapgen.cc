@@ -3,12 +3,13 @@
 include "yapgen.h"
 @end
 
-const unsigned arg_option_cnt = 4;
+const unsigned arg_option_cnt = 5;
 const char *arg_option_names[arg_option_cnt] =
 {
    "--parser_descr",
    "--parser_save_cc",
    "--parser_save_js",
+   "--parser_save_rust",
    "--source"
 };
 
@@ -17,6 +18,7 @@ enum
   c_arg_parser_descr = 0,
   c_arg_parser_save_cc,
   c_arg_parser_save_js,
+  c_arg_parser_save_rust,
   c_arg_source,
 };
 
@@ -100,71 +102,49 @@ int main(int argc,char **argv)
     }
   }
 
+#define GENERATE_PARSER(LANG) \
+{/*{{{*/\
+  if (arg_file_idxs[c_arg_parser_save_ ## LANG])\
+  {\
+    if (!parser_exist)\
+    {\
+      fprintf(stderr,"main: --parser_save_" # LANG ": Parser doesnt exist\n");\
+    }\
+    else\
+    {\
+      bc_array_s LANG ## _source;\
+      LANG ## _source.init();\
+      \
+      parser.create_ ## LANG ## _source(LANG ## _source);\
+      \
+      FILE *f = fopen(argv[arg_file_idxs[c_arg_parser_save_ ## LANG]],"wb");\
+      if (f == NULL)\
+      {\
+        fprintf(stderr,"main: --parser_save_" # LANG ": Cannot save parser source to file\n");\
+      }\
+      else\
+      {\
+        if (LANG ## _source.used != 0)\
+        {\
+          fwrite(LANG ## _source.data,LANG ## _source.used,1,f);\
+        }\
+        \
+        fclose(f);\
+      }\
+      \
+      LANG ## _source.clear();\
+    }\
+  }\
+}/*}}}*/
+
   // -- generate parser code in c/c++ language --
-  if (arg_file_idxs[c_arg_parser_save_cc])
-  {
-    if (!parser_exist)
-    {
-      fprintf(stderr,"main: --parser_save_cc: Parser doesnt exist\n");
-    }
-    else
-    {
-      bc_array_s cc_source;
-      cc_source.init();
-
-      parser.create_cc_source(cc_source);
-
-      FILE *f = fopen(argv[arg_file_idxs[c_arg_parser_save_cc]],"wb");
-      if (f == NULL)
-      {
-        fprintf(stderr,"main: --parser_save_cc: Cannot save parser source to file\n");
-      }
-      else
-      {
-        if (cc_source.used != 0)
-        {
-          fwrite(cc_source.data,cc_source.used,1,f);
-        }
-
-        fclose(f);
-      }
-
-      cc_source.clear();
-    }
-  }
+  GENERATE_PARSER(cc);
 
   // -- generate parser code in JavaScript --
-  if (arg_file_idxs[c_arg_parser_save_js])
-  {
-    if (!parser_exist)
-    {
-      fprintf(stderr,"main: --parser_save_js: Parser doesnt exist\n");
-    }
-    else
-    {
-      bc_array_s js_source;
-      js_source.init();
+  GENERATE_PARSER(js);
 
-      parser.create_js_source(js_source);
-
-      FILE *f = fopen(argv[arg_file_idxs[c_arg_parser_save_js]],"wb");
-      if (f == NULL)
-      {
-        fprintf(stderr,"main: --parser_save_js: Cannot save parser source to file\n");
-      }
-      else
-      {
-        if (js_source.used != 0)
-        {
-          fwrite(js_source.data,js_source.used,1,f);
-        }
-
-        fclose(f);
-      }
-
-      js_source.clear();
-    }
-  }
+  // -- generate parser code in Rust --
+  GENERATE_PARSER(rust);
 
   // -- execute source code --
   if (arg_file_idxs[c_arg_source])
