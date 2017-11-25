@@ -322,11 +322,21 @@ PUSH_CODE(
                              ,MPAR(e_idx,target_state));\
           }\
           else {\
-            PUSH_FORMAT_CODE(\
-                             "   if (in_char >= %d && in_char < %d)\n"\
-                             "      goto state_%d_label;\n"\
-                             "\n"\
-                             ,MPAR(MPAR(b_idx,e_idx),target_state));\
+            if (e_idx < 256) {\
+              PUSH_FORMAT_CODE(\
+                               "   if (in_char >= %d && in_char < %d)\n"\
+                               "      goto state_%d_label;\n"\
+                               "\n"\
+                               ,MPAR(MPAR(b_idx,e_idx),target_state));\
+            }\
+            else {\
+              cassert(e_idx == 256);\
+              PUSH_FORMAT_CODE(\
+                               "   if (in_char >= %d)\n"\
+                               "      goto state_%d_label;\n"\
+                               "\n"\
+                               ,MPAR(b_idx,target_state));\
+            }\
           }\
         }\
         else {\
@@ -373,7 +383,7 @@ PUSH_CODE(
 "   input_idx++;\\\n"
 "}\n"
 "\n"
-"   unsigned short in_char;\n"
+"   unsigned char in_char;\n"
 "   goto fa_start_label;\n"
 "\n"
 );
