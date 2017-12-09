@@ -190,6 +190,7 @@ PUSH_CODE(
 "      self.start = true;\n"
 "      self.state_0()\n"
 "    }\n"
+"\n"
 );
 
 #define RUST_PROCESS_STATE(STATE_IDX) \
