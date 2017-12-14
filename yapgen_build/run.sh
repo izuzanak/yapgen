@@ -36,6 +36,10 @@
 #echo "string_format.rules" 1>&2
 #./yapgen --parser_descr rules/string_format.rules --source rules/string_format.src
 
+# - uic parser -
+#echo "uic.rules" 1>&2
+#./yapgen --parser_descr rules/uic.rules --source rules/uic.src
+
 # - demo_exp -
 #echo "demo_exp.rules" 1>&2
 #./yapgen --parser_descr rules/demo_exp.rules --source rules/demo_exp.src
