@@ -187,8 +187,8 @@ PUSH_CODE(
 "    }\n"
 "\n"
 "    fn recognize_terminal(&mut self) -> u32 {\n"
-"      self.start = true;\n"
-"      self.state_0()\n"
+"        self.start = true;\n"
+"        self.state_0()\n"
 "    }\n"
 "\n"
 );

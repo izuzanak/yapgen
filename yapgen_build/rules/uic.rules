@@ -394,7 +394,7 @@ rules:
 
   <program> -> <term_list> ->> {}
 
-  <term_list> -> <term> <term_list> ->> {}
+  <term_list> -> <term_list> <term> ->> {}
   <term_list> -> <term> ->> {}
 
   <term> -> uic_num ->> {print("uic_num: "..rule_body(0));}
