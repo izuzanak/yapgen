@@ -64,10 +64,11 @@ int main(int argc,char **argv)
   if (!parse_arguments(argc,argv,arg_file_idxs)) {
     fprintf(stderr,
         "main: bad arguments format\n"
-        "arguments: --parser_descr <file>   - create parser from description file\n"
-        "           --parser_save_cc <file> - save parser source in language C to file\n"
-        "           --parser_save_js <file> - save parser source in JavaScript to file\n"
-        "           --source <file>         - load and parse source file\n"
+        "arguments: --parser_descr <file>     - create parser from description file\n"
+        "           --parser_save_cc <file>   - save parser source in language C to file\n"
+        "           --parser_save_js <file>   - save parser source in JavaScript to file\n"
+        "           --parser_save_rust <file> - save parser source in Rust to file\n"
+        "           --source <file>           - load and parse source file\n"
         );
     exit(0);
   }
