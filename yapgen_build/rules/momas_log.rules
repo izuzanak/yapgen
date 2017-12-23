@@ -1,0 +1,124 @@
+#vim: set syntax=rules:
+
+init_code:
+{
+  tabs = {\};
+}
+
+terminals:
+   string {'\''.!'\''*.'\''}
+   integer {('-'+e).('0'+(<19>.d*))}
+   float {('-'+e).('0'+(<19>.d*)).(('.'.d*)+e).(([eE].([+-]+e).d.d*)+e)}
+   date_time {d.d.d.d.'-'.d.d.'-'.d.d.'/'.d.d.':'.d.d.':'.d.d}
+
+   train_nb {(d+l).(d+l)*.'/'.d.d*}
+   na {"NA"}
+
+   unknown {"unknown"}
+   ok {"ok"}
+   comerr {"comerr"}
+   failure {"failure"}
+
+   error {"error"}
+   standalone {"standalone"}
+   master {"master"}
+   slave {"slave"}
+   slave_unconf {"slave_unconf"}
+
+   active {"active"}
+   prepared {"prepared"}
+
+   lr_br {'('}
+   rr_br {')'}
+
+   colon {':'}
+
+   unit_eq {"unit="}
+   time_eq {"time="}
+   lat_eq {"lat="}
+   lon_eq {"lon="}
+   speed_eq {"speed="}
+   course_eq {"course="}
+   trainNb_eq {"trainNb="}
+   nadiSz_eq {"nadiSz="}
+   veh_eq {"veh="}
+   pis_eq {"pis="}
+   pisCtrl_eq {"pisCtrl="}
+   nb_devs_eq {"nb_devs="}
+   name_eq {"name="}
+   type_eq {"type="}
+   loc_eq {"loc="}
+   stat_eq {"stat="}
+   verName_eq {"verName="}
+   ver_eq {"ver="}
+   usage_eq {"usage="}
+
+   _SKIP_ {w.w*}
+   _END_ {'\0'}
+
+nonterminals:
+  <start>
+  <end_check>
+  <program>
+  <term_list>
+  <term>
+
+rules:
+  <start> -> <end_check> ->> {}
+
+  $ !!! FIXME comment these two rules before production
+  <end_check> -> <program> _END_ ->> {}
+  <end_check> -> _END_ ->> {}
+
+  <program> -> <term_list> ->> {}
+
+  <term_list> -> <term_list> <term> ->> {}
+  <term_list> -> <term> ->> {}
+
+  <term> -> string ->> {print("string: "..rule_body(0));}
+  <term> -> integer ->> {print("integer: "..rule_body(0));}
+  <term> -> float ->> {print("float: "..rule_body(0));}
+  <term> -> date_time ->> {print("date_time: "..rule_body(0));}
+
+  <term> -> train_nb ->> {print("train_nb: "..rule_body(0));}
+  <term> -> na ->> {print("na: "..rule_body(0));}
+
+  <term> -> unknown ->> {print("unknown: "..rule_body(0));}
+  <term> -> ok ->> {print("ok: "..rule_body(0));}
+  <term> -> comerr ->> {print("comerr: "..rule_body(0));}
+  <term> -> failure ->> {print("failure: "..rule_body(0));}
+
+  <term> -> error ->> {print("error: "..rule_body(0));}
+  <term> -> standalone ->> {print("standalone: "..rule_body(0));}
+  <term> -> master ->> {print("master: "..rule_body(0));}
+  <term> -> slave ->> {print("slave: "..rule_body(0));}
+  <term> -> slave_unconf ->> {print("slave_unconf: "..rule_body(0));}
+
+  <term> -> active ->> {print("active: "..rule_body(0));}
+  <term> -> prepared ->> {print("prepared: "..rule_body(0));}
+
+  <term> -> lr_br ->> {print("lr_br: "..rule_body(0));}
+  <term> -> rr_br ->> {print("rr_br: "..rule_body(0));}
+
+  <term> -> colon ->> {print("colon: "..rule_body(0));}
+
+  <term> -> unit_eq ->> {print("unit_eq: "..rule_body(0));}
+  <term> -> time_eq ->> {print("time_eq: "..rule_body(0));}
+  <term> -> lat_eq ->> {print("lat_eq: "..rule_body(0));}
+  <term> -> lon_eq ->> {print("lon_eq: "..rule_body(0));}
+  <term> -> speed_eq ->> {print("speed_eq: "..rule_body(0));}
+  <term> -> course_eq ->> {print("course_eq: "..rule_body(0));}
+  <term> -> trainNb_eq ->> {print("trainNb_eq: "..rule_body(0));}
+  <term> -> nadiSz_eq ->> {print("nadiSz_eq: "..rule_body(0));}
+  <term> -> veh_eq ->> {print("veh_eq: "..rule_body(0));}
+  <term> -> pis_eq ->> {print("pis_eq: "..rule_body(0));}
+  <term> -> pisCtrl_eq ->> {print("pisCtrl_eq: "..rule_body(0));}
+  <term> -> nb_devs_eq ->> {print("nb_devs_eq: "..rule_body(0));}
+  <term> -> name_eq ->> {print("name_eq: "..rule_body(0));}
+  <term> -> type_eq ->> {print("type_eq: "..rule_body(0));}
+  <term> -> loc_eq ->> {print("loc_eq: "..rule_body(0));}
+  <term> -> stat_eq ->> {print("stat_eq: "..rule_body(0));}
+  <term> -> verName_eq ->> {print("verName_eq: "..rule_body(0));}
+  <term> -> ver_eq ->> {print("ver_eq: "..rule_body(0));}
+  <term> -> usage_eq ->> {print("usage_eq: "..rule_body(0));}
+
