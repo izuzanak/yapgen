@@ -1,0 +1,16 @@
+type        
+==
+!=
+<
+>
+<=
+>=
+length ==
+length !=
+length <
+length >
+length <=
+length >=
+ref
+regex
+items

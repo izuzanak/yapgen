@@ -66,7 +66,7 @@ rules:
 
    $6
    <def> -> define id <modifier_list> ->> {print("define: "..rule_body(1))}
-   
+
    $7
    <modifier_list> -> <modifier_list> <modifier> ->> {}
    $8
@@ -87,7 +87,7 @@ rules:
    $14
    <attr_list> -> <attr_list> <attr> ->> {}
    $15
-   <attr_list> -> <attr> ->> {} 
+   <attr_list> -> <attr> ->> {}
 
    $16
    <attr> -> ls_br <element_list> rs_br ->> {}
@@ -95,16 +95,16 @@ rules:
    $17
    <element_list> -> <element_list> <element> ->> {}
    $18
-   <element_list> -> <element> ->> {} 
+   <element_list> -> <element> ->> {}
 
    $19
-   <element> -> id ->> {print("type: "..rule_body(0))} 
+   <element> -> id ->> {print("type: "..rule_body(0))}
    $20
-   <element> -> id colon id ->> {print("type and name: "..rule_body(0)..":"..rule_body(2))} 
+   <element> -> id colon id ->> {print("type and name: "..rule_body(0)..":"..rule_body(2))}
 
    $21
    <attr> -> options <option_list> rr_br ->> {}
-   
+
    $22
    <option_list> -> <option_list> id  ->> {print("option: "..rule_body(1))}
    $23

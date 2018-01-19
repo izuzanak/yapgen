@@ -40,6 +40,18 @@
 #echo "string_format.rules" 1>&2
 #./yapgen --parser_descr rules/string_format.rules --source rules/string_format.src
 
+# - validator -
+#echo "validator.rules" 1>&2
+#./yapgen --parser_descr rules/validator.rules --source rules/validator.src
+
+# - gcg_msg_head -
+#echo "gcg_msg_head.rules" 1>&2
+#./yapgen --parser_descr rules/gcg_msg_head.rules --source rules/gcg_msg_head.src
+
+# - gcg_msg_tail -
+#echo "gcg_msg_tail.rules" 1>&2
+#./yapgen --parser_descr rules/gcg_msg_tail.rules --source rules/gcg_msg_tail.src
+
 # - uic parser -
 #echo "uic.rules" 1>&2
 #./yapgen --parser_descr rules/uic.rules --source rules/uic.src
