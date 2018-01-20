@@ -20,6 +20,7 @@ terminals:
   ref {"ref"}
   regex {"regex"}
   items {"items"}
+  all_items {"all-items"}
 
   $ !!! FIXME comment this terminal before production
    _SKIP_ {w.w*}
@@ -61,4 +62,5 @@ rules:
   <term> -> ref ->> {print("ref");}
   <term> -> regex ->> {print("regex");}
   <term> -> items ->> {print("items");}
+  <term> -> all_items ->> {print("all_items");}
 
