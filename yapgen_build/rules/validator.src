@@ -13,5 +13,8 @@ length <=
 length >=
 ref
 regex
+test
 items
 all-items
+all-keys
+in
