@@ -1,6 +1,9 @@
 
 {
   "user" : {
+    # Fictional series character
+    // Fictional series character
+    /* Fictional series character */
     "name" : "Frank Sobotka",
     "age"  : 56,
     "sex"  : "male"
