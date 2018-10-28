@@ -4525,6 +4525,16 @@ include "rust_creator.h"
   return true;
 }/*}}}*/
 
+bool parser_s::create_awk_source(bc_array_s &cc_source)
+{/*{{{*/
+
+@begin
+include "awk_creator.h"
+@end
+
+  return true;
+}/*}}}*/
+
 /*
  * global functions
  */

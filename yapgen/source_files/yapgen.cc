@@ -3,13 +3,14 @@
 include "yapgen.h"
 @end
 
-const unsigned arg_option_cnt = 5;
+const unsigned arg_option_cnt = 6;
 const char *arg_option_names[arg_option_cnt] =
 {
    "--parser_descr",
    "--parser_save_cc",
    "--parser_save_js",
    "--parser_save_rust",
+   "--parser_save_awk",
    "--source"
 };
 
@@ -19,6 +20,7 @@ enum
   c_arg_parser_save_cc,
   c_arg_parser_save_js,
   c_arg_parser_save_rust,
+  c_arg_parser_save_awk,
   c_arg_source,
 };
 
@@ -68,6 +70,7 @@ int main(int argc,char **argv)
         "           --parser_save_cc <file>   - save parser source in language C to file\n"
         "           --parser_save_js <file>   - save parser source in JavaScript to file\n"
         "           --parser_save_rust <file> - save parser source in Rust to file\n"
+        "           --parser_save_awk <file>  - save parser source in AWK to file\n"
         "           --source <file>           - load and parse source file\n"
         );
     exit(0);
@@ -146,6 +149,9 @@ int main(int argc,char **argv)
 
   // -- generate parser code in Rust --
   GENERATE_PARSER(rust);
+
+  // -- generate parser code in AWK --
+  GENERATE_PARSER(awk);
 
   // -- execute source code --
   if (arg_file_idxs[c_arg_source])
