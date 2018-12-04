@@ -64,6 +64,8 @@ namespace First->Second->Third
         value = 10;
         ("result: %s" % $(value + 10)).print();
         ("arr: %s" % $arr).print();
+
+        test = 0b10 & 0B01;
       }
     }
   }
