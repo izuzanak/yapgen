@@ -5,11 +5,11 @@
 
 cc_source.clear();
 
-const unsigned buffer_size = 2048;
+const int buffer_size = 2048;
 char buffer[buffer_size];
-const unsigned sub_buffer_size = 256;
+const int sub_buffer_size = 256;
 char sub_buffer[sub_buffer_size];
-unsigned chars_writed;
+int chars_writed;
 
 PUSH_CODE(
 "\n"
@@ -97,15 +97,13 @@ PUSH_FORMAT_CODE(
       }
       else if (row_ptr[col_idx] < c_lalr_table_reduce_base)
       {
-        SUB_FORMAT("%d",row_ptr[col_idx]);
-        PUSH_SPACES(4 - chars_writed);
-        PUSH_FORMAT_CODE(" SHIFT(%s),",sub_buffer);
+        SUB_FORMAT("SHIFT(%d)",row_ptr[col_idx]);
+        PUSH_FORMAT_CODE("%12s,",sub_buffer);
       }
       else
       {
-        SUB_FORMAT("%d",row_ptr[col_idx] - c_lalr_table_reduce_base);
-        PUSH_SPACES(4 - chars_writed);
-        PUSH_FORMAT_CODE("REDUCE(%s),",sub_buffer);
+        SUB_FORMAT("REDUCE(%d)",row_ptr[col_idx] - c_lalr_table_reduce_base);
+        PUSH_FORMAT_CODE("%12s,",sub_buffer);
       }
     }
     while(++col_idx < terminal_cnt);
@@ -119,9 +117,8 @@ PUSH_FORMAT_CODE(
       }
       else
       {
-        SUB_FORMAT("%d",row_ptr[col_idx]);
-        PUSH_SPACES(4 - chars_writed);
-        PUSH_FORMAT_CODE("  GOTO(%s),",sub_buffer);
+        SUB_FORMAT("GOTO(%d)",row_ptr[col_idx]);
+        PUSH_FORMAT_CODE("%12s,",sub_buffer);
       }
     }
     while(++col_idx < lalr_table.x_size);

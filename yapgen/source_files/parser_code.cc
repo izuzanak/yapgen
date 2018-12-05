@@ -28,18 +28,6 @@ include "parser_code.h"
     }\
   }/*}}}*/
 
-#define PUSH_SPACES(SPACE_CNT) \
-  {/*{{{*/\
-    register unsigned space_cnt = SPACE_CNT;\
-    if (space_cnt != 0) {\
-      unsigned s_idx = 0;\
-      \
-      do {\
-        cc_source.push(' ');\
-      } while(++s_idx < space_cnt);\
-    }\
-  }/*}}}*/
-
 /*
  * terminals read from file describing rules
  */

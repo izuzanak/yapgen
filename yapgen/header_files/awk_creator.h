@@ -5,9 +5,9 @@
 
 cc_source.clear();
 
-const unsigned buffer_size = 2048;
+const int buffer_size = 2048;
 char buffer[buffer_size];
-unsigned chars_writed;
+int chars_writed;
 
 PUSH_CODE(
 "\n"
