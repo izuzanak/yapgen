@@ -3,7 +3,7 @@
 include "yapgen.h"
 @end
 
-const unsigned arg_option_cnt = 6;
+const unsigned arg_option_cnt = 7;
 const char *arg_option_names[arg_option_cnt] =
 {
    "--parser_descr",
@@ -11,6 +11,7 @@ const char *arg_option_names[arg_option_cnt] =
    "--parser_save_js",
    "--parser_save_rust",
    "--parser_save_awk",
+   "--parser_save_php",
    "--source"
 };
 
@@ -21,6 +22,7 @@ enum
   c_arg_parser_save_js,
   c_arg_parser_save_rust,
   c_arg_parser_save_awk,
+  c_arg_parser_save_php,
   c_arg_source,
 };
 
@@ -60,7 +62,7 @@ bool parse_arguments(int argc,char **argv,unsigned *arg_file_idxs)
 
 int main(int argc,char **argv)
 {/*{{{*/
-  unsigned arg_file_idxs[6] = {0,0,0,0,0,0};
+  unsigned arg_file_idxs[arg_option_cnt] = {0};
 
   // -- retrieve indexes of input/output files in program arguments --
   if (!parse_arguments(argc,argv,arg_file_idxs)) {
@@ -71,6 +73,7 @@ int main(int argc,char **argv)
         "           --parser_save_js <file>   - save parser source in JavaScript to file\n"
         "           --parser_save_rust <file> - save parser source in Rust to file\n"
         "           --parser_save_awk <file>  - save parser source in AWK to file\n"
+        "           --parser_save_php <file>  - save parser source in PHP to file\n"
         "           --source <file>           - load and parse source file\n"
         );
     exit(0);
@@ -152,6 +155,9 @@ int main(int argc,char **argv)
 
   // -- generate parser code in AWK --
   GENERATE_PARSER(awk);
+
+  // -- generate parser code in PHP --
+  GENERATE_PARSER(php);
 
   // -- execute source code --
   if (arg_file_idxs[c_arg_source])

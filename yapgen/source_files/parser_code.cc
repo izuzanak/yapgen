@@ -4535,6 +4535,16 @@ include "awk_creator.h"
   return true;
 }/*}}}*/
 
+bool parser_s::create_php_source(bc_array_s &cc_source)
+{/*{{{*/
+
+@begin
+include "php_creator.h"
+@end
+
+  return true;
+}/*}}}*/
+
 /*
  * global functions
  */

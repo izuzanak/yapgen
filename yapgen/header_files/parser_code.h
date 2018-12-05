@@ -542,6 +542,7 @@ struct
   bool create_js_source(bc_array_s &cc_source);
   bool create_rust_source(bc_array_s &cc_source);
   bool create_awk_source(bc_array_s &cc_source);
+  bool create_php_source(bc_array_s &cc_source);
 }
 
 parser_s;
