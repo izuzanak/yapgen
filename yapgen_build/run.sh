@@ -2,7 +2,7 @@
 
 # - uclang_parser -
 #echo "uclang_parser.rules" 1>&2
-./yapgen --parser_descr rules/uclang_parser.rules --source rules/uclang_parser.src
+#./yapgen --parser_descr rules/uclang_parser.rules --source rules/uclang_parser.src
 
 # - momas_log parser-
 #echo "momas_log.rules" 1>&2
@@ -77,4 +77,8 @@
 # - cont -
 #echo "cont.rules" 1>&2
 #./yapgen --parser_descr rules/cont.rules --source rules/cont.src
+
+# - ucl_params_options -
+#echo "ucl_params_options.rules" 1>&2
+./yapgen --parser_descr rules/ucl_params_options.rules --source rules/ucl_params_options.src
 

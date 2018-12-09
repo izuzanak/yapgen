@@ -1,0 +1,45 @@
+#vim: set syntax=rules:
+
+init_code: {}
+
+terminals:
+  method {"method"}
+  class {"class"}
+  static_method {"static_method"}
+  macro {"macro"}
+  ignore {"ignore"}
+  retrieve_integer {"retrieve_integer"}
+  retrieve_float {"retrieve_float"}
+  retrieve_integer_init {"retrieve_integer_init"}
+  retrieve_float_init {"retrieve_float_init"}
+
+  $ !!! FIXME comment this terminal before production
+  _SKIP_ {w.w*}
+  _END_ {'\0'}
+
+nonterminals:
+  <start>
+  <end_check>
+  <type_list>
+  <type>
+
+rules:
+  <start> -> <end_check> ->> {}
+
+  $ !!! FIXME comment these two rules before production
+  <end_check> -> <type_list> _END_ ->> {}
+  <end_check> -> _END_ ->> {}
+
+  <type_list> -> <type> <type_list> ->> {}
+  <type_list> -> <type> ->> {}
+
+  <type> -> method ->> {print("method");}
+  <type> -> class ->> {print("class");}
+  <type> -> static_method ->> {print("static_method");}
+  <type> -> macro ->> {print("macro");}
+  <type> -> ignore ->> {print("ignore");}
+  <type> -> retrieve_integer ->> {print("retrieve_integer");}
+  <type> -> retrieve_float ->> {print("retrieve_float");}
+  <type> -> retrieve_integer_init ->> {print("retrieve_integer_init");}
+  <type> -> retrieve_float_init ->> {print("retrieve_float_init");}
+
