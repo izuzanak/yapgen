@@ -742,7 +742,7 @@ cfg_ref[CFG_MODULE] = project_c(#{{{
   ],
   [ 
   ],
-  opt_build, # GPP options
+  opt_build + "-I/usr/include/lua5.2 ", # GPP options
   opt_link + "-llua5.2 ", # GPP link options
   "", # GPP defines
   [],
