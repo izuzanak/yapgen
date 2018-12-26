@@ -45,6 +45,7 @@
 #define THREAD_LIB THREAD_LIB_PTHREAD
 #define MUTEX_TYPE MUTEX_TYPE_PTHREAD
 #define DYNAMIC_TYPE DYNAMIC_TYPE_POSIX
+#define EXPORT
 #endif
 
 #ifdef ANDROID
@@ -55,6 +56,7 @@
 #define THREAD_LIB THREAD_LIB_PTHREAD
 #define MUTEX_TYPE MUTEX_TYPE_PTHREAD
 #define DYNAMIC_TYPE DYNAMIC_TYPE_POSIX
+#define EXPORT
 #endif
 
 #ifdef NACL
@@ -64,6 +66,7 @@
 #define THREAD_LIB THREAD_LIB_PTHREAD
 #define MUTEX_TYPE MUTEX_TYPE_PTHREAD
 #define DYNAMIC_TYPE DYNAMIC_TYPE_POSIX
+#define EXPORT
 #endif
 
 #ifdef WINDOWS
@@ -73,6 +76,7 @@
 #define THREAD_LIB THREAD_LIB_PTHREAD
 #define MUTEX_TYPE MUTEX_TYPE_WINDOWS
 #define DYNAMIC_TYPE DYNAMIC_TYPE_WINDOWS
+#define EXPORT __declspec(dllexport) 
 #endif
 
 // - system includes -
@@ -206,9 +210,16 @@ const float c_pid2_number = 1.57079632679489661922;
 // - logarithm of two (needed by red-black tree container) -
 const float c_log_of_2 = logf(2.0f);
 
+// - red-black tree descent stack size -
+#ifdef _MSC_VER
+#define RB_TREE_STACK_SIZE(VAR) 32
+#else
+#define RB_TREE_STACK_SIZE(VAR) (VAR).get_descent_stack_size()
+#endif
+
 // - system errors and exceptions -
-enum  /*{{{*/
-{
+enum
+{/*{{{*/
   c_error_OK = 0,
   c_error_UNKNOWN,
 
