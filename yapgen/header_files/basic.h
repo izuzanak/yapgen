@@ -23,6 +23,7 @@
 // - thread library selection -
 #define THREAD_LIB_PTHREAD 1 // - for thread manipulation use pthread library
 #define THREAD_LIB_DSP_TSK 2 // - for thread implementation use DSP Task library
+#define THREAD_LIB_WINDOWS 3 // - for thread implementation use win32 library
 // --
 
 // - mutex library selection -
@@ -73,7 +74,7 @@
 #define _WIN32_WINNT 0x0500
 #define SYSTEM_TYPE SYSTEM_TYPE_WINDOWS
 #define ATOMIC_TYPE ATOMIC_TYPE_WINDOWS
-#define THREAD_LIB THREAD_LIB_PTHREAD
+#define THREAD_LIB THREAD_LIB_WINDOWS
 #define MUTEX_TYPE MUTEX_TYPE_WINDOWS
 #define DYNAMIC_TYPE DYNAMIC_TYPE_WINDOWS
 #define EXPORT __declspec(dllexport) 
@@ -203,9 +204,9 @@ const unsigned INT_BIT = (sizeof(int)*CHAR_BIT);
 const unsigned UINT_BIT = (sizeof(unsigned)*CHAR_BIT);
 
 // - pi number definitions -
-const float c_pi_number = 3.14159265358979323844;
-const float c_2pi_number = 6.28318530717958647688;
-const float c_pid2_number = 1.57079632679489661922;
+const float c_pi_number = 3.14159265358979323844f;
+const float c_2pi_number = 6.28318530717958647688f;
+const float c_pid2_number = 1.57079632679489661922f;
 
 // - logarithm of two (needed by red-black tree container) -
 const float c_log_of_2 = logf(2.0f);

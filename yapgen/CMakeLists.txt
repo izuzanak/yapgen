@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.0.2)
 
 project(yapgen)
 
-find_package(Lua 5.2 REQUIRED)
+find_package(Lua 5.1.5 REQUIRED)
 
 set(PROC_DIR "${CMAKE_CURRENT_BINARY_DIR}/proc_files")
 file(MAKE_DIRECTORY ${PROC_DIR})
@@ -62,6 +62,6 @@ process_component()
 if(${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
   add_definitions(-O2 -DNDEBUG -Wall -Wfatal-errors -Wno-class-memaccess -DLINUX)
 elseif(${CMAKE_SYSTEM_NAME} STREQUAL "Windows")
-  add_definitions("/DWINDOWS /D_CRT_SECURE_NO_WARNINGS")
+  add_definitions("/DWINDOWS /D_CRT_SECURE_NO_WARNINGS /wd4244")
 endif()
 

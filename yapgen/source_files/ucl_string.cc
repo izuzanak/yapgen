@@ -14,6 +14,13 @@ const char c_string_terminating_char = '\0';
  * methods of structure string_s
  */
 
+extern "C" {
+void string_s_set(string_s *a_this,unsigned a_length,const char *a_data)
+{/*{{{*/
+  a_this->set(a_length,a_data);
+}/*}}}*/
+}
+
 void string_s::mult_char_ptr(unsigned a_length,const char *a_data,unsigned a_mult)
 {/*{{{*/
   if (a_length == 0 || a_mult == 0)
@@ -101,7 +108,7 @@ unsigned string_s::utf32_to_utf8(unsigned *a_src,char *a_trg,unsigned a_size)
       t_ptr += 2;
       continue;
     }
-    
+
     if (value <= 0xffff)
     {
       t_ptr[0] = 0xe0 |   value >> 12;
@@ -110,7 +117,7 @@ unsigned string_s::utf32_to_utf8(unsigned *a_src,char *a_trg,unsigned a_size)
       t_ptr += 3;
       continue;
     }
-    
+
     if (value <= 0x1fffff)
     {
       t_ptr[0] = 0xf0 |   value >> 18;
@@ -120,7 +127,7 @@ unsigned string_s::utf32_to_utf8(unsigned *a_src,char *a_trg,unsigned a_size)
       t_ptr += 4;
       continue;
     }
-    
+
     if (value <= 0x3ffffff)
     {
       t_ptr[0] = 0xf8 |   value >> 24;
@@ -131,7 +138,7 @@ unsigned string_s::utf32_to_utf8(unsigned *a_src,char *a_trg,unsigned a_size)
       t_ptr += 5;
       continue;
     }
-    
+
     if (value <= 0x7fffffff)
     {
       t_ptr[0] = 0xfc |   value >> 30;
@@ -143,7 +150,7 @@ unsigned string_s::utf32_to_utf8(unsigned *a_src,char *a_trg,unsigned a_size)
       t_ptr += 6;
       continue;
     }
-    
+
   } while(++s_ptr < s_ptr_end);
 
   return t_ptr - (unsigned char *)a_trg;
@@ -153,118 +160,86 @@ void string_s::setf(const char *a_format,...)
 {/*{{{*/
   clear();
 
-  const int init_size = 256;
-  int alloc_size = init_size;
-
+  const size_t init_size = 128;
   va_list ap;
 
-  do
+  data = (char *)cmalloc(init_size*sizeof(char));
+
+  va_start(ap,a_format);
+  int length = vsnprintf(data,init_size,a_format,ap);
+  va_end(ap);
+
+  size = length + 1;
+
+  if (size > init_size)
   {
-    data = (char *)cmalloc(alloc_size*sizeof(char));
-
-    va_start(ap,a_format);
-
-#if SYSTEM_TYPE == SYSTEM_TYPE_DSP
-    // DSP FIXME
-    int cnt = vsprintf(data,a_format,ap);
-#else
-    int cnt = vsnprintf(data,alloc_size,a_format,ap);
-#endif
-    va_end(ap);
-
-    if (cnt < alloc_size)
-    {
-      size = cnt + 1;
-      break;
-    }
-
     cfree(data);
-    alloc_size <<= 1;
-
-  }
-  while(1);
-}/*}}}*/
-
-void string_s::concf(const char *a_format,...)
-{/*{{{*/
-  const int init_size = 256;
-  int alloc_size = init_size;
-
-  // - creation of formated string -
-  string_s fmt_str;
-  fmt_str.init();
-
-  va_list ap;
-
-  do
-  {
-    fmt_str.data = (char *)cmalloc(alloc_size*sizeof(char));
+    data = (char *)cmalloc(size*sizeof(char));
 
     va_start(ap,a_format);
-
-#if SYSTEM_TYPE == SYSTEM_TYPE_DSP
-    // DSP FIXME
-    int cnt = vsprintf(fmt_str.data,a_format,ap);
-#else
-    int cnt = vsnprintf(fmt_str.data,alloc_size,a_format,ap);
-#endif
+    vsnprintf(data,size,a_format,ap);
     va_end(ap);
-
-    if (cnt < alloc_size)
-    {
-      fmt_str.size = cnt + 1;
-      break;
-    }
-
-    cfree(fmt_str.data);
-    alloc_size <<= 1;
-
   }
-  while(1);
-
-  // - concatenation to result string -
-  string_s res_str;
-  res_str.init();
-  res_str.conc_set(size - 1,data,fmt_str.size - 1,fmt_str.data);
-
-  // - swap this string with result string -
-  swap(res_str);
-
-  // - clear temporary strings -
-  res_str.clear();
-  fmt_str.clear();
 }/*}}}*/
 
 unsigned string_s::get_idx(unsigned a_idx,unsigned a_length,const char *a_data)
 {/*{{{*/
-  if (a_idx >= (size - 1) || a_length >= (size - a_idx))
+  if (a_idx >= (size - 1) || a_length == 0 || a_length >= (size - a_idx))
   {
     return c_idx_not_exist;
   }
 
-  char *s_ptr = data + a_idx;
-  char *s_ptr_end = data + (size - a_length);
-  do
+  // - single character search -
+  if (a_length == 1)
   {
-    char *ss_ptr = s_ptr;
-    char *ss_ptr_end = ss_ptr + a_length;
-    const char *a_ptr = a_data;
-    do
-    {
-      if (*ss_ptr != *a_ptr)
-      {
-        break;
-      }
-
-      if (++a_ptr,++ss_ptr >= ss_ptr_end)
+    char *s_ptr = data + a_idx;
+    char *s_ptr_end = data + (size - a_length);
+    do {
+      if (*s_ptr == *a_data)
       {
         return s_ptr - data;
       }
-    }
-    while(1);
-
+    } while(++s_ptr < s_ptr_end);
   }
-  while(++s_ptr < s_ptr_end);
+
+  // - multiple characters search -
+  else
+  {
+    // - compute search sum -
+    unsigned search_sum = 0;
+    const unsigned char *ss_ptr = (const unsigned char *)a_data;
+    const unsigned char *ss_ptr_end = ss_ptr + a_length;
+    do {
+      search_sum += *ss_ptr;
+    } while(++ss_ptr < ss_ptr_end);
+
+    // - compute text sum -
+    unsigned text_sum = 0;
+    unsigned char *s_ptr = (unsigned char *)data + a_idx;
+    unsigned char *s_ptr_end = s_ptr + a_length;
+    do {
+      text_sum += *s_ptr;
+    } while(++s_ptr < s_ptr_end);
+
+    s_ptr = (unsigned char *)data + a_idx;
+    s_ptr_end = (unsigned char *)data + (size - a_length);
+    do {
+
+      // - if search sum was found -
+      if (text_sum == search_sum)
+      {
+        if (memcmp(a_data,s_ptr,a_length) == 0)
+        {
+          return s_ptr - (unsigned char *)data;
+        }
+      }
+
+      // - update text sum -
+      text_sum -= *s_ptr;
+      text_sum += s_ptr[a_length];
+
+    } while(++s_ptr < s_ptr_end);
+  }
 
   return c_idx_not_exist;
 }/*}}}*/
@@ -273,13 +248,27 @@ unsigned string_s::get_print_size_between(unsigned f_idx,unsigned s_idx)
 {/*{{{*/
   debug_assert(f_idx < size && s_idx < size);
 
-  if (f_idx >= s_idx) return 0;
+  if (f_idx >= s_idx)
+  {
+    return 0;
+  }
 
   unsigned char_cnt = s_idx - f_idx;
+
+#ifdef _MSC_VER
+  unsigned *utf32_data = (unsigned *)cmalloc(char_cnt*sizeof(unsigned));
+#else
   unsigned utf32_data[char_cnt];
+#endif
 
   int utf32_cnt = utf8_to_utf32(data + f_idx,utf32_data,char_cnt);
-  if (utf32_cnt < 0) return 0;
+  if (utf32_cnt < 0)
+  {
+#ifdef _MSC_VER
+    cfree(utf32_data);
+#endif
+    return 0;
+  }
 
   unsigned *c_ptr = utf32_data;
   unsigned *c_ptr_end = c_ptr + utf32_cnt;
@@ -298,12 +287,19 @@ unsigned string_s::get_print_size_between(unsigned f_idx,unsigned s_idx)
   }
   while(++c_ptr < c_ptr_end);
 
+#ifdef _MSC_VER
+  cfree(utf32_data);
+#endif
+
   return print_size;
 }/*}}}*/
 
 unsigned string_s::get_character_line(unsigned c_idx)
 {/*{{{*/
-  if (size <= c_idx) return 0;
+  if (size <= c_idx)
+  {
+    return 0;
+  }
 
   char *c_ptr = data;
   char *c_ptr_end = c_ptr + c_idx;
