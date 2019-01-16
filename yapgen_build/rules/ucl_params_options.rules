@@ -12,6 +12,7 @@ terminals:
   retrieve_float {"retrieve_float"}
   retrieve_integer_init {"retrieve_integer_init"}
   retrieve_float_init {"retrieve_float_init"}
+  retrieve_data_buffer {"retrieve_data_buffer"}
 
   $ !!! FIXME comment this terminal before production
   _SKIP_ {w.w*}
@@ -42,4 +43,5 @@ rules:
   <type> -> retrieve_float ->> {print("retrieve_float");}
   <type> -> retrieve_integer_init ->> {print("retrieve_integer_init");}
   <type> -> retrieve_float_init ->> {print("retrieve_float_init");}
+  <type> -> retrieve_data_buffer ->> {print("retrieve_data_buffer");}
 

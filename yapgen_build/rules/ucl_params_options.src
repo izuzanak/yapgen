@@ -8,4 +8,5 @@ retrieve_integer
 retrieve_float
 retrieve_integer_init
 retrieve_float_init
+retrieve_data_buffer
 
