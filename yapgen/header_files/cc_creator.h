@@ -387,29 +387,7 @@ PUSH_CODE(
 {
   fa_states_s &states = final_automata.states;
 
-  PUSH_CODE(
-"// - STATE 0 -\n"
-"state_0_label:\n"
-  );
-  if (states[0].final != c_idx_not_exist)
-  {
-    PUSH_FORMAT_CODE(
-"   CLOSE_CHAR(%d);\n"
-      ,states[0].final);
-  }
-  else
-  {
-    PUSH_CODE(
-"   CLOSE_CHAR(c_idx_not_exist);\n"
-    );
-  }
-  PUSH_CODE(
-"\n"
-"fa_start_label:\n"
-  );
-  CC_PROCESS_STATE(0);
-
-  unsigned s_idx = 1;
+  unsigned s_idx = 0;
   do
   {
     PUSH_FORMAT_CODE(
@@ -426,6 +404,13 @@ PUSH_CODE(
     {
       PUSH_CODE(
 "   CLOSE_CHAR(c_idx_not_exist);\n"
+      );
+    }
+    if (s_idx == 0)
+    {
+      PUSH_CODE(
+"\n"
+"fa_start_label:\n"
       );
     }
     CC_PROCESS_STATE(s_idx);

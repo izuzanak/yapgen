@@ -1,0 +1,157 @@
+
+#vim: set syntax=rules:
+
+init_code: {}
+
+terminals:
+  xml_header {"<?xml version='1.0' encoding='utf-8'?>"}
+  TRAIN_CAM_REQ {"TRAIN_CAM_REQ"}
+
+  RESET {"RESET"}
+  START {"START"}
+  STOP {"STOP"}
+  VER_XCHG {"VER_XCHG"}
+  SYNC_TIME {"SYNC_TIME"}
+  SET_OCCUP_MODE {"SET_OCCUP_MODE"}
+  TRAIN_CAM_CONF {"TRAIN_CAM_CONF"}
+  LAYOUT {"LAYOUT"}
+  DISP_LAYOUT {"DISP_LAYOUT"}
+  GET_STATE {"GET_STATE"}
+  GET_DIAG {"GET_DIAG"}
+  MIN_SPEED {"MIN_SPEED"}
+  LEFT_DOOR {"LEFT_DOOR"}
+  RIGHT_DOOR {"RIGHT_DOOR"}
+  SHIFT_ZOOM {"SHIFT_ZOOM"}
+  SHIFT_BRIGHTNESS {"SHIFT_BRIGHTNESS"}
+  LANGUAGE {"LANGUAGE"}
+  INDELIBLE {"INDELIBLE"}
+  GET_ADVANCED_DIAG {"GET_ADVANCED_DIAG"}
+  GET_SHORT_DIAG {"GET_SHORT_DIAG"}
+  AUDIO {"AUDIO"}
+
+  reqid {"reqid"}
+  ver_dicasm {"ver_dicasm"}
+  time {"time"}
+  mode {"mode"}
+  t_fix_bef_alrm {"t_fix_bef_alrm"}
+  t_fix_after_alrm {"t_fix_after_alrm"}
+  my_veh {"my_veh"}
+  reset {"reset"}
+  layoutid {"layoutid"}
+  min_speed {"min_speed"}
+  open {"open"}
+  shift {"shift"}
+  camid {"camid"}
+  lang {"lang"}
+  vehicle {"vehicle"}
+  value {"value"}
+
+  val_uint {'"'.d.d*.'"'}
+  val_sint {'"'.[+-].d.d*.'"'}
+  val_current {"\"current\""}
+  val_time {'"'.(e+'1').d.'/'.(e+<13>).d.'/'.d.d.d.d.' '.(e+<12>).d.':'.<05>.d.':'.<05>.d.'"'}
+  val_bool {'"'.("True"+"False").'"'}
+  val_sign {'"'.('+'+'-').'"'}
+  val_lang {'"'.<AZ>.<AZ>.'"'}
+
+  tag_open {'<'}
+  tag_close {'>'}
+  tag_end_open {"</"}
+  tag_self_close {"/>"}
+  equal {'='}
+
+  _SKIP_ {w.w*}
+  _END_ {'\0'}
+
+nonterminals:
+  <start>
+  <request>
+  <command_list>
+  <command>
+  <shift_zoom_value>
+  <indelible>
+
+rules:
+  <start> -> xml_header <request> _END_ ->> {}
+
+  <request> -> tag_open TRAIN_CAM_REQ reqid equal val_uint <command_list> tag_end_open TRAIN_CAM_REQ tag_close ->> {
+    print("TRAIN_CAM_REQ reqid:"..rule_body(4))
+  }
+
+  <command_list> -> <command_list> tag_open <command> tag_self_close ->> {}
+  <command_list> -> tag_close ->> {}
+
+  <command> -> RESET ->> {
+    print(rule_body(0));
+  }
+  <command> -> START ->> {
+    print(rule_body(0));
+  }
+  <command> -> STOP ->> {
+    print(rule_body(0));
+  }
+  <command> -> VER_XCHG ver_dicasm equal val_current ->> {
+    print(rule_body(0).." ver_dicasm:"..rule_body(3));
+  }
+  <command> -> SYNC_TIME time equal val_time ->> {
+    print(rule_body(0).." time:"..rule_body(3));
+  }
+  <command> -> SET_OCCUP_MODE mode equal val_bool ->> {
+    print(rule_body(0).." mode:"..rule_body(3));
+  }
+  <command> -> TRAIN_CAM_CONF t_fix_bef_alrm equal val_uint t_fix_after_alrm equal val_uint my_veh equal val_uint ->> {
+    print(rule_body(0).." t_fix_bef_alrm:"..rule_body(3).." t_fix_after_alrm:"..rule_body(6).." my_veh:"..rule_body(9));
+  }
+  <command> -> LAYOUT reset equal val_bool ->> {
+    print(rule_body(0).." reset:"..rule_body(3));
+  }
+  <command> -> DISP_LAYOUT layoutid equal val_uint ->> {
+    print(rule_body(0).." layoutid:"..rule_body(3));
+  }
+  <command> -> GET_STATE ->> {
+    print(rule_body(0));
+  }
+  <command> -> GET_DIAG ->> {
+    print(rule_body(0));
+  }
+  <command> -> MIN_SPEED min_speed equal val_bool ->> {
+    print(rule_body(0).." min_speed:"..rule_body(3));
+  }
+  <command> -> LEFT_DOOR open equal val_bool ->> {
+    print(rule_body(0).." open:"..rule_body(3));
+  }
+  <command> -> RIGHT_DOOR open equal val_bool ->> {
+    print(rule_body(0).." open:"..rule_body(3));
+  }
+  <command> -> SHIFT_ZOOM shift equal <shift_zoom_value> camid equal val_uint ->> {
+    print(rule_body(0).." shift:"..rule_body(3).." camid:"..rule_body(6));
+  }
+
+  <shift_zoom_value> -> val_uint ->> {}
+  <shift_zoom_value> -> val_sint ->> {}
+
+  <command> -> SHIFT_BRIGHTNESS shift equal val_sign ->> {
+    print(rule_body(0).." shift:"..rule_body(3));
+  }
+  <command> -> LANGUAGE lang equal val_lang ->> {
+    print(rule_body(0).." lang:"..rule_body(3));
+  }
+  <command> -> INDELIBLE <indelible> ->> {}
+
+  <indelible> -> camid equal val_uint ->> {
+    print("INDELIBLE".." camid:"..rule_body(1))
+  }
+  <indelible> -> vehicle equal val_uint ->> {
+    print("INDELIBLE".." vehicle:"..rule_body(1))
+  }
+
+  <command> -> GET_ADVANCED_DIAG ->> {
+    print(rule_body(0));
+  }
+  <command> -> GET_SHORT_DIAG ->> {
+    print(rule_body(0));
+  }
+  <command> -> AUDIO value equal val_bool camid equal val_uint ->> {
+    print(rule_body(0).." value:"..rule_body(3).." camid:"..rule_body(6));
+  }
+
