@@ -282,24 +282,24 @@ PUSH_CODE(
             if (e_idx - b_idx > 1) {\
               if (b_idx == 0) {\
                 PUSH_FORMAT_CODE(\
-                                 "   if (in_char < %d)\n"\
+                                 "   if (in_char < %d) {\n"\
                                  "      goto state_%d_label;\n"\
-                                 "\n"\
+                                 "   }\n"\
                                  ,MPAR(e_idx,target_state));\
               }\
               else {\
                 PUSH_FORMAT_CODE(\
-                                 "   if (in_char >= %d && in_char < %d)\n"\
+                                 "   if (in_char >= %d && in_char < %d) {\n"\
                                  "      goto state_%d_label;\n"\
-                                 "\n"\
+                                 "   }\n"\
                                  ,MPAR(MPAR(b_idx,e_idx),target_state));\
               }\
             }\
             else {\
               PUSH_FORMAT_CODE(\
-                               "   if (in_char == %d)\n"\
+                               "   if (in_char == %d) {\n"\
                                "      goto state_%d_label;\n"\
-                               "\n"\
+                               "   }\n"\
                                ,MPAR(b_idx,target_state));\
             }\
           }\
@@ -313,34 +313,34 @@ PUSH_CODE(
         if (e_idx - b_idx > 1) {\
           if (b_idx == 0) {\
             PUSH_FORMAT_CODE(\
-                             "   if (in_char < %d)\n"\
+                             "   if (in_char < %d) {\n"\
                              "      goto state_%d_label;\n"\
-                             "\n"\
+                             "   }\n"\
                              ,MPAR(e_idx,target_state));\
           }\
           else {\
             if (e_idx < 256) {\
               PUSH_FORMAT_CODE(\
-                               "   if (in_char >= %d && in_char < %d)\n"\
+                               "   if (in_char >= %d && in_char < %d) {\n"\
                                "      goto state_%d_label;\n"\
-                               "\n"\
+                               "   }\n"\
                                ,MPAR(MPAR(b_idx,e_idx),target_state));\
             }\
             else {\
               cassert(e_idx == 256);\
               PUSH_FORMAT_CODE(\
-                               "   if (in_char >= %d)\n"\
+                               "   if (in_char >= %d) {\n"\
                                "      goto state_%d_label;\n"\
-                               "\n"\
+                               "   }\n"\
                                ,MPAR(b_idx,target_state));\
             }\
           }\
         }\
         else {\
           PUSH_FORMAT_CODE(\
-                           "   if (in_char == %d)\n"\
+                           "   if (in_char == %d) {\n"\
                            "      goto state_%d_label;\n"\
-                           "\n"\
+                           "   }\n"\
                            ,MPAR(b_idx,target_state));\
         }\
       }\
