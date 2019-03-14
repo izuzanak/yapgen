@@ -40,8 +40,8 @@ PUSH_CODE(
 );
 
 PUSH_FORMAT_CODE(
-"const unsigned c_rule_cnt = %d;\n"
-"const unsigned rule_head_idxs[c_rule_cnt] = {"
+"const unsigned c__prefix_rule_cnt = %d;\n"
+"const unsigned _prefix_rule_head_idxs[c__prefix_rule_cnt] = {"
   ,rule_descrs.used);
 
 if (rule_descrs.used != 0)
@@ -61,7 +61,7 @@ PUSH_CODE(
 );
 
 PUSH_CODE(
-"const unsigned rule_body_lengths[c_rule_cnt] = {"
+"const unsigned _prefix_rule_body_lengths[c__prefix_rule_cnt] = {"
 );
 
 if (rule_descrs.used != 0)
@@ -83,16 +83,16 @@ PUSH_CODE(
 
 PUSH_FORMAT_CODE(
 "// - lalr parse table - \n"
-"#define blank c_idx_not_exist\n"
-"#define SHIFT(VALUE) VALUE\n"
-"#define REDUCE(VALUE) c_lalr_table_reduce_base + VALUE\n"
-"#define GOTO(VALUE) VALUE\n"
+"#define _prefix_blank c_idx_not_exist\n"
+"#define _PREFIX_SHIFT(VALUE) VALUE\n"
+"#define _PREFIX_REDUCE(VALUE) c__prefix_lalr_table_reduce_base + VALUE\n"
+"#define _PREFIX_GOTO(VALUE) VALUE\n"
 "\n"
-"const unsigned c_lalr_table_reduce_base = 0x%x;\n"
-"const unsigned c_terminal_plus_nonterminal_cnt = %d;\n"
-"const unsigned lalr_state_cnt = %d;\n"
+"const unsigned c__prefix_lalr_table_reduce_base = 0x%x;\n"
+"const unsigned c__prefix_terminal_plus_nonterminal_cnt = %d;\n"
+"const unsigned _prefix_lalr_state_cnt = %d;\n"
 "\n"
-"const unsigned lalr_table[lalr_state_cnt*c_terminal_plus_nonterminal_cnt] =\n"
+"const unsigned _prefix_lalr_table[_prefix_lalr_state_cnt*c__prefix_terminal_plus_nonterminal_cnt] =\n"
 "{/*{{{*/\n"
   ,MPAR(MPAR(c_lalr_table_reduce_base,lalr_table.x_size),lalr_table.y_size));
 
@@ -109,17 +109,17 @@ PUSH_FORMAT_CODE(
     {
       if (row_ptr[col_idx] == c_idx_not_exist)
       {
-        PUSH_CODE("       blank,");
+        PUSH_CODE("       _prefix_blank,");
       }
       else if (row_ptr[col_idx] < c_lalr_table_reduce_base)
       {
-        SUB_FORMAT("SHIFT(%d)",row_ptr[col_idx]);
-        PUSH_FORMAT_CODE("%12s,",sub_buffer);
+        SUB_FORMAT("_PREFIX_SHIFT(%d)",row_ptr[col_idx]);
+        PUSH_FORMAT_CODE("%20s,",sub_buffer);
       }
       else
       {
-        SUB_FORMAT("REDUCE(%d)",row_ptr[col_idx] - c_lalr_table_reduce_base);
-        PUSH_FORMAT_CODE("%12s,",sub_buffer);
+        SUB_FORMAT("_PREFIX_REDUCE(%d)",row_ptr[col_idx] - c_lalr_table_reduce_base);
+        PUSH_FORMAT_CODE("%20s,",sub_buffer);
       }
     }
     while(++col_idx < terminal_cnt);
@@ -129,12 +129,12 @@ PUSH_FORMAT_CODE(
     {
       if (row_ptr[col_idx] == c_idx_not_exist)
       {
-        PUSH_CODE("       blank,");
+        PUSH_CODE("       _prefix_blank,");
       }
       else
       {
-        SUB_FORMAT("GOTO(%d)",row_ptr[col_idx]);
-        PUSH_FORMAT_CODE("%12s,",sub_buffer);
+        SUB_FORMAT("_PREFIX_GOTO(%d)",row_ptr[col_idx]);
+        PUSH_FORMAT_CODE("%20s,",sub_buffer);
       }
     }
     while(++col_idx < lalr_table.x_size);
@@ -259,7 +259,7 @@ PUSH_CODE(
 
 PUSH_CODE(
 "// - recognize next terminal - \n"
-"unsigned recognize_terminal(unsigned &input_idx)\n"
+"unsigned _prefix_recognize_terminal(unsigned &input_idx)\n"
 "{/*{{{*/\n"
 );
 
@@ -270,7 +270,7 @@ PUSH_CODE(
     \
     if (state.moves.used != 0) {\
       PUSH_CODE(\
-                "   GET_NEXT_CHAR();\n"\
+                "   _PREFIX_GET_NEXT_CHAR();\n"\
                 "\n"\
                );\
       unsigned b_idx = 0;\
@@ -361,7 +361,7 @@ PUSH_CODE(
   }/*}}}*/
 
 PUSH_CODE(
-"#define GET_NEXT_CHAR() \\\n"
+"#define _PREFIX_GET_NEXT_CHAR() \\\n"
 "{\\\n"
 "   if (input_idx < source_string_length) {\\\n"
 "      in_char = (unsigned char)source_string[input_idx];\\\n"
@@ -371,7 +371,7 @@ PUSH_CODE(
 "   }\\\n"
 "}\n"
 "\n"
-"#define CLOSE_CHAR(RET_TERM_IDX) \\\n"
+"#define _PREFIX_CLOSE_CHAR(RET_TERM_IDX) \\\n"
 "{\\\n"
 "   if (in_char == '\\0') {\\\n"
 "      return RET_TERM_IDX;\\\n"
@@ -397,13 +397,13 @@ PUSH_CODE(
     if (states[s_idx].final != c_idx_not_exist)
     {
       PUSH_FORMAT_CODE(
-"   CLOSE_CHAR(%d);\n"
+"   _PREFIX_CLOSE_CHAR(%d);\n"
         ,states[s_idx].final);
     }
     else
     {
       PUSH_CODE(
-"   CLOSE_CHAR(c_idx_not_exist);\n"
+"   _PREFIX_CLOSE_CHAR(c_idx_not_exist);\n"
       );
     }
     if (s_idx == 0)
@@ -424,7 +424,7 @@ PUSH_CODE(
 
 PUSH_CODE(
 "// - parse source string -\n"
-"void parser_parse_source_string()\n"
+"void _prefix_parser_parse_source_string()\n"
 "{/*{{{*/\n"
 "   lalr_stack.used = 0;\n"
 "   lalr_stack.push(0);\n"
@@ -438,7 +438,7 @@ PUSH_CODE(
 "      while (ret_term == c_idx_not_exist) {\n"
 "         old_input_idx = input_idx;\n"
 "\n"
-"         ret_term = recognize_terminal(input_idx);\n"
+"         ret_term = _prefix_recognize_terminal(input_idx);\n"
 "         assert(ret_term != c_idx_not_exist);\n"
 );
 
@@ -468,11 +468,11 @@ PUSH_CODE(
 "      }\n"
 "\n"
 "      // - retrieve action from table of actions -\n"
-"      parse_action = lalr_table[lalr_stack.last().lalr_state*c_terminal_plus_nonterminal_cnt + ret_term];\n"
+"      parse_action = _prefix_lalr_table[lalr_stack.last().lalr_state*c__prefix_terminal_plus_nonterminal_cnt + ret_term];\n"
 "      assert(parse_action != c_idx_not_exist);\n"
 "\n"
 "      // - action SHIFT -\n"
-"      if (parse_action < c_lalr_table_reduce_base) {\n"
+"      if (parse_action < c__prefix_lalr_table_reduce_base) {\n"
 "\n"
 );
 PUSH_FORMAT_CODE(
@@ -490,16 +490,16 @@ PUSH_CODE(
 "\n"
 "      // - action REDUCE -\n"
 "      else {\n"
-"         parse_action -= c_lalr_table_reduce_base;\n"
+"         parse_action -= c__prefix_lalr_table_reduce_base;\n"
 "\n"
 "         // - print index of reduction rule to output -\n"
 "         printf(\"%d, \",parse_action);\n"
 "\n"
 "         // - remove rule body from stack -\n"
-"         lalr_stack.used -= rule_body_lengths[parse_action];\n"
+"         lalr_stack.used -= _prefix_rule_body_lengths[parse_action];\n"
 "\n"
 "         // - push new state to lalr stack -\n"
-"         unsigned goto_val = lalr_table[lalr_stack.last().lalr_state*c_terminal_plus_nonterminal_cnt + rule_head_idxs[parse_action]];\n"
+"         unsigned goto_val = _prefix_lalr_table[lalr_stack.last().lalr_state*c__prefix_terminal_plus_nonterminal_cnt + _prefix_rule_head_idxs[parse_action]];\n"
 "         lalr_stack.push(goto_val);\n"
 "      }\n"
 "\n"
@@ -536,7 +536,7 @@ PUSH_CODE(
 "   fclose(f);\n"
 "\n"
 "   // - parse source string -\n"
-"   parser_parse_source_string();\n"
+"   _prefix_parser_parse_source_string();\n"
 "\n"
 "   // - release global variables -\n"
 "   if (source_string != NULL) {\n"

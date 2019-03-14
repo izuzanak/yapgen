@@ -2,7 +2,7 @@
 
 # - uclang_parser -
 #echo "uclang_parser.rules" 1>&2
-./yapgen --parser_descr rules/uclang_parser.rules --source rules/uclang_parser.src
+#./yapgen --parser_descr rules/uclang_parser.rules --source rules/uclang_parser.src
 
 # - momas_log parser-
 #echo "momas_log.rules" 1>&2
@@ -85,4 +85,12 @@
 # - ksp -
 #echo "ksp.rules" 1>&2
 #./yapgen --parser_descr rules/ksp.rules --source rules/ksp.src
+
+# - rtsp -
+#echo "rtsp.rules" 1>&2
+./yapgen --parser_descr rules/rtsp.rules --source rules/rtsp.src
+
+# - rtsp_sdp -
+#echo "rtsp_sdp.rules" 1>&2
+#./yapgen --parser_descr rules/rtsp_sdp.rules --source rules/rtsp_sdp.src
 

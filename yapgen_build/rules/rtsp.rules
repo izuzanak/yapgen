@@ -1,0 +1,106 @@
+#vim: set syntax=rules:
+
+init_code: {}
+
+terminals:
+  resp_ok {"RTSP/1.0 200 OK"}
+  rtsp_ver1 {"RTSP/1.0"}
+
+  header_cseq      {"C".[sS]."eq:"}
+  header_public    {"Public:"}
+  header_ct_base   {"Content-Base:"}
+  header_ct_type   {"Content-Type:"}
+  header_ct_length {"Content-".[lL]."ength:"}
+  header_transport {"Transport:"}
+  header_session   {"Session: ".(<az>+<AZ>+d)*}
+  header_range     {"Range:"}
+  header_ping      {"Ping: Pong"}
+  header_accept    {"Accept:"}
+  header_ignore    {("Date"+"User-Agent"+"Server"+"Cache-Control"+"RTP-Info").":".|\r|*}
+
+  number {d.d*.('.'+e).d*}
+  range {d.d*.('.'+e).d*.'-'.((d.d*.('.'+e).d*)+e)}
+
+  key_timeout {"timeout="}
+  key_npt {"npt="}
+  key_unicast {"unicast"}
+  key_interleaved {"interleaved="}
+
+  value_url_rtsp {("rtsp://".(<az>+<AZ>+d+[:/._-]).((<az>+<AZ>+d+[:/._-]))*)+'*'}
+  value_cont_sdp {"application/sdp"}
+  value_trans_tcp {"RTP/AVP/TCP"}
+
+  command_options {"OPTIONS"}
+  command_describe {"DESCRIBE"}
+  command_setup {"SETUP"}
+  command_teardown {"TEARDOWN"}
+  command_play {"PLAY"}
+  command_pause {"PAUSE"}
+  command_set_parameter {"SET_PARAMETER"}
+  command_get_parameter {"GET_PARAMETER"}
+
+  separator {[,;]}
+
+  _SKIP_ {("\r\n"+' ').("\r\n"+' ')*}
+  _END_ {"\r\n\r\n"}
+
+nonterminals:
+  <start>
+  <message>
+  <command>
+  <response>
+  <header_list>
+  <header>
+  <pubcmd_list>
+  <pubcmd>
+  <key_list>
+  <key>
+  <session>
+
+rules:
+  <start> -> <message> _END_ ->> {}
+
+  <message> -> <command> <header_list> ->> {}
+  <message> -> <response> <header_list> ->> {}
+ 
+  <command> -> <pubcmd> value_url_rtsp rtsp_ver1 ->> {print("Command")}
+  <response> -> resp_ok ->> {print("Response")}
+ 
+  <header_list> -> <header_list> <header> ->> {}
+  <header_list> -> <header> ->> {}
+
+  <header> -> header_cseq number ->> {print("Cseq: "..rule_body(1))}
+  <header> -> header_public <pubcmd_list> ->> {}
+  <header> -> header_ct_base value_url_rtsp ->> {print("Content-Base: "..rule_body(1))}
+  <header> -> header_ct_type value_cont_sdp ->> {print("Content-Type: "..rule_body(1))}
+  <header> -> header_ct_length number ->> {print("Content-Length: "..rule_body(1))}
+  <header> -> header_transport value_trans_tcp separator <key_list> ->> {print("Transport: "..rule_body(1))}
+  <header> -> <session> ->> {}
+  <header> -> <session> separator <key_list> ->> {}
+  <header> -> header_range key_npt range ->> {print("Range: "..rule_body(2))}
+  <header> -> header_ping ->> {print("Ping")}
+  <header> -> header_ignore ->> {print("Ignore: "..rule_body(0))}
+  <header> -> header_accept value_cont_sdp ->> {print("Accept: "..rule_body(1))}
+
+  <pubcmd_list> -> <pubcmd_list> separator <pubcmd> ->> {}
+  <pubcmd_list> -> <pubcmd> ->> {}
+
+  <pubcmd> -> command_options       ->> {print("Public: "..rule_body(0))}
+  <pubcmd> -> command_describe      ->> {print("Public: "..rule_body(0))}
+  <pubcmd> -> command_setup         ->> {print("Public: "..rule_body(0))}
+  <pubcmd> -> command_teardown      ->> {print("Public: "..rule_body(0))}
+  <pubcmd> -> command_play          ->> {print("Public: "..rule_body(0))}
+  <pubcmd> -> command_pause         ->> {print("Public: "..rule_body(0))}
+  <pubcmd> -> command_set_parameter ->> {print("Public: "..rule_body(0))}
+  <pubcmd> -> command_get_parameter ->> {print("Public: "..rule_body(0))}
+
+  <key_list> -> <key_list> separator <key> ->> {}
+  <key_list> -> <key> ->> {}
+
+  <session> -> header_session ->> {print("Session: "..rule_body(0))}
+
+  <key> -> key_timeout number ->> {print("timeout: "..rule_body(1))}
+  <key> -> key_npt range ->> {print("npt: "..rule_body(1))}
+  <key> -> key_unicast ->> {print("unicast")}
+  <key> -> key_interleaved range ->> {print("interleaved: "..rule_body(1))}
+

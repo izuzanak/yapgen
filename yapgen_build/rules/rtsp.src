@@ -1,0 +1,71 @@
+DESCRIBE rtsp://10.2.35.6:554/moxa-cgi/udpstream_ch1 RTSP/1.0
+Accept: application/sdp
+CSeq: 2
+User-Agent: Lavf55.42.100
+CSeq: 0
+Date: Sat, Jan 01 2000 03:29:24 GMT
+Public: OPTIONS, DESCRIBE, SETUP, TEARDOWN, PLAY, SET_PARAMETER
+CSeq: 1
+Date: Sat, Jan 01 2000 03:29:24 GMT
+Content-Base: rtsp://10.2.35.5:554/udpstream_ch1/
+Content-Type: application/sdp
+Content-Length: 754
+CSeq: 2
+Date: Sat, Jan 01 2000 03:29:24 GMT
+Transport: RTP/AVP/TCP;unicast;interleaved=0-1
+Session: 673444117;timeout=60
+CSeq: 4
+Date: Sat, Jan 01 2000 03:29:24 GMT
+Range: npt=0.000-
+Session: 673444117
+RTP-Info: url=rtsp://10.2.35.5:554/udpstream_ch1/video;seq=57002;rtptime=1103984010
+CSeq: 0
+Ping: Pong
+CSeq: 4
+Date: Mon, Jan 17 2000 19:11:16 GMT
+Range: npt=0.000-
+Session: 770834926
+User-Agent: Lavf55.42.100
+RTP-Info: url=rtsp://10.2.35.1:554/udpstream_ch1/video;seq=63746;rtptime=768390030,url=rtsp://10.2.35.1:554/udpstream_ch1/audio;seq=47939;rtptime=1036140795
+Transport: RTP/AVP/TCP;unicast;interleaved=0-1
+CSeq: 3
+User-Agent: Lavf55.42.100
+Transport: RTP/AVP/TCP;unicast;interleaved=2-3
+CSeq: 4
+User-Agent: Lavf55.42.100
+Session: 1550822128808589
+Range: npt=0.000-
+CSeq: 5
+User-Agent: Lavf55.42.100
+Session: 1550822128808589
+Server: VLC/3.0.6
+Content-Length: 0
+Cseq: 0
+Public: DESCRIBE,SETUP,TEARDOWN,PLAY,PAUSE,GET_PARAMETER
+Server: VLC/3.0.6
+Date: Sat, Jan 01 2000 03:29:24 GMT
+Date: Fri, 22 Feb 2019 09:32:39 GMT
+Content-Type: application/sdp
+Content-Base: rtsp://10.2.1.10:8080/video
+Content-Length: 443
+Cache-Control: no-cache
+Cseq: 1
+CSeq: 1
+Server: Hipcam RealServer/V1.0
+Content-Type: application/sdp
+Cache-Control: must-revalidate
+Content-length: 407
+Content-Base: rtsp://10.2.1.18:554/11/
+CSeq: 2
+Server: Hipcam RealServer/V1.0
+Session: EPsTbSfkdUO
+Transport: RTP/AVP/TCP;unicast;interleaved=0-1
+CSeq: 4
+Server: Hipcam RealServer/V1.0
+Session: IdHHGwuQVvR
+RTP-Info:url=10.2.1.18/trackID=0;seq=1;rtptime=10000,url=10.2.1.18/trackID=1;seq=1;rtptime=10000
+
+DESCRIBE rtsp://10.2.35.6:554/moxa-cgi/udpstream_ch1 RTSP/1.0
+RTSP/1.0 200 OK
+SET_PARAMETER * RTSP/1.0
+DESCRIBE rtsp://10.2.35.1:554/udpstream_ch1 RTSP/1.0

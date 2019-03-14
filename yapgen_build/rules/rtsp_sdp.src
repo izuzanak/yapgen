@@ -1,0 +1,38 @@
+v=0
+o=- 946696689382405 1 IN IP4 127.0.0.1
+s=Moxa Streaming Server
+i=/dev/Streaming
+t=0 0
+a=tool:MOXA VPort P06-1MP-M12 IP Camera
+a=type:broadcast
+a=control:*
+a=range:npt=0-
+a=x-qt-text-nam:Moxa Streaming Server
+a=x-qt-text-inf:/dev/Streaming
+m=video 0 RTP/AVP 97
+c=IN IP4 0.0.0.0
+a=rtpmap:97 H264/90000
+a=fmtp:97 packetization-mode=1; profile-level-id=640020; sprop-parameter-sets=Z2QAIK2EBUViuKxUdCAqKxXFYqOhAVFYrisVHQgKisVxWKjoQFRWK4rFR0ICorFcVio6ECSFITk8nyfk/k/J8nm5s00IEkKQnJ5Pk/J/J+T5PNzZprQCgDLSpAAAAwHgAABwgYEAABMS0AAAmJaL3vheEQjU,aO48sA==
+a=control:rtsp://127.0.0.1:8000/udpstream_ch1/video
+a=recvonly
+m=audio 0 RTP/AVP 0
+c=IN IP4 0.0.0.0
+a=rtpmap:0 PCMU/8035/1
+a=control:rtsp://127.0.0.1:8000/udpstream_ch1/audio
+a=recvonly
+v=0
+o=- 16148302087223739921 16148302087223739921 IN IP4 elite
+s=Unnamed
+i=N/A
+c=IN IP4 0.0.0.0
+t=0 0
+a=tool:vlc 3.0.6
+a=recvonly
+a=type:broadcast
+a=charset:UTF-8
+a=control:rtsp://10.2.1.10:8080/video
+m=video 0 RTP/AVP 96
+b=RR:0
+a=rtpmap:96 H264/90000
+a=fmtp:96 packetization-mode=1;profile-level-id=640016;sprop-parameter-sets=Z2QAFqzZQKAv+XAWoCAgSAAAAwAIAAADAKR4sWyw,aOvjyyLA;
+a=control:rtsp://10.2.1.10:8080/video/trackID=0
