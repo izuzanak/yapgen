@@ -1,4 +1,4 @@
-DESCRIBE rtsp://10.2.35.6:554/moxa-cgi/udpstream_ch1 RTSP/1.0
+OPTIONS rtsp://10.2.1.176:8006 RTSP/1.0
 Accept: application/sdp
 CSeq: 2
 User-Agent: Lavf55.42.100
@@ -64,6 +64,23 @@ CSeq: 4
 Server: Hipcam RealServer/V1.0
 Session: IdHHGwuQVvR
 RTP-Info:url=10.2.1.18/trackID=0;seq=1;rtptime=10000,url=10.2.1.18/trackID=1;seq=1;rtptime=10000
+Server: IP Webcam Server 0.4
+CSeq: 0
+CSeq: 2
+Transport: RTP/AVP/TCP;unicast;interleaved=0-1
+CSeq: 0
+Transport: RTP/AVP;unicast;client_port=9360-9361
+Transport: RTP/AVP/UDP;unicast;client_port=14560-14561
+CSeq: 3
+User-Agent: Lavf57.83.100
+CSeq: 1
+User-Agent: RealMedia Player Version 6.0.9.1235 (linux-2.0-libc6-i386-gcc2.95)
+ClientChallenge: 9e26d33f2984236010ef6253fb1887f7
+PlayerStarttime: [28/03/2003:22:50:23 00:00]
+CompanyID: KnKV4M4I/B2FjJ1TToLycw==
+GUID: 00000000-0000-0000-0000-000000000000
+RegionData: 0
+ClientID: Linux_2.4_6.0.9.1235_play32_RN01_EN_586
 
 DESCRIBE rtsp://10.2.35.6:554/moxa-cgi/udpstream_ch1 RTSP/1.0
 RTSP/1.0 200 OK

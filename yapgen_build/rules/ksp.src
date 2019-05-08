@@ -5,6 +5,8 @@
   <STOP/>
   <VER_XCHG ver_dicasm="current"/>
   <SYNC_TIME time="11/30/2014 12:51:59"/>
+  <SYNC_TIME time="10/13/2015 00:00:00"/>
+  <SYNC_TIME time="1/1/2015 00:00:00"/>
   <SET_OCCUP_MODE mode="True"/>
   <TRAIN_CAM_CONF t_fix_bef_alrm="300" t_fix_after_alrm="300" my_veh="56012"/>
   <LAYOUT reset="False"/>

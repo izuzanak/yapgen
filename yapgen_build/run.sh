@@ -88,9 +88,13 @@
 
 # - rtsp -
 #echo "rtsp.rules" 1>&2
-./yapgen --parser_descr rules/rtsp.rules --source rules/rtsp.src
+#./yapgen --parser_descr rules/rtsp.rules --source rules/rtsp.src
 
 # - rtsp_sdp -
 #echo "rtsp_sdp.rules" 1>&2
 #./yapgen --parser_descr rules/rtsp_sdp.rules --source rules/rtsp_sdp.src
+
+# - fuser_fname -
+#echo "fuser_fname.rules" 1>&2
+./yapgen --parser_descr rules/fuser_fname.rules --source rules/fuser_fname.src
 

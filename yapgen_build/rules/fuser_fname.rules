@@ -1,0 +1,43 @@
+#vim: set syntax=rules:
+
+init_code: {}
+
+terminals:
+
+  events {"events\0"}
+  records {"records\0"}
+
+  event {"event_".d.d*.'_'.|\0|*.'\0'}
+  time {d.d.d.d.'-'.d.d.'-'.d.d.'_'.d.d.':'.d.d.':'.d.d.'\0'}
+  camera {"cam_".d.d*.".mpg\0"}
+
+  $ !!! FIXME comment this terminal before production
+  _SKIP_ {'\n'}
+  _END_ {'\1'}
+
+nonterminals:
+  <start>
+  <end_check>
+  <program>
+  <term_list>
+  <term>
+
+rules:
+
+  <start> -> <end_check> ->> {}
+
+  $ !!! FIXME comment these two rules before production
+  <end_check> -> <program> _END_ ->> {}
+  <end_check> -> _END_ ->> {}
+
+  <program> -> <term_list> ->> {}
+
+  <term_list> -> <term_list> <term> ->> {}
+  <term_list> -> <term> ->> {}
+
+  <term> -> events  ->> {print("events");}
+  <term> -> records ->> {print("records");}
+  <term> -> event   ->> {print("event");}
+  <term> -> time    ->> {print("time");}
+  <term> -> camera  ->> {print("camera");}
+

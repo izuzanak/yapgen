@@ -16,7 +16,19 @@ terminals:
   header_range     {"Range:"}
   header_ping      {"Ping: Pong"}
   header_accept    {"Accept:"}
-  header_ignore    {("Date"+"User-Agent"+"Server"+"Cache-Control"+"RTP-Info").":".|\r|*}
+  header_ignore    {(
+      "Date"+
+      "User-Agent"+
+      "Server"+
+      "Cache-Control"+
+      "RTP-Info"+
+      "ClientChallenge"+
+      "PlayerStarttime"+
+      "CompanyID"+
+      "GUID"+
+      "RegionData"+
+      "ClientID"
+  ).":".|\r|*}
 
   number {d.d*.('.'+e).d*}
   range {d.d*.('.'+e).d*.'-'.((d.d*.('.'+e).d*)+e)}
@@ -25,10 +37,12 @@ terminals:
   key_npt {"npt="}
   key_unicast {"unicast"}
   key_interleaved {"interleaved="}
+  key_client_port {"client_port="}
 
   value_url_rtsp {("rtsp://".(<az>+<AZ>+d+[:/._-]).((<az>+<AZ>+d+[:/._-]))*)+'*'}
   value_cont_sdp {"application/sdp"}
   value_trans_tcp {"RTP/AVP/TCP"}
+  value_trans_udp {"RTP/AVP".("/UDP"+e)}
 
   command_options {"OPTIONS"}
   command_describe {"DESCRIBE"}
@@ -74,7 +88,8 @@ rules:
   <header> -> header_ct_base value_url_rtsp ->> {print("Content-Base: "..rule_body(1))}
   <header> -> header_ct_type value_cont_sdp ->> {print("Content-Type: "..rule_body(1))}
   <header> -> header_ct_length number ->> {print("Content-Length: "..rule_body(1))}
-  <header> -> header_transport value_trans_tcp separator <key_list> ->> {print("Transport: "..rule_body(1))}
+  <header> -> header_transport value_trans_tcp separator <key_list> ->> {print("Transport TCP: "..rule_body(1))}
+  <header> -> header_transport value_trans_udp separator <key_list> ->> {print("Transport UDP: "..rule_body(1))}
   <header> -> <session> ->> {}
   <header> -> <session> separator <key_list> ->> {}
   <header> -> header_range key_npt range ->> {print("Range: "..rule_body(2))}
@@ -103,4 +118,5 @@ rules:
   <key> -> key_npt range ->> {print("npt: "..rule_body(1))}
   <key> -> key_unicast ->> {print("unicast")}
   <key> -> key_interleaved range ->> {print("interleaved: "..rule_body(1))}
+  <key> -> key_client_port range ->> {print("client_port: "..rule_body(1))}
 

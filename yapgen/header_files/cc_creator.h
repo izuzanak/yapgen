@@ -373,7 +373,7 @@ PUSH_CODE(
 "\n"
 "#define _PREFIX_CLOSE_CHAR(RET_TERM_IDX) \\\n"
 "{\\\n"
-"   if (in_char == '\\0') {\\\n"
+"   if (input_idx >= source_string_length) {\\\n"
 "      return RET_TERM_IDX;\\\n"
 "   }\\\n"
 "\\\n"

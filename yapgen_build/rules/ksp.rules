@@ -49,8 +49,8 @@ terminals:
   val_uint {'"'.d.d*.'"'}
   val_sint {'"'.[+-].d.d*.'"'}
   val_current {"\"current\""}
-  val_time {'"'.(e+'1').d.'/'.(e+<13>).d.'/'.d.d.d.d.' '.(e+<12>).d.':'.<05>.d.':'.<05>.d.'"'}
-  val_bool {'"'.("True"+"False").'"'}
+  val_time {'"'.(e+'1').d.'/'.(e+<13>).d.'/'.d.d.d.d.' '.(e+<02>).d.':'.<05>.d.':'.<05>.d.'"'}
+  val_bool {'"'.([Tt]."rue"+[Ff]."alse").'"'}
   val_sign {'"'.('+'+'-').'"'}
   val_lang {'"'.<AZ>.<AZ>.'"'}
 
@@ -61,11 +61,12 @@ terminals:
   equal {'='}
 
   _SKIP_ {w.w*}
-  _END_ {'\0'}
+  _END_ {"</TRAIN_CAM_REQ>"}
 
 nonterminals:
   <start>
   <request>
+  <request_id>
   <command_list>
   <command>
   <shift_zoom_value>
@@ -74,8 +75,9 @@ nonterminals:
 rules:
   <start> -> xml_header <request> _END_ ->> {}
 
-  <request> -> tag_open TRAIN_CAM_REQ reqid equal val_uint <command_list> tag_end_open TRAIN_CAM_REQ tag_close ->> {
-    print("TRAIN_CAM_REQ reqid:"..rule_body(4))
+  <request> -> tag_open TRAIN_CAM_REQ <request_id> <command_list> ->> {}
+  <request_id> -> reqid equal val_uint ->> {
+    print("reqid:"..rule_body(2))
   }
 
   <command_list> -> <command_list> tag_open <command> tag_self_close ->> {}
