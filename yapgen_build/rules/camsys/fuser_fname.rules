@@ -8,8 +8,13 @@ terminals:
   records {"records\0"}
 
   event {"event_".d.d*.'_'.|\0|*.'\0'}
+
+  time_level_0 {"60_minutes\0"}
+  time_level_1 {"30_minutes\0"}
+  time_level_2 {"05_minutes\0"}
+
   time {d.d.d.d.'-'.d.d.'-'.d.d.'_'.d.d.':'.d.d.':'.d.d.'\0'}
-  camera {"cam_".d.d*.".mpg\0"}
+  camera {"cam_".d.d*.".mkv\0"}
 
   $ !!! FIXME comment this terminal before production
   _SKIP_ {'\n'}
@@ -35,9 +40,12 @@ rules:
   <term_list> -> <term_list> <term> ->> {}
   <term_list> -> <term> ->> {}
 
-  <term> -> events  ->> {print("events");}
-  <term> -> records ->> {print("records");}
-  <term> -> event   ->> {print("event");}
-  <term> -> time    ->> {print("time");}
-  <term> -> camera  ->> {print("camera");}
+  <term> -> events       ->> {print("events");}
+  <term> -> records      ->> {print("records");}
+  <term> -> event        ->> {print("event");}
+  <term> -> time_level_0 ->> {print("time_level_0");}
+  <term> -> time_level_1 ->> {print("time_level_1");}
+  <term> -> time_level_2 ->> {print("time_level_2");}
+  <term> -> time         ->> {print("time");}
+  <term> -> camera       ->> {print("camera");}
 

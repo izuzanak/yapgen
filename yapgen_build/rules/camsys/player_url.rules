@@ -1,0 +1,45 @@
+#vim: set syntax=rules:
+
+init_code: {}
+
+terminals:
+  address {"rtsp://".(<az>+<AZ>+d+[._-]).(<az>+<AZ>+d+[._-])*.':'.d.d*}
+
+  number {'/'.d.d*}
+  id {'/'.(<az>+<AZ>+d+[_-]).(<az>+<AZ>+d+[_-])*}
+
+  synced {"/synced"}
+  single {"/single"}
+  burst {"/burst"}
+
+  $ !!! FIXME comment this terminal before production
+  $_SKIP_ {'\n'}
+  $_END_ {'\0'}
+
+nonterminals:
+  <start>
+  <end_check>
+  <program>
+  <term_list>
+  <term>
+
+rules:
+
+  <start> -> <end_check> ->> {}
+
+  $ !!! FIXME comment these two rules before production
+  $<end_check> -> <program> _END_ ->> {}
+  $<end_check> -> _END_ ->> {}
+
+  <program> -> <term_list> ->> {}
+
+  <term_list> -> <term_list> <term> ->> {}
+  <term_list> -> <term> ->> {}
+
+  <term> -> address ->> {print("address");}
+  <term> -> id      ->> {print("id");}
+  <term> -> number  ->> {print("number");}
+  <term> -> single  ->> {print("single");}
+  <term> -> synced  ->> {print("synced");}
+  <term> -> burst   ->> {print("burst");}
+
