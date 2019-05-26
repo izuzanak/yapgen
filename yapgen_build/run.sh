@@ -96,9 +96,9 @@
 
 # - fuser_fname -
 #echo "fuser_fname.rules" 1>&2
-#./yapgen --parser_descr rules/camsys/fuser_fname.rules --source rules/camsys/fuser_fname.src
+./yapgen --parser_descr rules/camsys/fuser_fname.rules --source rules/camsys/fuser_fname.src
 
 # - player_url -
 #echo "player_url.rules" 1>&2
-./yapgen --parser_descr rules/camsys/player_url.rules --source rules/camsys/player_url.src
+#./yapgen --parser_descr rules/camsys/player_url.rules --source rules/camsys/player_url.src
 

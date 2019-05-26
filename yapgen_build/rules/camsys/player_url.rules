@@ -8,6 +8,9 @@ terminals:
   number {'/'.d.d*}
   id {'/'.(<az>+<AZ>+d+[_-]).(<az>+<AZ>+d+[_-])*}
 
+  last {"/last"}
+  all {"/all"}
+
   synced {"/synced"}
   single {"/single"}
   burst {"/burst"}
@@ -39,6 +42,8 @@ rules:
   <term> -> address ->> {print("address");}
   <term> -> id      ->> {print("id");}
   <term> -> number  ->> {print("number");}
+  <term> -> last    ->> {print("last");}
+  <term> -> all     ->> {print("all");}
   <term> -> single  ->> {print("single");}
   <term> -> synced  ->> {print("synced");}
   <term> -> burst   ->> {print("burst");}
