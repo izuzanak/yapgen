@@ -49,7 +49,7 @@ terminals:
   val_uint {'"'.d.d*.'"'}
   val_sint {'"'.[+-].d.d*.'"'}
   val_current {"\"current\""}
-  val_time {'"'.(e+'1').d.'/'.(e+<13>).d.'/'.d.d.d.d.' '.(e+<02>).d.':'.<05>.d.':'.<05>.d.'"'}
+  val_time {'"'.[01].d.'/'.<03>.d.'/'.d.d.d.d.' '.<02>.d.':'.<05>.d.':'.<05>.d.'"'}
   val_bool {'"'.([Tt]."rue"+[Ff]."alse").'"'}
   val_sign {'"'.('+'+'-').'"'}
   val_lang {'"'.<AZ>.<AZ>.'"'}

@@ -84,7 +84,7 @@
 
 # - ksp -
 #echo "ksp.rules" 1>&2
-#./yapgen --parser_descr rules/camsys/ksp.rules --source rules/camsys/ksp.src
+./yapgen --parser_descr rules/camsys/ksp.rules --source rules/camsys/ksp.src
 
 # - rtsp -
 #echo "rtsp.rules" 1>&2
@@ -96,7 +96,7 @@
 
 # - fuser_fname -
 #echo "fuser_fname.rules" 1>&2
-./yapgen --parser_descr rules/camsys/fuser_fname.rules --source rules/camsys/fuser_fname.src
+#./yapgen --parser_descr rules/camsys/fuser_fname.rules --source rules/camsys/fuser_fname.src
 
 # - player_url -
 #echo "player_url.rules" 1>&2
