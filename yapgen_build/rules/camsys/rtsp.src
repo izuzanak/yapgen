@@ -81,6 +81,18 @@ CompanyID: KnKV4M4I/B2FjJ1TToLycw==
 GUID: 00000000-0000-0000-0000-000000000000
 RegionData: 0
 ClientID: Linux_2.4_6.0.9.1235_play32_RN01_EN_586
+Transport: RTP/AVP/TCP;unicast;interleaved=0-1;ssrc=390336F2;mode="PLAY"
+Server: GStreamer RTSP server
+Session: h-xJCUPU6QuG2nGs; timeout=60
+Date: Wed, 29 May 2019 08:49:09 GMT
+Session: zQZ.fE9kznXZv6aP; timeout=60
+Session: kw$PLdYiSG6PpEO$; timeout=60
+CSeq: 3
+RTP-Info: url=rtsp://10.2.35.13:554/axis-media/media.amp/stream=0;seq=21128;rtptime=4155727015
+Range: npt=now-
+Server: GStreamer RTSP server
+Session: ING0GfODSaJOJo1b; timeout=60
+Date: Wed, 29 May 2019 12:08:23 GMT
 
 DESCRIBE rtsp://10.2.35.6:554/moxa-cgi/udpstream_ch1 RTSP/1.0
 RTSP/1.0 200 OK

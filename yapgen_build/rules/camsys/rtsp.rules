@@ -12,7 +12,7 @@ terminals:
   header_ct_type   {"Content-Type:"}
   header_ct_length {"Content-".[lL]."ength:"}
   header_transport {"Transport:"}
-  header_session   {"Session: ".(<az>+<AZ>+d)*}
+  header_session   {"Session: ".(l+d+[$-_.+])*}
   header_range     {"Range:"}
   header_ping      {"Ping: Pong"}
   header_accept    {"Accept:"}
@@ -32,6 +32,7 @@ terminals:
 
   number {d.d*.('.'+e).d*}
   range {d.d*.('.'+e).d*.'-'.((d.d*.('.'+e).d*)+e)}
+  npt_range {"now-"}
 
   key_timeout {"timeout="}
   key_npt {"npt="}
@@ -39,7 +40,10 @@ terminals:
   key_interleaved {"interleaved="}
   key_client_port {"client_port="}
 
-  value_url_rtsp {("rtsp://".(<az>+<AZ>+d+[:/._-]).((<az>+<AZ>+d+[:/._-]))*)+'*'}
+  key_value_ssrc {"ssrc=".(d+<af>+<AF>).(d+<af>+<AF>)*}
+  key_value_mode {"mode=".'"'.|"|*.'"'}
+
+  value_url_rtsp {("rtsp://".(l+d+[:/._-]).((l+d+[:/._-]))*)+'*'}
   value_cont_sdp {"application/sdp"}
   value_trans_tcp {"RTP/AVP/TCP"}
   value_trans_udp {"RTP/AVP".("/UDP"+e)}
@@ -65,6 +69,7 @@ nonterminals:
   <response>
   <header_list>
   <header>
+  <npt_range>
   <pubcmd_list>
   <pubcmd>
   <key_list>
@@ -76,10 +81,10 @@ rules:
 
   <message> -> <command> <header_list> ->> {}
   <message> -> <response> <header_list> ->> {}
- 
+
   <command> -> <pubcmd> value_url_rtsp rtsp_ver1 ->> {print("Command")}
   <response> -> resp_ok ->> {print("Response")}
- 
+
   <header_list> -> <header_list> <header> ->> {}
   <header_list> -> <header> ->> {}
 
@@ -92,10 +97,13 @@ rules:
   <header> -> header_transport value_trans_udp separator <key_list> ->> {print("Transport UDP: "..rule_body(1))}
   <header> -> <session> ->> {}
   <header> -> <session> separator <key_list> ->> {}
-  <header> -> header_range key_npt range ->> {print("Range: "..rule_body(2))}
+  <header> -> header_range key_npt <npt_range> ->> {print("Range: "..rule_body(2))}
   <header> -> header_ping ->> {print("Ping")}
   <header> -> header_ignore ->> {print("Ignore: "..rule_body(0))}
   <header> -> header_accept value_cont_sdp ->> {print("Accept: "..rule_body(1))}
+
+  <npt_range> -> range ->> {}
+  <npt_range> -> npt_range ->> {}
 
   <pubcmd_list> -> <pubcmd_list> separator <pubcmd> ->> {}
   <pubcmd_list> -> <pubcmd> ->> {}
@@ -119,4 +127,7 @@ rules:
   <key> -> key_unicast ->> {print("unicast")}
   <key> -> key_interleaved range ->> {print("interleaved: "..rule_body(1))}
   <key> -> key_client_port range ->> {print("client_port: "..rule_body(1))}
+
+  <key> -> key_value_ssrc ->> {print("ssrc: "..rule_body(0))}
+  <key> -> key_value_mode ->> {print("mode: "..rule_body(0))}
 
