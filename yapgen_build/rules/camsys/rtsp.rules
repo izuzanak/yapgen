@@ -43,7 +43,7 @@ terminals:
   key_value_ssrc {"ssrc=".(d+<af>+<AF>).(d+<af>+<AF>)*}
   key_value_mode {"mode=".'"'.|"|*.'"'}
 
-  value_url_rtsp {("rtsp://".(l+d+[:/._-]).((l+d+[:/._-]))*)+'*'}
+  value_url_rtsp {("rtsp://".(l+d+[:/._-+]).((l+d+[:/._-+]))*)+'*'}
   value_cont_sdp {"application/sdp"}
   value_trans_tcp {"RTP/AVP/TCP"}
   value_trans_udp {"RTP/AVP".("/UDP"+e)}
