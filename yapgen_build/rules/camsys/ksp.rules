@@ -10,7 +10,7 @@ terminals:
   RESET {"RESET"}
   START {"START"}
   STOP {"STOP"}
-  VER_XCHG {"VER_XCHG"}
+  VER_XCHG {"VER_XCHG".|//|*}
   SYNC_TIME {"SYNC_TIME"}
   SET_OCCUP_MODE {"SET_OCCUP_MODE"}
   TRAIN_CAM_CONF {"TRAIN_CAM_CONF"}
@@ -30,7 +30,6 @@ terminals:
   AUDIO {"AUDIO"}
 
   reqid {"reqid"}
-  ver_dicasm {"ver_dicasm"}
   time {"time"}
   mode {"mode"}
   t_fix_bef_alrm {"t_fix_bef_alrm"}
@@ -48,7 +47,6 @@ terminals:
 
   val_uint {'"'.d.d*.'"'}
   val_sint {'"'.[+-].d.d*.'"'}
-  val_current {"\"current\""}
   val_time {'"'.[01].d.'/'.<03>.d.'/'.d.d.d.d.' '.<02>.d.':'.<05>.d.':'.<05>.d.'"'}
   val_bool {'"'.([Tt]."rue"+[Ff]."alse").'"'}
   val_sign {'"'.('+'+'-').'"'}
@@ -92,8 +90,8 @@ rules:
   <command> -> STOP ->> {
     print(rule_body(0));
   }
-  <command> -> VER_XCHG ver_dicasm equal val_current ->> {
-    print(rule_body(0).." ver_dicasm:"..rule_body(3));
+  <command> -> VER_XCHG ->> {
+    print(rule_body(0));
   }
   <command> -> SYNC_TIME time equal val_time ->> {
     print(rule_body(0).." time:"..rule_body(3));

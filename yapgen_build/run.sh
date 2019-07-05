@@ -84,11 +84,11 @@
 
 # - ksp -
 #echo "ksp.rules" 1>&2
-#./yapgen --parser_descr rules/camsys/ksp.rules --source rules/camsys/ksp.src
+./yapgen --parser_descr rules/camsys/ksp.rules --source rules/camsys/ksp.src
 
 # - rtsp -
 #echo "rtsp.rules" 1>&2
-./yapgen --parser_descr rules/camsys/rtsp.rules --source rules/camsys/rtsp.src
+#./yapgen --parser_descr rules/camsys/rtsp.rules --source rules/camsys/rtsp.src
 
 # - rtsp_sdp -
 #echo "rtsp_sdp.rules" 1>&2
