@@ -1,0 +1,38 @@
+
+#vim: set syntax=rules:
+
+init_code: {}
+
+terminals:
+  cam_ip {"%%CAM_IP%%"}
+  nvr_loc_ip {"%%NVR_LOC_IP%%"}
+  nvr_rmt_ip {"%%NVR_RMT_IP%%"}
+
+  text {!'%'*+('%'.!'%'*)}
+
+  _END_ {'\0'}
+
+nonterminals:
+  <start>
+  <end_check>
+  <program>
+  <term_list>
+  <term>
+
+rules:
+  <start> -> <end_check> ->> {}
+
+  <end_check> -> <program> _END_ ->> {}
+  <end_check> -> _END_ ->> {}
+
+  <program> -> <term_list> ->> {}
+
+  <term_list> -> <term_list> <term> ->> {}
+  <term_list> -> <term> ->> {}
+
+  <term> -> cam_ip ->> {print("cam_ip");}
+  <term> -> nvr_loc_ip ->> {print("nvr_loc_ip");}
+  <term> -> nvr_rmt_ip ->> {print("nvr_rmt_ip");}
+
+  <term> -> text ->> {print("text");}
+

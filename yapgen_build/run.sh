@@ -84,7 +84,10 @@
 
 # - ksp -
 #echo "ksp.rules" 1>&2
-./yapgen --parser_descr rules/camsys/ksp.rules --source rules/camsys/ksp.src
+#./yapgen --parser_descr rules/camsys/ksp.rules --source rules/camsys/ksp.src
+
+#echo "ini_cfg.rules" 1>&2
+./yapgen --parser_descr rules/camsys/ini_cfg.rules --source rules/camsys/ini_cfg.src
 
 # - rtsp -
 #echo "rtsp.rules" 1>&2
