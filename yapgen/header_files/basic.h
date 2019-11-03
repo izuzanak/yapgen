@@ -1,6 +1,6 @@
 
-#ifndef __BASIC_H
-#define __BASIC_H
+#ifndef YAPGEN_BASIC_H
+#define YAPGEN_BASIC_H
 
 #define ENABLED 1
 #define MP_COMMA ,

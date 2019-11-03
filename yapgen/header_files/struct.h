@@ -1,6 +1,6 @@
 
-#ifndef __STRUCT_H
-#define __STRUCT_H
+#ifndef YAPGEN_STRUCT_H
+#define YAPGEN_STRUCT_H
 
 @begin
 include "ucl_string.h"

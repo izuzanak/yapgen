@@ -1,6 +1,6 @@
 
-#ifndef __UCL_STRING_H
-#define __UCL_STRING_H
+#ifndef YAPGEN_UCL_STRING_H
+#define YAPGEN_UCL_STRING_H
 
 @begin
 include "basic.h"

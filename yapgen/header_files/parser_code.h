@@ -1,6 +1,6 @@
 
-#ifndef __PARSER_CODE_H
-#define __PARSER_CODE_H
+#ifndef YAPGEN_PARSER_CODE_H
+#define YAPGEN_PARSER_CODE_H
 
 @begin
 include "struct.h"

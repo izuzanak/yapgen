@@ -1,6 +1,6 @@
 
-#ifndef __PARSER_RUN_H
-#define __PARSER_RUN_H
+#ifndef YAPGEN_PARSER_RUN_H
+#define YAPGEN_PARSER_RUN_H
 
 @begin
 include "parser_code.h"
