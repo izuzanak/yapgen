@@ -13,12 +13,12 @@ enable_testing()
 
 # - process target source file -
 function(process_source TARGET)
-  execute_process(COMMAND process --deps "${SOURCE_DIR}/${TARGET}.cc" ${COMP_HEADER_DIRS}
+  execute_process(COMMAND cont --deps "${SOURCE_DIR}/${TARGET}.cc" ${COMP_HEADER_DIRS}
       OUTPUT_VARIABLE DEPS
       ERROR_QUIET)
   add_custom_command(OUTPUT "${PROC_DIR}/p.${TARGET}.cc"
       DEPENDS ${DEPS}
-      COMMAND process "--output" "${PROC_DIR}/p.${TARGET}.cc" "${SOURCE_DIR}/${TARGET}.cc" ${COMP_HEADER_DIRS})
+      COMMAND cont "--output" "${PROC_DIR}/p.${TARGET}.cc" "${SOURCE_DIR}/${TARGET}.cc" ${COMP_HEADER_DIRS})
 endfunction()
 
 # - process component -
