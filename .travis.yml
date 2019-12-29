@@ -1,0 +1,21 @@
+
+language: cpp
+compiler: gcc
+os: linux
+git:
+  clone: false
+
+install:
+  - git clone --branch=master https://github.com/izuzanak/cont.git cont
+  - git clone --branch=master https://github.com/izuzanak/yapgen.git yapgen
+
+  - cd ~/build/cont/build
+  - cmake ..
+  - make
+  - sudo make install
+
+script:
+  - cd ~/build/yapgen/build
+  - cmake ../yapgen
+  - make
+
