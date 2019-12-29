@@ -37,7 +37,7 @@ if (rule_descrs.used != 0)
 
   do
   {
-    PUSH_FORMAT_CODE("%d %d ",MPAR(rd_ptr - rule_descrs.data,rd_ptr->head));
+    PUSH_FORMAT_CODE("%d %u ",MPAR((int)(rd_ptr - rule_descrs.data),rd_ptr->head));
   }
   while(++rd_ptr < rd_ptr_end);
 }
@@ -54,7 +54,7 @@ if (rule_descrs.used != 0)
 
   do
   {
-    PUSH_FORMAT_CODE("%d %d ",MPAR(rd_ptr - rule_descrs.data,rd_ptr->body_size));
+    PUSH_FORMAT_CODE("%d %u ",MPAR((int)(rd_ptr - rule_descrs.data),rd_ptr->body_size));
   }
   while(++rd_ptr < rd_ptr_end);
 }
