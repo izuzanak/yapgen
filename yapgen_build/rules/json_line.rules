@@ -1,0 +1,33 @@
+#vim: set syntax=rules:
+
+init_code: {}
+
+terminals:
+
+  line {|\x0d|*."\x0d\x0a"}
+
+  $ !!! FIXME comment this terminal before production
+  $_END_ {'\0'}
+
+nonterminals:
+  <start>
+  <end_check>
+  <program>
+  <term_list>
+  <term>
+
+rules:
+
+  <start> -> <end_check> ->> {}
+
+  $ !!! FIXME comment these two rules before production
+  $<end_check> -> <program> _END_ ->> {}
+  $<end_check> -> _END_ ->> {}
+
+  <program> -> <term_list> ->> {}
+
+  <term_list> -> <term_list> <term> ->> {}
+  <term_list> -> <term> ->> {}
+
+  <term> -> line ->> {print("line");}
+

@@ -15,6 +15,7 @@ ref
 regex
 test
 items
+opt-items
 all-items
 all-keys
 in

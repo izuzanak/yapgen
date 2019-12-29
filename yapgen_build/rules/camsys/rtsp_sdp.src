@@ -36,3 +36,14 @@ b=RR:0
 a=rtpmap:96 H264/90000
 a=fmtp:96 packetization-mode=1;profile-level-id=640016;sprop-parameter-sets=Z2QAFqzZQKAv+XAWoCAgSAAAAwAIAAADAKR4sWyw,aOvjyyLA;
 a=control:rtsp://10.2.1.10:8080/video/trackID=0
+m=video 0 RTP/AVP 97
+c=IN IP4 0.0.0.0
+a=rtpmap:97 H264/90000
+a=fmtp:97 packetization-mode=1; profile-level-id=640032; sprop-parameter-sets=J2QAMq2EBUViuKxUcQgKisVxWKjiECSFITk8nyfk/k/J8nm5s00IEkKQnJ5Pk/J/J+T5PNzZphcqAeAIn5ZsYAAAKkGAACpBm97raA==,KP4Niw==
+a=control:rtsp://10.2.1.10:8006/loop_0/56043005/last/all/single/video
+a=recvonly
+m=audio 0 RTP/AVP 0
+c=IN IP4 0.0.0.0
+a=rtpmap:0 PCMU/8035/1
+a=control:rtsp://10.2.1.10:8006/loop_0/56043005/last/all/single/audio
+a=recvonly

@@ -2,7 +2,7 @@
 
 # - uclang_parser -
 #echo "uclang_parser.rules" 1>&2
-#./yapgen --parser_descr rules/uclang_parser.rules --source rules/uclang_parser.src
+./yapgen --parser_descr rules/uclang_parser.rules --source rules/uclang_parser.src
 
 # - momas_log parser-
 #echo "momas_log.rules" 1>&2
@@ -31,6 +31,10 @@
 # - json -
 #echo "json.rules" 1>&2
 #./yapgen --parser_descr rules/json.rules --source rules/json.src
+
+# - json -
+#echo "json.rules" 1>&2
+#./yapgen --parser_descr rules/json_line.rules --source rules/json_line.src
 
 # - pack_code -
 #echo "pack_code.rules" 1>&2
@@ -87,7 +91,7 @@
 #./yapgen --parser_descr rules/camsys/ksp.rules --source rules/camsys/ksp.src
 
 #echo "ini_cfg.rules" 1>&2
-./yapgen --parser_descr rules/camsys/ini_cfg.rules --source rules/camsys/ini_cfg.src
+#./yapgen --parser_descr rules/camsys/ini_cfg.rules --source rules/camsys/ini_cfg.src
 
 # - rtsp -
 #echo "rtsp.rules" 1>&2
