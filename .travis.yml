@@ -5,6 +5,9 @@ os: linux
 git:
   clone: false
 
+before_install:
+  - sudo apt-get -y install liblua5.1-0-dev
+
 install:
   - git clone --branch=master https://github.com/izuzanak/cont.git cont
   - git clone --branch=master https://github.com/izuzanak/yapgen.git yapgen
