@@ -2,23 +2,20 @@
 language: cpp
 compiler: gcc
 os: linux
-git:
-  clone: false
 
 before_install:
   - sudo apt-get -y install liblua5.2-dev
 
 install:
-  - git clone --branch=master https://github.com/izuzanak/cont.git cont
-  - git clone --branch=master https://github.com/izuzanak/yapgen.git yapgen
+  - git clone --branch=master https://github.com/izuzanak/cont.git ~/build/izuzanak/cont
 
-  - cd ~/build/cont/build
+  - cd ~/build/izuzanak/cont/build
   - cmake ..
   - make
   - sudo make install
 
 script:
-  - cd ~/build/yapgen/build
+  - cd ~/build/izuzanak/yapgen/build
   - cmake ../yapgen
   - make
 
