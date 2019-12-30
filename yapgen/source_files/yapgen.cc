@@ -62,10 +62,12 @@ bool parse_arguments(int argc,char **argv,unsigned *arg_file_idxs)
 
 int main(int argc,char **argv)
 {/*{{{*/
+  int return_value = 0;
   unsigned arg_file_idxs[arg_option_cnt] = {0};
 
   // -- retrieve indexes of input/output files in program arguments --
-  if (!parse_arguments(argc,argv,arg_file_idxs)) {
+  if (!parse_arguments(argc,argv,arg_file_idxs))
+  {
     fprintf(stderr,
         "main: bad arguments format\n"
         "arguments: --parser_descr <file>     - create parser from description file\n"
@@ -74,9 +76,9 @@ int main(int argc,char **argv)
         "           --parser_save_rust <file> - save parser source in Rust to file\n"
         "           --parser_save_awk <file>  - save parser source in AWK to file\n"
         "           --parser_save_php <file>  - save parser source in PHP to file\n"
-        "           --source <file>           - load and parse source file\n"
-        );
-    exit(0);
+        "           --source <file>           - load and parse source file\n");
+
+    exit(1);
   }
 
   // -- variables describing parser and temporary strings --
@@ -93,12 +95,14 @@ int main(int argc,char **argv)
     if (!str.load_text_file(argv[arg_file_idxs[c_arg_parser_descr]]))
     {
       fprintf(stderr,"main: --parser_descr: Cannot open file\n");
+      return_value = 1;
     }
     else
     {
       if (!parser.create_from_rule_string(str))
       {
         parser.print_error(str);
+        return_value = 1;
       }
       else
       {
@@ -116,6 +120,7 @@ int main(int argc,char **argv)
     if (!parser_exist)\
     {\
       fprintf(stderr,"main: --parser_save_" # LANG ": Parser doesnt exist\n");\
+      return_value = 1;\
     }\
     else\
     {\
@@ -128,6 +133,7 @@ int main(int argc,char **argv)
       if (f == NULL)\
       {\
         fprintf(stderr,"main: --parser_save_" # LANG ": Cannot save parser source to file\n");\
+        return_value = 1;\
       }\
       else\
       {\
@@ -165,12 +171,14 @@ int main(int argc,char **argv)
     if (!str.load_text_file(argv[arg_file_idxs[c_arg_source]]))
     {
       fprintf(stderr,"main: --source: Cannot load source text\n");
+      return_value = 1;
     }
     else
     {
       if (!parser_exist)
       {
         fprintf(stderr,"main: --source: Parser doesnt exist\n");
+        return_value = 1;
       }
       else
       {
@@ -179,13 +187,15 @@ int main(int argc,char **argv)
 
         if (!parser_run.create_from_parser(parser))
         {
-          fprintf(stderr,"main: --source: Cannot create parser run for parser\n");
+          fprintf(stderr,"main: --source: Cannot create parser_run from parser\n");
+          return_value = 1;
         }
         else
         {
           if (!parser_run.parse_source_string(str))
           {
             parser_run.print_error(str);
+            return_value = 1;
           }
         }
 
@@ -199,6 +209,6 @@ int main(int argc,char **argv)
   // -- release parser from memory --
   parser.clear();
 
-  return 0;
+  return return_value;
 }/*}}}*/
 
