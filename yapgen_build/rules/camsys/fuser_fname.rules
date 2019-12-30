@@ -21,8 +21,8 @@ terminals:
   camera {"cam_".d.d*.".mkv\0"}
 
   $ !!! FIXME comment this terminal before production
-  $_SKIP_ {'\n'}
-  $_END_ {'\1'}
+  _SKIP_ {'\n'}
+  _END_ {'\1'}
 
 nonterminals:
   <start>
@@ -36,8 +36,8 @@ rules:
   <start> -> <end_check> ->> {}
 
   $ !!! FIXME comment these two rules before production
-  $<end_check> -> <program> _END_ ->> {}
-  $<end_check> -> _END_ ->> {}
+  <end_check> -> <program> _END_ ->> {}
+  <end_check> -> _END_ ->> {}
 
   <program> -> <term_list> ->> {}
 

@@ -16,6 +16,10 @@ install:
 
 script:
   - cd ~/build/izuzanak/yapgen/build
-  - cmake ../yapgen
+  - cmake ..
   - make
+  - sudo make install
+
+  - cd ~/build/izuzanak/yapgen/yapgen_build
+  - ./test.sh > test.out
 

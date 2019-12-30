@@ -7,7 +7,7 @@ terminals:
   line {|\x0d|*."\x0d\x0a"}
 
   $ !!! FIXME comment this terminal before production
-  $_END_ {'\0'}
+  _END_ {'\0'}
 
 nonterminals:
   <start>
@@ -21,8 +21,8 @@ rules:
   <start> -> <end_check> ->> {}
 
   $ !!! FIXME comment these two rules before production
-  $<end_check> -> <program> _END_ ->> {}
-  $<end_check> -> _END_ ->> {}
+  <end_check> -> <program> _END_ ->> {}
+  <end_check> -> _END_ ->> {}
 
   <program> -> <term_list> ->> {}
 

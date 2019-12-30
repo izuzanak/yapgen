@@ -46,7 +46,7 @@ function(process_component)
 endfunction()
 
 # - process yapgen -
-set(COMP_DIR ${CMAKE_CURRENT_SOURCE_DIR})
+set(COMP_DIR "${CMAKE_CURRENT_SOURCE_DIR}/yapgen")
 get_filename_component(COMP_NAME ${COMP_DIR} NAME)
 
 set(COMP_HEADER_DIRS "${COMP_DIR}/header_files")
@@ -56,6 +56,8 @@ set(COMP_COMP_DEFS)
 set(COMP_LINK_LIBS ${LUA_LIBRARIES})
 
 process_component()
+
+install(TARGETS yapgen RUNTIME DESTINATION bin)
 
 # -----
 
