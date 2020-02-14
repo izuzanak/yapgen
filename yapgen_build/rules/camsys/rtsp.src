@@ -1,4 +1,6 @@
-OPTIONS rtsp://10.2.1.176:8006/+++ RTSP/1.0
+OPTIONS rtsps://127.0.0.1:8006/mpv/56043001/last/all/single RTSP/1.0
+CSeq: 1
+User-Agent: Lavf58.20.100
 Accept: application/sdp
 CSeq: 2
 User-Agent: Lavf55.42.100
@@ -93,6 +95,8 @@ Range: npt=now-
 Server: GStreamer RTSP server
 Session: ING0GfODSaJOJo1b; timeout=60
 Date: Wed, 29 May 2019 12:08:23 GMT
+CSeq: 2
+Transport: RTP/AVP/TCP;unicast;interleaved=0-1
 
 DESCRIBE rtsp://10.2.35.6:554/moxa-cgi/udpstream_ch1 RTSP/1.0
 RTSP/1.0 200 OK

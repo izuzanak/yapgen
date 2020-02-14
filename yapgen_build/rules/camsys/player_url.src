@@ -4,4 +4,5 @@ rtsp://10.2.1.176:8006/mpv_001/56035008/540/burst
 rtsp://dev.nvr.cs:8006/mpv_001/56035008/540/burst
 rtsp://dev.nvr.cs:8006/mpv_001/56035008/last/0/burst
 rtsp://dev.nvr.cs:8006/mpv_001/56035008/540/all/burst
-rtsp://dev.nvr.cs:8006/mpv_001/56035008/540+1200/all/burst
+rtsps://dev.nvr.cs:8006/mpv_001/56035008/540+1200/all/burst
+rtsps://127.0.0.1:8006/mpv/56043001/last/all/single

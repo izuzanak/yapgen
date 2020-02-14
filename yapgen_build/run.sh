@@ -33,7 +33,7 @@
 #./yapgen --parser_descr rules/json.rules --source rules/json.src
 
 # - json -
-#echo "json.rules" 1>&2
+#echo "json_line.rules" 1>&2
 #./yapgen --parser_descr rules/json_line.rules --source rules/json_line.src
 
 # - pack_code -
