@@ -1,4 +1,22 @@
-OPTIONS rtsps://127.0.0.1:8006/mpv/56043001/last/all/single RTSP/1.0
+GET /mpv/56043001/last/all/single HTTP/1.1
+User-Agent: mpv 0.29.1
+Accept: */*
+Range: bytes=0-
+Connection: close
+Host: 127.0.0.1:8006
+Icy-MetaData: 1
+Host: 127.0.0.1:8006
+Accept: */*
+Accept-Language: en_US
+User-Agent: VLC/3.0.8 LibVLC/3.0.8
+Range: bytes=0-
+Server: GStreamer RTSP Server
+Connection: close
+Cache-Control: no-store
+Pragma: no-cache
+X-Server-IP-Address: 192.168.3.29
+Content-Type: application/x-rtsp-tunnelled
+Date: Sat, 15 Feb 2020 04:12:36 GMT
 CSeq: 1
 User-Agent: Lavf58.20.100
 Accept: application/sdp
@@ -97,8 +115,13 @@ Session: ING0GfODSaJOJo1b; timeout=60
 Date: Wed, 29 May 2019 12:08:23 GMT
 CSeq: 2
 Transport: RTP/AVP/TCP;unicast;interleaved=0-1
+CSeq: 0
+Public: OPTIONS, DESCRIBE, ANNOUNCE, GET_PARAMETER, PAUSE, PLAY, RECORD, SETUP, SET_PARAMETER, TEARDOWN
+Server: GStreamer RTSP server
+Date: Mon, 02 Mar 2020 09:46:50 GMT
 
 DESCRIBE rtsp://10.2.35.6:554/moxa-cgi/udpstream_ch1 RTSP/1.0
 RTSP/1.0 200 OK
 SET_PARAMETER * RTSP/1.0
 DESCRIBE rtsp://10.2.35.1:554/udpstream_ch1 RTSP/1.0
+HTTP/1.1 200 OK

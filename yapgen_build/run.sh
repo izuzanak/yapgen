@@ -2,7 +2,7 @@
 
 # - uclang_parser -
 #echo "uclang_parser.rules" 1>&2
-./yapgen --parser_descr rules/uclang_parser.rules --source rules/uclang_parser.src
+#./yapgen --parser_descr rules/uclang_parser.rules --source rules/uclang_parser.src
 
 # - momas_log parser-
 #echo "momas_log.rules" 1>&2
@@ -107,5 +107,5 @@
 
 # - player_url -
 #echo "player_url.rules" 1>&2
-#./yapgen --parser_descr rules/camsys/player_url.rules --source rules/camsys/player_url.src
+./yapgen --parser_descr rules/camsys/player_url.rules --source rules/camsys/player_url.src
 

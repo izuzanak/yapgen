@@ -3,7 +3,9 @@
 init_code: {}
 
 terminals:
-  resp_ok {"RTSP/1.0 200 OK"}
+  resp_ok {("RTSP/1.0"+("HTTP/1.".[01]))." 200 OK"}
+
+  http_ver1 {"HTTP/1.".[01]}
   rtsp_ver1 {"RTSP/1.0"}
 
   header_cseq      {"C".[sS]."eq:"}
@@ -13,12 +15,15 @@ terminals:
   header_ct_length {"Content-".[lL]."ength:"}
   header_transport {"Transport:"}
   header_session   {"Session: ".(l+d+[$-_.+])*}
-  header_range     {"Range:"}
   header_ping      {"Ping: Pong"}
-  header_accept    {"Accept:"}
   header_ignore    {(
       "Date"+
       "User-Agent"+
+      "Accept"+
+      "Accept-Language"+
+      "Range"+
+      "Host"+
+      "Icy-MetaData"+
       "Server"+
       "Cache-Control"+
       "RTP-Info"+
@@ -27,7 +32,10 @@ terminals:
       "CompanyID"+
       "GUID"+
       "RegionData"+
-      "ClientID"
+      "ClientID"+
+      "Connection"+
+      "Pragma"+
+      "X-Server-IP-Address"
   ).":".|\r|*}
 
   number {d.d*.('.'+e).d*}
@@ -43,13 +51,18 @@ terminals:
   key_value_ssrc {"ssrc=".(d+<af>+<AF>).(d+<af>+<AF>)*}
   key_value_mode {"mode=".'"'.|"|*.'"'}
 
+  value_url_http {('/'.(l+d+[:/._-+]).((l+d+[:/._-+=]))*)}
   value_url_rtsp {("rtsp".('s'+e)."://".(l+d+[:/._-+]).((l+d+[:/._-+=]))*)+'*'}
+  value_cont_x_rtsp_tunnelled {"application/x-rtsp-tunnelled"}
   value_cont_sdp {"application/sdp"}
   value_trans_tcp {"RTP/AVP/TCP"}
   value_trans_udp {"RTP/AVP".("/UDP"+e)}
 
+  command_get {"GET"}
   command_options {"OPTIONS"}
   command_describe {"DESCRIBE"}
+  command_announce {"ANNOUNCE"}
+  command_record {"RECORD"}
   command_setup {"SETUP"}
   command_teardown {"TEARDOWN"}
   command_play {"PLAY"}
@@ -69,6 +82,7 @@ nonterminals:
   <response>
   <header_list>
   <header>
+  <cont_type>
   <npt_range>
   <pubcmd_list>
   <pubcmd>
@@ -82,6 +96,7 @@ rules:
   <message> -> <command> <header_list> ->> {}
   <message> -> <response> <header_list> ->> {}
 
+  <command> -> <pubcmd> value_url_http http_ver1 ->> {print("Command")}
   <command> -> <pubcmd> value_url_rtsp rtsp_ver1 ->> {print("Command")}
   <response> -> resp_ok ->> {print("Response")}
 
@@ -91,16 +106,17 @@ rules:
   <header> -> header_cseq number ->> {print("Cseq: "..rule_body(1))}
   <header> -> header_public <pubcmd_list> ->> {}
   <header> -> header_ct_base value_url_rtsp ->> {print("Content-Base: "..rule_body(1))}
-  <header> -> header_ct_type value_cont_sdp ->> {print("Content-Type: "..rule_body(1))}
+  <header> -> header_ct_type <cont_type> ->> {print("Content-Type: "..rule_body(1))}
   <header> -> header_ct_length number ->> {print("Content-Length: "..rule_body(1))}
   <header> -> header_transport value_trans_tcp separator <key_list> ->> {print("Transport TCP: "..rule_body(1))}
   <header> -> header_transport value_trans_udp separator <key_list> ->> {print("Transport UDP: "..rule_body(1))}
   <header> -> <session> ->> {}
   <header> -> <session> separator <key_list> ->> {}
-  <header> -> header_range key_npt <npt_range> ->> {print("Range: "..rule_body(2))}
   <header> -> header_ping ->> {print("Ping")}
   <header> -> header_ignore ->> {print("Ignore: "..rule_body(0))}
-  <header> -> header_accept value_cont_sdp ->> {print("Accept: "..rule_body(1))}
+
+  <cont_type> -> value_cont_x_rtsp_tunnelled ->> {}
+  <cont_type> -> value_cont_sdp ->> {}
 
   <npt_range> -> range ->> {}
   <npt_range> -> npt_range ->> {}
@@ -108,8 +124,11 @@ rules:
   <pubcmd_list> -> <pubcmd_list> separator <pubcmd> ->> {}
   <pubcmd_list> -> <pubcmd> ->> {}
 
+  <pubcmd> -> command_get           ->> {print("Public: "..rule_body(0))}
   <pubcmd> -> command_options       ->> {print("Public: "..rule_body(0))}
   <pubcmd> -> command_describe      ->> {print("Public: "..rule_body(0))}
+  <pubcmd> -> command_announce      ->> {print("Public: "..rule_body(0))}
+  <pubcmd> -> command_record        ->> {print("Public: "..rule_body(0))}
   <pubcmd> -> command_setup         ->> {print("Public: "..rule_body(0))}
   <pubcmd> -> command_teardown      ->> {print("Public: "..rule_body(0))}
   <pubcmd> -> command_play          ->> {print("Public: "..rule_body(0))}
