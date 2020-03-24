@@ -1,0 +1,4 @@
+GET /index.html HTTP/1.1
+HEAD /some/uri/index.html HTTP/1.1
+HEAD /some/uri/index.html HTTP/1.1
+HEAD /some/uri/index.html HTTP/1.1

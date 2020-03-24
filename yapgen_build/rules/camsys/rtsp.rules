@@ -35,7 +35,8 @@ terminals:
       "ClientID"+
       "Connection"+
       "Pragma"+
-      "X-Server-IP-Address"
+      "X-Server-IP-Address"+
+      "x-sessioncookie"
   ).":".|\r|*}
 
   number {d.d*.('.'+e).d*}

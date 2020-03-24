@@ -1,0 +1,41 @@
+#vim: set syntax=rules:
+
+init_code: {}
+
+terminals:
+  get {"GET"}
+  head {"HEAD"}
+  post {"POST"}
+  put {"PUT"}
+
+  uri_component {'/'.|/|.|/ |*}
+  http {("HTTP/1.".[01])}
+  whitespace {w.w*}
+
+  $ !!! FIXME comment this terminal before production
+  _END_ {'\0'}
+
+nonterminals:
+  <start>
+  <end_check>
+  <term_list>
+  <term>
+
+rules:
+  <start> -> <end_check> ->> {}
+
+  $ !!! FIXME comment these two rules before production
+  <end_check> -> <term_list> _END_ ->> {}
+  <end_check> -> _END_ ->> {}
+
+  <term_list> -> <term> <term_list> ->> {}
+  <term_list> -> <term> ->> {}
+
+  <term> -> get ->> {print("get: "..rule_body(0));}
+  <term> -> head ->> {print("head: "..rule_body(0));}
+  <term> -> post ->> {print("post: "..rule_body(0));}
+  <term> -> put ->> {print("put: "..rule_body(0));}
+
+  <term> -> uri_component ->> {print("uri_component: "..rule_body(0));}
+  <term> -> http ->> {print("http: "..rule_body(0));}
+  <term> -> whitespace ->> {print("whitespace");}

@@ -107,5 +107,13 @@
 
 # - player_url -
 #echo "player_url.rules" 1>&2
-./yapgen --parser_descr rules/camsys/player_url.rules --source rules/camsys/player_url.src
+#./yapgen --parser_descr rules/camsys/player_url.rules --source rules/camsys/player_url.src
+
+# - http_request -
+#echo "http_request.rules" 1>&2
+#./yapgen --parser_descr rules/http/http_request.rules --source rules/http/http_request.src
+
+# - http_headers -
+#echo "http_headers.rules" 1>&2
+./yapgen --parser_descr rules/http/http_headers.rules --source rules/http/http_headers.src
 

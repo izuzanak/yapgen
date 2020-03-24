@@ -1,0 +1,41 @@
+#vim: set syntax=rules:
+
+init_code: {}
+
+terminals:
+  separator {':'.[ \t]*}
+  _END_ {"\r\n"}
+
+  header {|\r:|.|\r:|*}
+
+  $host {[Hh].[Oo].[Ss].[Tt]}
+  $connection {[Cc].[Oo].[Nn].[Nn].[Ee].[Cc].[Tt].[Ii].[Oo].[Nn]}
+  $accept {[Aa].[Cc].[Cc].[Ee].[Pp].[Tt]}
+  content_type {[Cc].[Oo].[Nn].[Tt].[Ee].[Nn].[Tt].'-'.[Tt].[Yy].[Pp].[Ee]}
+  content_length {[Cc].[Oo].[Nn].[Tt].[Ee].[Nn].[Tt].'-'.[Ll].[Ee].[Nn].[Gg].[Tt].[Hh]}
+
+nonterminals:
+  <start>
+  <end_check>
+  <term_list>
+  <term>
+
+rules:
+  <start> -> <end_check> ->> {}
+
+  <end_check> -> <term_list> _END_ ->> {}
+  <end_check> -> _END_ ->> {}
+
+  <term_list> -> <term> <term_list> ->> {}
+  <term_list> -> <term> ->> {}
+
+  <term> -> separator ->> {print("separator: '"..rule_body(0).."'");}
+
+  <term> -> header ->> {print("header: '"..rule_body(0).."'");}
+
+  $<term> -> host ->> {print("host");}
+  $<term> -> connection ->> {print("connection");}
+  $<term> -> accept ->> {print("accept");}
+  <term> -> content_type ->> {print("content_type");}
+  <term> -> content_length ->> {print("content_length");}
+

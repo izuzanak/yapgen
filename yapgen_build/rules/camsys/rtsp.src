@@ -1,4 +1,4 @@
-GET /mpv/56043001/last/all/single HTTP/1.1
+GET /mpv/56043001/20200309072000/all/single HTTP/1.1
 User-Agent: mpv 0.29.1
 Accept: */*
 Range: bytes=0-
@@ -119,6 +119,15 @@ CSeq: 0
 Public: OPTIONS, DESCRIBE, ANNOUNCE, GET_PARAMETER, PAUSE, PLAY, RECORD, SETUP, SET_PARAMETER, TEARDOWN
 Server: GStreamer RTSP server
 Date: Mon, 02 Mar 2020 09:46:50 GMT
+User-Agent: Lavf/58.20.100
+Range: bytes=0-
+Connection: close
+Host: 127.0.0.1:8006
+Icy-MetaData: 1
+x-sessioncookie: aa8503a5712f1bd2
+Accept: application/x-rtsp-tunnelled
+Pragma: no-cache
+Cache-Control: no-cache
 
 DESCRIBE rtsp://10.2.35.6:554/moxa-cgi/udpstream_ch1 RTSP/1.0
 RTSP/1.0 200 OK
