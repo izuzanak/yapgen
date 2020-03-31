@@ -46,7 +46,7 @@
 
 # - validator -
 #echo "validator.rules" 1>&2
-#./yapgen --parser_descr rules/validator.rules --source rules/validator.src
+./yapgen --parser_descr rules/validator.rules --source rules/validator.src
 
 # - gcg_msg_head -
 #echo "gcg_msg_head.rules" 1>&2
@@ -111,9 +111,9 @@
 
 # - http_request -
 #echo "http_request.rules" 1>&2
-#./yapgen --parser_descr rules/http/http_request.rules --source rules/http/http_request.src
+./yapgen --parser_descr rules/http/http_request.rules --source rules/http/http_request.src
 
 # - http_headers -
 #echo "http_headers.rules" 1>&2
-./yapgen --parser_descr rules/http/http_headers.rules --source rules/http/http_headers.src
+#./yapgen --parser_descr rules/http/http_headers.rules --source rules/http/http_headers.src
 

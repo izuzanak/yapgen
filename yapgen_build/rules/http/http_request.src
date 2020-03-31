@@ -1,4 +1,3 @@
-GET /index.html HTTP/1.1
-HEAD /some/uri/index.html HTTP/1.1
-HEAD /some/uri/index.html HTTP/1.1
-HEAD /some/uri/index.html HTTP/1.1
+HEAD /a/b/c/index.html?value=1&val%20e1=2 HTTP/1.1
+GET /translate.google%20.cz/?source=osdd#auto|auto|Hello+world HTTP/1.1
+GET /translate.google.cz/?source=a%20b%20c HTTP/1.1

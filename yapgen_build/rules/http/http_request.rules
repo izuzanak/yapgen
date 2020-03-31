@@ -8,7 +8,15 @@ terminals:
   post {"POST"}
   put {"PUT"}
 
-  uri_component {'/'.|/|.|/ |*}
+  component {'/'.|/?% |*}
+  enc_component {'/'.(|/?% |+('%'.(<09>+<af>+<AF>).(<09>+<af>+<AF>)))*}
+
+  id {[?&].|=%|.|=%|*}
+  enc_id {[?&].(|=%|+('%'.(<09>+<af>+<AF>).(<09>+<af>+<AF>))).(|=%|+('%'.(<09>+<af>+<AF>).(<09>+<af>+<AF>)))*}
+
+  value {'='.|&% |*}
+  enc_value {'='.(|&% |+('%'.(<09>+<af>+<AF>).(<09>+<af>+<AF>)))*}
+
   http {("HTTP/1.".[01])}
   whitespace {w.w*}
 
@@ -36,6 +44,14 @@ rules:
   <term> -> post ->> {print("post: "..rule_body(0));}
   <term> -> put ->> {print("put: "..rule_body(0));}
 
-  <term> -> uri_component ->> {print("uri_component: "..rule_body(0));}
+  <term> -> component ->> {print("component: "..rule_body(0));}
+  <term> -> enc_component ->> {print("enc_component: "..rule_body(0));}
+
+  <term> -> id ->> {print("id: "..rule_body(0));}
+  <term> -> enc_id ->> {print("enc_id: "..rule_body(0));}
+
+  <term> -> value ->> {print("value: "..rule_body(0));}
+  <term> -> enc_value ->> {print("enc_value: "..rule_body(0));}
+
   <term> -> http ->> {print("http: "..rule_body(0));}
   <term> -> whitespace ->> {print("whitespace");}

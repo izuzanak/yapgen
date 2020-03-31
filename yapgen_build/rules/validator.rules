@@ -27,7 +27,7 @@ terminals:
   in {"in"}
 
   $ !!! FIXME comment this terminal before production
-   _SKIP_ {w.w*}
+  _SKIP_ {w.w*}
   _END_ {'\0'}
 
 nonterminals:
