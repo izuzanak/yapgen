@@ -1,0 +1,282 @@
+#vim: set syntax=rules:
+
+init_code:
+{
+  tabs = {\};
+} 
+
+terminals:
+  single_char_const {'\''.!'\0'.'\''}
+  octal_char_const {'\''.'\\'.<07>.(<07>+e).(<07>+e).'\''}
+  hex_char_const {'\''.'\\'.'x'.(<09>+<af>+<AF>).(<09>+<af>+<AF>+e).'\''}
+  backslash_char_const {'\''.'\\'.[abfnrtv\\?\'"].'\''}
+
+  bin_int_const {'0'.[bB].[01].[01]*}
+  oct_int_const {'0'.<07>*}
+  dec_int_const {<19>.d*}
+  hex_int_const {'0'.[xX].(<09>+<af>+<AF>).(<09>+<af>+<AF>)*}
+
+  float_const {(d*.((d.'.')+('.'.d)).d*)+((d*.((d.'.')+('.'.d)+d).d*).[eE].([+-]+e).d.d*)}
+
+  string_const {'"'.(|\\\"|+(('\\'.<07>.(<07>+e).(<07>+e))+('\\'.'x'.(<09>+<af>+<AF>).(<09>+<af>+<AF>+e))+('\\'.[abfnrtv\\?\'"])))*.'"'}
+
+  id {('_'+l).('_'+l+d)*}
+  path {("</".('_'+l+d).('_'+l+d)*).('/'.('_'+l+d).('_'+l+d)*)*.'>'}
+
+  states {"states"}
+  output {"output"}
+  watch {"watch"}
+  event {"event"}
+  fire {"fire"}
+
+  lr_br {'('}
+  rr_br {')'}
+
+  lc_br {'{'}
+  rc_br {'\}'}
+
+  le_br {'['}
+  re_br {']'}
+
+  comma {','}
+
+  if {"if"}
+  else {"else"}
+
+  switch {"switch"}
+  case {"case"}
+  default {"default"}
+
+  equal {'='}
+  double_ampersand {"&&"}
+  double_pipe {"||"}
+  double_equal {"=="}
+  exclamation_equal {"!="}
+  rs_br {'>'}
+  ls_br {'<'}
+  rs_br_equal {">="}
+  ls_br_equal {"<="}
+  plus {'+'}
+  minus {'-'}
+  asterisk {'*'}
+  slash {'/'}
+  percent {'%'}
+  question {'?'}
+  exclamation {'!'}
+  colon {':'}
+
+  dot {'.'}
+  right_arrow {"->"}
+
+  _SKIP_ {w.w*}
+  _SKIP__ {'#'.!'\n'*.'\n'}
+  _SKIP___ {"//".!'\n'*.'\n'}
+  _SKIP____ {"/*".(!'*'+('*'.!'/'))*."*/"}
+  _END_ {'\0'}
+
+nonterminals:
+  <start>
+  <end_check>
+  <program>
+
+  <state_list>
+  <state>
+  <state_name>
+
+  <event_list>
+  <event>
+
+  <command_list>
+  <command>
+
+  <command_block>
+  <command_block_begin>
+
+  <state_mod_list>
+  <state_mod>
+
+  <state_ids>
+  <state_id_list>
+  <state_id>
+
+  <output_mod_list>
+  <output_mod>
+
+  <element_ids>
+  <element_id_list>
+  <element_id>
+
+  <element_inits_empty>
+  <element_inits>
+  <element_init_list>
+  <element_init>
+
+  <parameters>
+  <parameters_begin>
+
+  <parameter_list>
+
+  <condition>
+  <if_else>
+
+  <exp>
+
+   <H>
+   <G>
+   <F>
+   <E>
+   <D>
+   <C>
+   <B>
+   <A>
+
+rules:
+  <start> -> <end_check> ->> {}
+
+  <end_check> -> <program> _END_ ->> {}
+  <end_check> -> _END_ ->> {}
+
+  <program> -> <state_list>  ->> {}
+
+  <state_list> -> <state> <state_list> ->> {}
+  <state_list> -> <state> ->> {}
+
+  <state> -> <state_name> <event_list> rs_br lc_br <command_list> rc_br ->>
+  {
+    table.remove(tabs)
+  }
+  <state_name> -> id ls_br ->> {table.insert(tabs," s  ")}
+
+  <event_list> -> <event> <event_list> ->> {}
+  <event_list> -> <event> ->> {print(table.concat(tabs,"").."event: "..rule_body(0))}
+  <event> -> id ->> {}
+
+  <command_list> -> <command> <command_list> ->> {}
+  <command_list> -> <command> ->> {}
+
+  <command> -> <command_block> ->>
+  {
+    table.remove(tabs)
+  }
+
+  <command_block> -> <command_block_begin> <command_list> rc_br ->> {}
+  <command_block_begin> -> lc_br ->> {table.insert(tabs," b  ")}
+
+  <command> -> states <state_mod_list> ->> {}
+
+  <state_mod_list> -> <state_mod> <state_mod_list> ->> {}
+  <state_mod_list> -> <state_mod> ->> {}
+
+  <state_mod> -> equal <state_ids> ->> {print(table.concat(tabs,"").."states set")}
+  <state_mod> -> plus <state_ids> ->> {print(table.concat(tabs,"").."states add")}
+  <state_mod> -> minus <state_ids> ->> {print(table.concat(tabs,"").."states remove")}
+
+  <state_ids> -> lr_br <state_id_list> rr_br ->> {}
+
+  <state_id_list> -> <state_id> <state_id_list> ->> {}
+  <state_id_list> -> <state_id> ->> {}
+  <state_id> -> id ->> {print(table.concat(tabs,"").."state_id: "..rule_body(0))}
+
+  <command> -> output <output_mod_list> ->> {}
+
+  <output_mod_list> -> <output_mod> <output_mod_list> ->> {}
+  <output_mod_list> -> <output_mod> ->> {}
+
+  <output_mod> -> equal <element_inits_empty> ->> {print(table.concat(tabs,"").."elements set")}
+  <output_mod> -> plus <element_inits> ->> {print(table.concat(tabs,"").."elements add")}
+  <output_mod> -> minus <element_ids> ->> {print(table.concat(tabs,"").."elements remove")}
+
+  <element_ids> -> lr_br <element_id_list> rr_br ->> {}
+  <element_id_list> -> <element_id> <element_id_list> ->> {}
+  <element_id_list> -> <element_id> ->> {}
+  <element_id> -> id ->> {print(table.concat(tabs,"").."element_id: "..rule_body(0))}
+
+  <element_inits_empty> -> lr_br <element_init_list> rr_br ->> {}
+  <element_inits_empty> -> lr_br rr_br ->> {}
+
+  <element_inits> -> lr_br <element_init_list> rr_br ->> {}
+  <element_init_list> -> <element_init> <element_init_list> ->> {}
+  <element_init_list> -> <element_init> ->> {}
+  <element_init> -> id equal id <parameters> ->> {print(table.concat(tabs,"").."element_init: "..rule_body(0).." = "..rule_body(2))}
+
+  <parameters> -> <parameters_begin> rr_br ->> {table.remove(tabs)}
+  <parameters> -> <parameters_begin> <parameter_list> rr_br ->> {table.remove(tabs)}
+
+  <parameters_begin> -> lr_br ->> {table.insert(tabs," p  ");}
+
+  <parameter_list> -> <parameter_list> comma <exp> ->> {print(table.concat(tabs,"").."parameter");}
+  <parameter_list> -> <exp> ->> {print(table.concat(tabs,"").."parameter");}
+
+  <command> -> watch path right_arrow id ->> {print(table.concat(tabs,"").."watch "..rule_body(1).." -> "..rule_body(3))}
+  <command> -> event id dot id right_arrow id ->> {print(table.concat(tabs,"").."event "..rule_body(1).." . "..rule_body(3).." -> "..rule_body(5))}
+  <command> -> fire right_arrow id ->> {print(table.concat(tabs,"").."fire "..rule_body(2))}
+
+  <command> -> if <condition> <if_else> ->> {}
+  <if_else> -> <command> ->> {print(table.concat(tabs,"").."if statement");}
+  <if_else> -> <command> else <command> ->> {print(table.concat(tabs,"").."if else statement");}
+
+  <condition> -> <exp> ->> {}
+
+   $ -- exp --
+   <exp> -> <H> ->> {}
+
+   $ -- exp operators --
+   <H> -> <G> ->> {}
+
+   <G> -> <G> double_ampersand <F> ->> {print(table.concat(tabs,"").."operator binary double_ampersand")}
+   <G> -> <G> double_pipe <F> ->> {print(table.concat(tabs,"").."operator binary double_pipe")}
+   <G> -> <F> ->> {}
+
+   <F> -> <F> double_equal <E> ->> {print(table.concat(tabs,"").."operator binary double_equal")}
+   <F> -> <F> exclamation_equal <E> ->> {print(table.concat(tabs,"").."operator binary exclamation_equal")}
+   <F> -> <F> rs_br <E> ->> {print(table.concat(tabs,"").."operator binary rs_br")}
+   <F> -> <F> ls_br <E> ->> {print(table.concat(tabs,"").."operator binary ls_br")}
+   <F> -> <F> rs_br_equal <E> ->> {print(table.concat(tabs,"").."operator binary rs_br_equal")}
+   <F> -> <F> ls_br_equal <E> ->> {print(table.concat(tabs,"").."operator binary ls_br_equal")}
+   <F> -> <E> ->> {}
+   <E> -> <D> ->> {}
+   <D> -> <C> ->> {}
+
+   <C> -> <C> plus <B> ->> {print(table.concat(tabs,"").."operator binary plus")}
+   <C> -> <C> minus <B> ->> {print(table.concat(tabs,"").."operator binary minus")}
+   <C> -> <B> ->> {}
+
+   <B> -> <B> asterisk <A> ->> {print(table.concat(tabs,"").."operator binary asterisk")}
+   <B> -> <B> slash <A> ->> {print(table.concat(tabs,"").."operator binary slash")}
+   <B> -> <B> percent <A> ->> {print(table.concat(tabs,"").."operator binary percent")}
+
+   <B> -> <A> ->> {}
+   <A> -> plus <A> ->> {print(table.concat(tabs,"").."operator unary pre_plus")}
+   <A> -> minus <A> ->> {print(table.concat(tabs,"").."operator unary pre_minus")}
+   <A> -> exclamation <A> ->> {print(table.concat(tabs,"").."operator unary pre_exclamation")}
+
+   $ -- indexing --
+   <A> -> <A> le_br <H> re_br ->> {}
+
+   $ -- input --
+   <A> -> path ->> {print(table.concat(tabs,"").."input \""..rule_body(0).."\"")}
+
+   $ -- exp bracket --
+   <A> -> lr_br <H> rr_br ->> {}
+
+   $ -- identifier --
+   <A> -> id ->> {print(table.concat(tabs,"").."identifier \""..rule_body(0).."\"")}
+
+   $ -- conditional expression --
+   <H> -> <H> question <exp> colon <exp> ->> {print(table.concat(tabs,"").."conditional expression")}
+
+   $ -- constant values --
+   <A> -> single_char_const ->> {print(table.concat(tabs,"").."const char: \""..rule_body(0).."\"")}
+   <A> -> octal_char_const ->> {print(table.concat(tabs,"").."const octal char: \""..rule_body(0).."\"")}
+   <A> -> hex_char_const ->> {print(table.concat(tabs,"").."const hex char: \""..rule_body(0).."\"")}
+   <A> -> backslash_char_const ->> {print(table.concat(tabs,"").."const backslash char: \""..rule_body(0).."\"")}
+
+   <A> -> bin_int_const ->> {print(table.concat(tabs,"").."const bin int: \""..rule_body(0).."\"")}
+   <A> -> oct_int_const ->> {print(table.concat(tabs,"").."const oct int: \""..rule_body(0).."\"")}
+   <A> -> dec_int_const ->> {print(table.concat(tabs,"").."const dec int: \""..rule_body(0).."\"")}
+   <A> -> hex_int_const ->> {print(table.concat(tabs,"").."const hex int: \""..rule_body(0).."\"")}
+
+   <A> -> float_const ->> {print(table.concat(tabs,"").."const float: \""..rule_body(0).."\"")}
+
+   <A> -> string_const ->> {print(table.concat(tabs,"").."const string register")}
+

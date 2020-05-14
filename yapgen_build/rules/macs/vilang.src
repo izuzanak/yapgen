@@ -1,0 +1,85 @@
+
+// script start events: start, check, <event_name>, ...
+
+route<start>
+{
+  output = (
+      logo_id = elem_image(100,100,200,200,"logo/" + </info/owner> + ".png")
+      announce_id = text_rot("Text mimořádného hlášení",1.0)
+  )
+  watch </control/phase> -> control_phase
+  fire -> rerun
+}
+
+route<rerun>
+{
+  output + (
+    train_id = text(</info/train/name>[</info/lang>])
+    table_id = table(</info/route>)
+  )
+
+  event table_id.finished -> route_finished
+}
+
+route<route_finished>
+{
+  states - (route)
+  output - (train_id table_id)
+
+  if </control/phase> == "j"
+  {
+    states + (advert)
+  }
+  else
+  {
+    states + (next_station)
+  }
+
+  fire -> rerun
+}
+
+advert<rerun>
+{
+  output + (
+    train_id = text(</info/train/name>[</info/lang>])
+    video_id = video(</info/advertisement>)
+  )
+
+  event video_id.finished -> video_finished
+}
+
+advert<video_finished>
+{
+  states - (advert) + (route)
+  output - (train_id video_id)
+  fire -> rerun
+}
+
+advert<control_phase>
+{
+  if </control/phase> != "j"
+  {
+    states - (advert) + (route)
+    output - (train_id video_id)
+    fire -> rerun
+  }
+}
+
+next_station<rerun>
+{
+  output + (
+    train_id = text(</info/train/name>[</info/lang>])
+    next_station_id = text_rot(</info/route/next_station>[</info/lang>],1.0)
+  )
+}
+
+next_station<control_phase>
+{
+  if </control/phase> == "j"
+  {
+    states - (next_station) + (route)
+    output - (train_id next_station_id)
+    fire -> rerun
+  }
+}
+
