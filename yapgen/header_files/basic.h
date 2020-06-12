@@ -367,6 +367,21 @@ enum
 #define debug_message_6(MSG)
 #endif
 
+typedef bool bb;
+typedef char bc;
+typedef unsigned char uc;
+typedef short int si;
+typedef unsigned short int usi;
+typedef int bi;
+typedef unsigned int ui;
+typedef long int li;
+typedef unsigned long uli;
+typedef long long int lli;
+typedef unsigned long long int ulli;
+typedef float bf;
+typedef double bd;
+typedef long double ld;
+
 // - t_ps_uint should have always same size as pointer -
 #if SYSTEM_TYPE == SYSTEM_TYPE_UNIX || SYSTEM_TYPE == SYSTEM_TYPE_WINDOWS
 typedef long unsigned t_ps_uint;

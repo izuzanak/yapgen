@@ -30,7 +30,7 @@
 
 # - json -
 #echo "json.rules" 1>&2
-./yapgen --parser_descr rules/json.rules --source rules/json.src
+#./yapgen --parser_descr rules/json.rules --source rules/json.src
 
 # - json -
 #echo "json_line.rules" 1>&2
@@ -72,7 +72,7 @@
 
 # - regexp -
 #echo "regexp.rules" 1>&2
-#./yapgen --parser_descr rules/regexp.rules --source rules/regexp.src
+./yapgen --parser_descr rules/regexp.rules --source rules/regexp.src
 
 # - packet_parser -
 #echo "packet_parser.rules" 1>&2
