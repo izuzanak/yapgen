@@ -701,7 +701,7 @@ class module_c:
 configuration = configuration_c()
 
 # set build and link compiler options
-opt_build = "-O2 -DNDEBUG -Wno-class-memaccess " # -DNDEBUG
+opt_build = "-std=c++11 -O2 -DNDEBUG -Wno-class-memaccess " # -DNDEBUG
 opt_link = ""
 
 if configuration.shell_type == configuration.C_SHELL_TYPE_BASH:
