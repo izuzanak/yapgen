@@ -1,0 +1,122 @@
+#vim: set syntax=rules:
+
+init_code:
+{
+  tabs = {\};
+}
+
+terminals:
+   string {'"'.(|\\\"|+(('\\'.["\\/bfnrt])+('\\'.'u'.(<09>+<af>+<AF>).(<09>+<af>+<AF>).(<09>+<af>+<AF>).(<09>+<af>+<AF>))))*.'"'}
+   integer {('-'+e).('0'+(<19>.d*))}
+   float {('-'+e).('0'+(<19>.d*)).(('.'.d*)+e).(([eE].([+-]+e).d.d*)+e)}
+
+   true {"true"}
+   false {"false"}
+   null {"null"}
+
+   lc_br {'{'}
+   rc_br {'\}'}
+
+   le_br {'['}
+   re_br {']'}
+
+   comma {','}
+   colon {':'}
+
+   _SKIP_ {w.w*}
+   _SKIP__ {'#'.!'\n'*.'\n'}
+   _SKIP___ {"//".!'\n'*.'\n'}
+   _SKIP____ {"/*".(!'*'+('*'.!'/'))*."*/"}
+   _END_ {'\0'}
+
+nonterminals:
+   <start>
+   <end_check>
+
+   <pairs>
+   <pair_list>
+   <pair>
+   <pair_key>
+
+   <values>
+   <value_list>
+   <value_zero>
+   <value_next>
+
+   <value>
+
+rules:
+   <start> -> <end_check> ->> {}
+   <end_check> -> <value> _END_ ->> {}
+
+   <pairs> -> lc_br rc_br ->> {}
+   <pairs> -> lc_br <pair_list> rc_br ->> {}
+
+   <pair_list> -> <pair_list> comma <pair> ->> {}
+   <pair_list> -> <pair> ->> {}
+
+   <pair> -> <pair_key> colon <value> ->> {}
+
+   <pair_key> -> string ->>
+   {
+     print(table.concat(tabs,"").."object key: "..rule_body(0));
+   }
+
+   <values> -> le_br re_br ->> {}
+   <values> -> <value_zero> <value_list> re_br ->>
+   {
+     print(table.concat(tabs,"").."index done");
+   }
+
+   <value_list> -> <value_next> <value> ->> {}
+   <value_list> -> <value> ->> {}
+
+   <value_zero> -> le_br ->>
+   {
+     print(table.concat(tabs,"").."index zero");
+   }
+
+   <value_next> -> <value_list> comma ->>
+   {
+     print(table.concat(tabs,"").."index next");
+   }
+
+   <value> -> string ->>
+   {
+     print(table.concat(tabs,"").."value: "..rule_body(0));
+   }
+
+   <value> -> integer ->>
+   {
+     print(table.concat(tabs,"").."value: "..rule_body(0));
+   }
+
+   <value> -> float ->>
+   {
+     print(table.concat(tabs,"").."value: "..rule_body(0));
+   }
+
+   <value> -> <pairs> ->>
+   {
+     print(table.concat(tabs,"").."value: "..rule_body(0));
+   }
+
+   <value> -> <values> ->>
+   {
+     print(table.concat(tabs,"").."value: "..rule_body(0));
+   }
+
+   <value> -> true ->>
+   {
+     print(table.concat(tabs,"").."value: "..rule_body(0));
+   }
+
+   <value> -> false ->>
+   {
+     print(table.concat(tabs,"").."value: "..rule_body(0));
+   }
+   <value> -> null ->>
+   {
+     print(table.concat(tabs,"").."value: "..rule_body(0));
+   }
+

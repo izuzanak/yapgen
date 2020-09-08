@@ -36,6 +36,10 @@
 #echo "json_line.rules" 1>&2
 #./yapgen --parser_descr rules/json_line.rules --source rules/json_line.src
 
+# - jspath -
+#echo "jspath.rules" 1>&2
+./yapgen --parser_descr rules/jspath.rules --source rules/jspath.src
+
 # - pack_code -
 #echo "pack_code.rules" 1>&2
 #./yapgen --parser_descr rules/pack_code.rules --source rules/pack_code.src
@@ -72,7 +76,7 @@
 
 # - regexp -
 #echo "regexp.rules" 1>&2
-./yapgen --parser_descr rules/regexp.rules --source rules/regexp.src
+#./yapgen --parser_descr rules/regexp.rules --source rules/regexp.src
 
 # - packet_parser -
 #echo "packet_parser.rules" 1>&2
