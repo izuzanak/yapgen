@@ -267,6 +267,7 @@ PUSH_CODE(
   {/*{{{*/\
     fa_state_s &state = states[STATE_IDX];\
     ui_array_s &state_moves = final_automata.state_moves[STATE_IDX];\
+    unsigned f_idx = 0; /* - full index - */\
     \
     if (state.moves.used != 0) {\
       PUSH_CODE(\
@@ -280,12 +281,13 @@ PUSH_CODE(
         if (state_moves[e_idx] != target_state) {\
           if (target_state != c_idx_not_exist) {\
             if (e_idx - b_idx > 1) {\
-              if (b_idx == 0) {\
+              if (b_idx == f_idx) {\
                 PUSH_FORMAT_CODE(\
                                  "   if (in_char < %d) {\n"\
                                  "      goto state_%d_label;\n"\
                                  "   }\n"\
                                  ,MPAR(e_idx,target_state));\
+                f_idx = e_idx;\
               }\
               else {\
                 PUSH_FORMAT_CODE(\
@@ -301,6 +303,9 @@ PUSH_CODE(
                                "      goto state_%d_label;\n"\
                                "   }\n"\
                                ,MPAR(b_idx,target_state));\
+              if (b_idx == f_idx) {\
+                ++f_idx;\
+              }\
             }\
           }\
           \
@@ -311,12 +316,21 @@ PUSH_CODE(
       \
       if (target_state != c_idx_not_exist) {\
         if (e_idx - b_idx > 1) {\
-          if (b_idx == 0) {\
-            PUSH_FORMAT_CODE(\
-                             "   if (in_char < %d) {\n"\
-                             "      goto state_%d_label;\n"\
-                             "   }\n"\
-                             ,MPAR(e_idx,target_state));\
+          if (b_idx == f_idx) {\
+            if (e_idx < 256) {\
+              PUSH_FORMAT_CODE(\
+                               "   if (in_char < %d) {\n"\
+                               "      goto state_%d_label;\n"\
+                               "   }\n"\
+                               ,MPAR(e_idx,target_state));\
+            }\
+            else\
+            {\
+              PUSH_FORMAT_CODE(\
+                               "   goto state_%d_label;\n"\
+                               ,target_state);\
+            }\
+            f_idx = e_idx;\
           }\
           else {\
             if (e_idx < 256) {\
@@ -346,15 +360,22 @@ PUSH_CODE(
       }\
     }\
     \
-    if (state.final != c_idx_not_exist) {\
-      PUSH_FORMAT_CODE(\
-                       "   return %d;\n"\
-                       "\n"\
-                       ,state.final);\
+    if (f_idx != 256) {\
+      if (state.final != c_idx_not_exist) {\
+        PUSH_FORMAT_CODE(\
+                         "   return %d;\n"\
+                         "\n"\
+                         ,state.final);\
+      }\
+      else {\
+        PUSH_CODE(\
+                  "   return c_idx_not_exist;\n"\
+                  "\n"\
+                 );\
+      }\
     }\
     else {\
       PUSH_CODE(\
-                "   return c_idx_not_exist;\n"\
                 "\n"\
                );\
     }\
