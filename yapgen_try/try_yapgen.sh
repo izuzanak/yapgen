@@ -64,8 +64,8 @@ do
   esac
 
   $YG_BUILD_DIR/yapgen \
-    --parser_descr $YG_BUILD_DIR/rules/$RES_NAME.rules \
-    --source $YG_BUILD_DIR/rules/$RES_NAME.src
+    --parser_descr $YG_BUILD_DIR/../build/rules/$RES_NAME.rules \
+    --source $YG_BUILD_DIR/../build/rules/$RES_NAME.src
 
   shift
 done

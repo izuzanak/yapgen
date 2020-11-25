@@ -25,7 +25,7 @@ Need for fast parser generation and testing.
 ## Rule examples
 
 Examples of rule files used to generate parsers are placed in directory:
-[`yapgen_build/rules`](https://github.com/izuzanak/yapgen/tree/master/yapgen_build/rules)
+[`build/rules`](https://github.com/izuzanak/yapgen/tree/master/build/rules)
 
 ### Inline examples
 
@@ -152,39 +152,28 @@ result: 59
 Programming language Lua of version [5.2](http://www.lua.org/ftp/) or greater
 is required for yapgen compilation.
 
-Container generator [`cont`](https://github.com/izuzanak/cont) is needed for
-compilation of parser generator. It will be automatically compiled in following
-compilation steps.
+The container generator [`cont`](https://github.com/izuzanak/cont) is needed
+for compilation of parser generator.
 
 ### Linux compilation
 
-For compilation of parser generator on Linux OS perform following steps:
-
-  * Download script [`try_yapgen.sh`](https://raw.githubusercontent.com/izuzanak/yapgen/master/yapgen_try/try_yapgen.sh).
-
+Enter build directory [`build`](https://github.com/izuzanak/yapgen/tree/master/build).
 ```
-wget https://raw.githubusercontent.com/izuzanak/yapgen/master/yapgen_try/try_yapgen.sh
+cd build
 ```
 
-  * Check prerequisites mentioned in script.
-  * Execute script `try_yapgen.sh`.
-
-```
-bash try_yapgen.sh
+Process cmake source.
+```sh
+cmake ..
 ```
 
-It will clone two repositories `cont` and `yapgen`, and subsequently compile
-container generator and parser generator.
+Build yapgen.
+```sh
+make -j$(nproc)
+```
 
 ### Linux example parsers
 
 Example parsers are located in directory
-[yapgen_build/rules](https://github.com/izuzanak/yapgen/tree/master/yapgen_build/rules).
-Names of parsers to be tested should be given as command line argument of
-`try_yapgen.sh` script.  List of example parsers can be found at the end of
-script `try_yapgen.sh`.
-
-```
-bash try_yapgen.sh demo_exp
-```
+[`build/rules`](https://github.com/izuzanak/yapgen/tree/master/build/rules).
 

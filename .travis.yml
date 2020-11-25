@@ -20,6 +20,5 @@ script:
   - make
   - sudo make install
 
-  - cd ~/build/izuzanak/yapgen/yapgen_build
   - ./test.sh > test.out
 

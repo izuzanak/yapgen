@@ -488,14 +488,14 @@ i32 test(i8 *data,u32 count)
 ```
 
 File containing set of rules of JIT language can be found
-[here](https://github.com/izuzanak/yapgen/blob/master/yapgen_build/rules/jit_parser.rules).
+[here](https://github.com/izuzanak/yapgen/blob/master/build/rules/jit_parser.rules).
 This example was introduced, to show that yapgen can be used for creation of
 real parsers, not just simple toys.
 
 ### Examples of generated code
 
 Generated C/C++ code of above examples can be found
-[here](https://github.com/izuzanak/yapgen/tree/master/yapgen_build/rules/demo_parse).
+[here](https://github.com/izuzanak/yapgen/tree/master/build/rules/demo_parse).
 There are three files for each example:
 
 1. `.rules` - file containing rules describing parser.
