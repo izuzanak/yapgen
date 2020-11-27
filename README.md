@@ -1,6 +1,7 @@
 # yapgen - parser generator
 
 [![Build Status](https://travis-ci.com/izuzanak/yapgen.svg?branch=master)](https://travis-ci.com/izuzanak/yapgen)
+![CI](https://github.com/izuzanak/yapgen/workflows/CI/badge.svg)
 
 Rapid prototyping parser generator.
 

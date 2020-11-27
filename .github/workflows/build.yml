@@ -1,0 +1,44 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Update ubuntu
+        run: sudo apt-get update
+
+      - name: Install libraries
+        run: >
+          sudo apt-get -y install
+          liblua5.2-dev
+
+      - name: Build and install cont
+        run: |
+          git clone --branch=master https://github.com/izuzanak/cont.git ${GITHUB_WORKSPACE}/../cont
+
+          cd ${GITHUB_WORKSPACE}/../cont/build
+          cmake ..
+          make
+          sudo make install
+
+      - name: Build yapgen
+        run: |
+          cd ${GITHUB_WORKSPACE}/build
+          cmake ..
+          make
+          sudo make install
+
+      - name: Test yapgen
+        run: |
+          cd ${GITHUB_WORKSPACE}/build
+          ./test.sh > test.out
+
