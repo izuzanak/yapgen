@@ -1,0 +1,30 @@
+#vim: set syntax=rules:
+
+init_code: {}
+
+terminals:
+  time {d.d.d.d.'-'.[01].d.'-'.<03>.d.'T'.<02>.d.':'.<05>.d.':'.<05>.d.'.'.d.d.d.'Z'}
+
+  $ !!! FIXME comment this terminal before production
+  _END_ {'\n'}
+
+nonterminals:
+  <start>
+  <end_check>
+  <program>
+  <term_list>
+  <term>
+
+rules:
+  <start> -> <end_check> ->> {}
+
+  $ !!! FIXME comment these two rules before production
+  <end_check> -> <program> _END_ ->> {}
+  <end_check> -> _END_ ->> {}
+
+  <program> -> <term_list> ->> {}
+
+  <term_list> -> <term_list> <term> ->> {}
+  <term_list> -> <term> ->> {}
+
+  <term> -> time ->> {print("time: "..rule_body(0));}

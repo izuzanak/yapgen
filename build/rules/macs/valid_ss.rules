@@ -1,0 +1,165 @@
+#vim: set syntax=rules:
+
+#"description02": "$_ is a placeholder for (represents) current date",
+#"description03": "dow($_) evaluates to day-of-week's ordinal number, 1 corresponds to Monday",
+#"description04": "X in [a,b,c,d,...] evaluates to true if element X is present in a set [a,b,c,d,...]",
+#"description05": "DD.MM.YYYY represents a specific day in the epoch (does not repeat over a year)",
+#"description06": "DD.MM. represents a specific day in a year (does repeat each year)",
+#"description07": "N represents an positive integer number",
+#"description08": "(<expression>) changes order of evaluation",
+#"description09": "[not|and|or] are logical operators",
+#"description10": "[=|<|<=|>|>=|<>]  are comparison operators",
+
+init_code: {}
+
+terminals:
+   now           {"$_"}
+   dow           {"dow($_)"}
+
+   ddmm          {<03>.d.'.'.[01].d.'.'}
+   ddmmyyyy      {<03>.d.'.'.[01].d.'.'.d.d.d.d}
+
+   int           {d.d*}
+
+   lr_br         {'('}
+   rr_br         {')'}
+
+   le_br         {'['}
+   re_br         {']'}
+
+   in            {"in"}
+   comma         {','}
+
+   and           {"and"}
+   or            {"or"}
+   equal         {"="}
+   not_equal     {"<>"}
+   greater       {'>'}
+   less          {'<'}
+   greater_equal {">="}
+   less_equal    {"<="}
+   not           {"not"}
+
+   _SKIP_        {w.w*}
+   _SKIP__       {"/*".(!'*'+('*'.!'/'))*."*/"}
+   _END_         {'\0'}
+
+nonterminals:
+   <start>
+   <end_check>
+
+   <exp>
+
+   <set>
+   <set_begin>
+   <set_list>
+
+   <E>
+   <D>
+   <C>
+   <B>
+   <A>
+
+rules:
+   <start> -> <end_check> ->> {}
+   <end_check> -> <exp> _END_ ->> {}
+
+   $ -- expression --
+   <exp> -> <E> ->>
+   {
+      print("expression");
+   }
+
+   $ -- exp --
+   <E> -> <D> ->> {}
+
+   <D> -> <D> and <C> ->>
+   {
+      print("operator binary logical and");
+   }
+   <D> -> <D> or <C> ->>
+   {
+      print("operator binary logical or");
+   }
+   <D> -> <C> ->> {}
+
+   <C> -> <C> equal <B> ->>
+   {
+      print("operator binary equal");
+   }
+   <C> -> <C> not_equal <B> ->>
+   {
+      print("operator binary not_equal");
+   }
+   <C> -> <C> greater <B> ->>
+   {
+      print("operator binary greater");
+   }
+   <C> -> <C> less <B> ->>
+   {
+      print("operator binary less");
+   }
+   <C> -> <C> greater_equal <B> ->>
+   {
+      print("operator binary greater_equal");
+   }
+   <C> -> <C> less_equal <B> ->>
+   {
+      print("operator binary less_equal");
+   }
+   <C> -> <B> ->> {}
+   <B> -> <A> ->> {}
+
+   <A> -> not <A> ->>
+   {
+      print("operator unary logical not");
+   }
+
+   $ -- in set --
+   <set> -> <set_begin> ->> {}
+   <set> -> <set_begin> <set_list> ->> {}
+
+   <set_begin> -> <A> in le_br ->>
+   {
+      print("set begin");
+   }
+
+   <set_list> -> <set_list> comma <E> ->>
+   {
+      print("set element");
+   }
+   <set_list> -> <E> ->>
+   {
+      print("set element");
+   }
+
+   <A> -> <set> re_br ->>
+   {
+      print("set done");
+   }
+
+   $ -- exp bracket --
+   <A> -> lr_br <E> rr_br ->> {}
+
+   $ -- constant values --
+   <A> -> now ->>
+   {
+      print("date now");
+   }
+   <A> -> dow ->>
+   {
+      print("day of week");
+   }
+   <A> -> ddmm ->>
+   {
+      print("const date: \""..rule_body(0).."\"");
+   }
+   <A> -> ddmmyyyy ->>
+   {
+      print("const date year: \""..rule_body(0).."\"");
+   }
+   <A> -> int ->>
+   {
+      print("const int: \""..rule_body(0).."\"");
+   }
+

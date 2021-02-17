@@ -17,7 +17,7 @@ terminals:
   time_level_1 {"30_minutes\0"}
   time_level_2 {"05_minutes\0"}
 
-  time {d.d.d.d.'-'.d.d.'-'.d.d.'_'.d.d.':'.d.d.':'.d.d.'\0'}
+  time {d.d.d.d.'-'.d.d.'-'.d.d.'_'.d.d.'.'.d.d.'.'.d.d.'\0'}
   camera {"cam_".d.d*.".mkv\0"}
 
   $ !!! FIXME comment this terminal before production

@@ -2,7 +2,7 @@
 
 # - uclang_parser -
 #echo "uclang_parser.rules" 1>&2
-#./yapgen --parser_descr rules/uclang_parser.rules --source rules/uclang_parser.src
+./yapgen --parser_descr rules/uclang_parser.rules --source rules/uclang_parser.src
 
 # - momas_log parser-
 #echo "momas_log.rules" 1>&2
@@ -38,7 +38,7 @@
 
 # - jspath -
 #echo "jspath.rules" 1>&2
-./yapgen --parser_descr rules/jspath.rules --source rules/jspath.src
+#./yapgen --parser_descr rules/jspath.rules --source rules/jspath.src
 
 # - pack_code -
 #echo "pack_code.rules" 1>&2
@@ -113,6 +113,10 @@
 #echo "player_url.rules" 1>&2
 #./yapgen --parser_descr rules/camsys/player_url.rules --source rules/camsys/player_url.src
 
+# - gps_time -
+#echo "gps_time.rules" 1>&2
+#./yapgen --parser_descr rules/camsys/gps_time.rules --source rules/camsys/gps_time.src
+
 # - http_request -
 #echo "http_request.rules" 1>&2
 #./yapgen --parser_descr rules/http/http_request.rules --source rules/http/http_request.src
@@ -124,4 +128,8 @@
 # - vilang -
 #echo "vilang.rules" 1>&2
 #./yapgen --parser_descr rules/macs/vilang.rules --source rules/macs/vilang.src
+
+# - valid_ss -
+#echo "valid_ss.rules" 1>&2
+#./yapgen --parser_descr rules/macs/valid_ss.rules --source rules/macs/valid_ss.src
 
