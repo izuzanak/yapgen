@@ -66,3 +66,22 @@ a=mediaclk:sender
 a=control:rtsp://192.168.0.90:443/axis-media/media.amp/stream=0
 a=framerate:25.000000
 a=transform:-1.000000,0.000000,0.000000;0.000000,-1.000000,0.000000;0.000000,0.000000,1.000000
+m=video 0 RTP/AVP 96
+c=IN IP4 0.0.0.0
+b=AS:50000
+a=rtpmap:96 H264/90000
+a=fmtp:96 packetization-mode=1;profile-level-id=4d0029;sprop-parameter-sets=Z00AKeKQCgC3YC3AQEBpB4kRUA==,aO48gA==
+a=control:rtsp://127.0.0.1:8006/local/test/56043001/10000/20000/burst/video
+a=recvonly
+m=text 0 RTP/AVP 98
+c=IN IP4 0.0.0.0
+a=rtpmap:98 t140/1000
+a=control:rtsp://127.0.0.1:8006/local/test/56043001/10000/20000/burst/text
+a=recvonly
+m=video 0 RTP/AVP 96
+c=IN IP4 0.0.0.0
+b=AS:50000
+a=rtpmap:96 H264/90000
+a=fmtp:96 packetization-mode=1;profile-level-id=4d0029;sprop-parameter-sets=Z00AKeKQCgC3YC3AQEBpB4kRUA==,aO48gA==
+a=control:rtsp://127.0.0.1:8006/local/test/56043001/9200/9300/single/video
+a=recvonly

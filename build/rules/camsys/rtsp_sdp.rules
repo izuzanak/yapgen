@@ -3,9 +3,10 @@
 init_code: {}
 
 terminals:
-  ignore {|\r\n|.|\r\n|*."\r\n"}
-  video {"m=video".|\r\n|*."\r\n"}
-  audio {"m=audio".|\r\n|*."\r\n"}
+  ignore  {|\r\n|.|\r\n|*."\r\n"}
+  video   {"m=video".|\r\n|*."\r\n"}
+  audio   {"m=audio".|\r\n|*."\r\n"}
+  text    {"m=text".|\r\n|*."\r\n"}
   control {"a=control:".|\r\n|*."\r\n"}
 
   _END_ {'\0'}
@@ -24,5 +25,6 @@ rules:
   <line> -> ignore ->> {}
   <line> -> video ->> {io.write("video: "..rule_body(0))}
   <line> -> audio ->> {io.write("audio: "..rule_body(0))}
+  <line> -> text ->> {io.write("text: "..rule_body(0))}
   <line> -> control ->> {io.write("control: "..rule_body(0))}
 
