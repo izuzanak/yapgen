@@ -35,17 +35,23 @@ terminals:
       "ClientID"+
       "Connection"+
       "Pragma"+
+      "Expires"+
       "X-Server-IP-Address"+
-      "x-sessioncookie"
+      "x-sessioncookie"+
+      "x-Accept-Retransmit"+
+      "x-Accept-Dynamic-Rate"
   ).":".|\r|*}
 
   number {d.d*.('.'+e).d*}
   range {d.d*.('.'+e).d*.'-'.((d.d*.('.'+e).d*)+e)}
   npt_range {"now-"}
+  ip {d.d*.'.'.d.d*.'.'.d.d*.'.'.d.d*}
 
   key_timeout {"timeout="}
   key_npt {"npt="}
   key_unicast {"unicast"}
+  key_destination {"destination="}
+  key_source {"source="}
   key_interleaved {"interleaved="}
   key_client_port {"client_port="}
 
@@ -142,12 +148,14 @@ rules:
 
   <session> -> header_session ->> {print("Session: "..rule_body(0))}
 
-  <key> -> key_timeout number ->> {print("timeout: "..rule_body(1))}
-  <key> -> key_npt range ->> {print("npt: "..rule_body(1))}
-  <key> -> key_unicast ->> {print("unicast")}
+  <key> -> key_timeout number    ->> {print("timeout: "..rule_body(1))}
+  <key> -> key_npt range         ->> {print("npt: "..rule_body(1))}
+  <key> -> key_unicast           ->> {print("unicast")}
+  <key> -> key_destination ip    ->> {print("destination: "..rule_body(1))}
+  <key> -> key_source ip         ->> {print("source: "..rule_body(1))}
   <key> -> key_interleaved range ->> {print("interleaved: "..rule_body(1))}
   <key> -> key_client_port range ->> {print("client_port: "..rule_body(1))}
 
-  <key> -> key_value_ssrc ->> {print("ssrc: "..rule_body(0))}
-  <key> -> key_value_mode ->> {print("mode: "..rule_body(0))}
+  <key> -> key_value_ssrc        ->> {print("ssrc: "..rule_body(0))}
+  <key> -> key_value_mode        ->> {print("mode: "..rule_body(0))}
 

@@ -1,4 +1,4 @@
-GET /mpv/56043001/20200309072000/all/single HTTP/1.1
+RTSP/1.0 200 OK
 User-Agent: mpv 0.29.1
 Accept: */*
 Range: bytes=0-
@@ -128,6 +128,24 @@ x-sessioncookie: aa8503a5712f1bd2
 Accept: application/x-rtsp-tunnelled
 Pragma: no-cache
 Cache-Control: no-cache
+CSeq: 1
+Date: Sun, 02 Jan 2000 14:25:56 GMT
+Expires: Sun, 02 Jan 2000 14:25:56 GMT
+Cache-Control: must-revalidate
+Public: DESCRIBE, SETUP, TEARDOWN, PLAY, PAUSE, OPTIONS, GET_PARAMETER, SET_PARAMETER
+CSeq: 1
+Date: Sun, 02 Jan 2000 14:25:57 GMT
+Expires: Sun, 02 Jan 2000 14:25:57 GMT
+Cache-Control: must-revalidate
+Content-Base: rtsp://10.177.3.105:554/onvif/profile2/media.smp
+Content-Type: application/sdp
+Content-Length: 747
+x-Accept-Retransmit: our-retransmit
+x-Accept-Dynamic-Rate: 1
+CSeq: 2
+Date: Tue, May 04 2010 22:27:55 GMT
+Transport: RTP/AVP/TCP;unicast;destination=10.99.100.232;source=10.177.3.106;interleaved=0-1
+Session: 290023
 
 DESCRIBE rtsp://10.2.35.6:554/moxa-cgi/udpstream_ch1 RTSP/1.0
 RTSP/1.0 200 OK
