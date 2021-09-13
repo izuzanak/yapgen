@@ -210,12 +210,12 @@ PUSH_CODE(
           if (e_idx - b_idx > 1) {\
             if (b_idx == 0) {\
               PUSH_FORMAT_CODE(\
-                               "            0x00 ... 0x%2.2x => self.state_%d(),\n"\
+                               "            0x00 ..= 0x%2.2x => self.state_%d(),\n"\
                                ,MPAR(e_idx - 1,target_state));\
             }\
             else {\
               PUSH_FORMAT_CODE(\
-                               "            0x%2.2x ... 0x%2.2x => self.state_%d(),\n"\
+                               "            0x%2.2x ..= 0x%2.2x => self.state_%d(),\n"\
                                ,MPAR(MPAR(b_idx,e_idx - 1),target_state));\
             }\
           }\
@@ -235,12 +235,12 @@ PUSH_CODE(
       if (e_idx - b_idx > 1) {\
         if (b_idx == 0) {\
           PUSH_FORMAT_CODE(\
-                           "            0x00 ... 0x%2.2x => self.state_%d(),\n"\
+                           "            0x00 ..= 0x%2.2x => self.state_%d(),\n"\
                            ,MPAR(e_idx - 1,target_state));\
         }\
         else {\
           PUSH_FORMAT_CODE(\
-                           "            0x%2.2x ... 0x%2.2x => self.state_%d(),\n"\
+                           "            0x%2.2x ..= 0x%2.2x => self.state_%d(),\n"\
                            ,MPAR(MPAR(b_idx,e_idx - 1),target_state));\
         }\
       }\
@@ -249,6 +249,8 @@ PUSH_CODE(
                          "            0x%2.2x          => self.state_%d(),\n"\
                          ,MPAR(b_idx,target_state));\
       }\
+      \
+      b_idx = e_idx;\
     }\
 \
     if (state.final != c_idx_not_exist) {\
@@ -257,9 +259,11 @@ PUSH_CODE(
                        ,state.final);\
     }\
     else {\
-      PUSH_CODE(\
-                "              _           => IDX_NOT_EXIST\n"\
-               );\
+      if (b_idx < 256) {\
+        PUSH_CODE(\
+                  "              _           => IDX_NOT_EXIST\n"\
+                 );\
+      }\
     }\
     PUSH_CODE(\
               "        }\n"\
