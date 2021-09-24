@@ -23,6 +23,7 @@ terminals:
   items {"items"}
   opt_items {"opt-items"}
   all_items {"all-items"}
+  all_arr_items {"all-arr-items"}
   all_keys {"all-keys"}
   in {"in"}
 
@@ -69,6 +70,7 @@ rules:
   <term> -> items ->> {print("items");}
   <term> -> opt_items ->> {print("opt_items");}
   <term> -> all_items ->> {print("all_items");}
+  <term> -> all_arr_items ->> {print("all_arr_items");}
   <term> -> all_keys ->> {print("all_keys");}
   <term> -> in ->> {print("in");}
 
