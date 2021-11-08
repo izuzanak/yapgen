@@ -4,6 +4,7 @@
    array<int> bi_array_s;
 
    define ui_array_s dynamic flushable
+   abbreviation bi xs_int_s
 
    struct
    <
