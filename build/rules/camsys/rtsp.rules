@@ -16,12 +16,13 @@ terminals:
   header_transport {"Transport:"}
   header_session   {"Session: ".(l+d+[$-_.+])*}
   header_ping      {"Ping: Pong"}
+  header_range     {"Range: ".|\r|*}
+  header_require   {"Require: ".|\r|*}
   header_ignore    {(
       "Date"+
       "User-Agent"+
       "Accept"+
       "Accept-Language"+
-      "Range"+
       "Host"+
       "Icy-MetaData"+
       "Server"+
@@ -44,7 +45,6 @@ terminals:
 
   number {d.d*.('.'+e).d*}
   range {d.d*.('.'+e).d*.'-'.((d.d*.('.'+e).d*)+e)}
-  npt_range {"now-"}
   ip {d.d*.'.'.d.d*.'.'.d.d*.'.'.d.d*}
 
   key_timeout {"timeout="}
@@ -90,7 +90,6 @@ nonterminals:
   <header_list>
   <header>
   <cont_type>
-  <npt_range>
   <pubcmd_list>
   <pubcmd>
   <key_list>
@@ -120,13 +119,12 @@ rules:
   <header> -> <session> ->> {}
   <header> -> <session> separator <key_list> ->> {}
   <header> -> header_ping ->> {print("Ping")}
+  <header> -> header_range ->> {print("Range: "..rule_body(0))}
+  <header> -> header_require ->> {print("Require: "..rule_body(0))}
   <header> -> header_ignore ->> {print("Ignore: "..rule_body(0))}
 
   <cont_type> -> value_cont_x_rtsp_tunnelled ->> {}
   <cont_type> -> value_cont_sdp ->> {}
-
-  <npt_range> -> range ->> {}
-  <npt_range> -> npt_range ->> {}
 
   <pubcmd_list> -> <pubcmd_list> separator <pubcmd> ->> {}
   <pubcmd_list> -> <pubcmd> ->> {}

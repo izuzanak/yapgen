@@ -1,0 +1,8 @@
+boolean(//Recording/Source/Test[Location = "Basement"]) and
+contains(//Recording/Source,"Noha") and
+boolean(//Track[TrackType = "Video"]) or
+boolean(//SimpleItem[@Name = "Test" and @Value < "10"]) and
+
+boolean(//Object/Appearance/Shape/BoundingBox[@right > "0.5"]) and
+boolean(//Object/Appearance/Shape/BoundingBox[@bottom > "0.5"]) 
+

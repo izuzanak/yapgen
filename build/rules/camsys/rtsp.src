@@ -146,9 +146,9 @@ CSeq: 2
 Date: Tue, May 04 2010 22:27:55 GMT
 Transport: RTP/AVP/TCP;unicast;destination=10.99.100.232;source=10.177.3.106;interleaved=0-1
 Session: 290023
+CSeq: 2
+User-Agent: ONVIF RTSP Client 18.06
+Transport: RTP/AVP;unicast;client_port=52848-52849
+Require: onvif-replay
+Range: clock=20211213T123508.480Z-
 
-DESCRIBE rtsp://10.2.35.6:554/moxa-cgi/udpstream_ch1 RTSP/1.0
-RTSP/1.0 200 OK
-SET_PARAMETER * RTSP/1.0
-DESCRIBE rtsp://10.2.35.1:554/udpstream_ch1 RTSP/1.0
-HTTP/1.1 200 OK

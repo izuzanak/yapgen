@@ -1,0 +1,150 @@
+
+#vim: set syntax=rules:
+
+init_code: {}
+
+terminals:
+  string {'"'.(|\\\"|+(('\\'.<07>.(<07>+e).(<07>+e))+('\\'.'x'.(<09>+<af>+<AF>).(<09>+<af>+<AF>+e))+('\\'.[abfnrtv\\?\'"])))*.'"'}
+  id_string {('_'+l).('_'+l+d)*}
+
+  eval_boolean {"boolean"}
+  eval_contains {"contains"}
+
+  attr_name {"@Name"}
+  attr_value {"@Value"}
+
+  item_simple {"SimpleItem"}
+  item_element {"ElementItem"}
+
+  and {"and"}
+  or {"or"}
+  not {"not"}
+
+  lr_br {'('}
+  rr_br {')'}
+
+  le_br {'['}
+  re_br {']'}
+
+  comma {','}
+
+  equal {'='}
+  exclamation_equal {"!="}
+  ls_br {'<'}
+  ls_br_equal {"<="}
+  rs_br {'>'}
+  rs_br_equal {">="}
+
+  slash {'/'}
+  at {'@'}
+
+  _SKIP_ {w.w*}
+  _END_ {'\0'}
+
+nonterminals:
+  <start>
+  <end_check>
+
+  <Expression>
+  <BoolExpr>
+  <double_slash>
+  <PathExpr>
+  <PathExpr_item>
+  <NodeTest>
+  <AttrExpr>
+  <NameComp>
+  <ValueComp>
+  <ValueComp_value>
+  <Operator>
+  <ElementTest>
+  <ElementPath>
+  <ElementName>
+  <NodeComp>
+  <NodeName>
+  <NodeName1>
+
+rules:
+
+  <start> -> <end_check> ->> {}
+
+  <end_check> -> <Expression> _END_ ->> {}
+  <end_check> -> _END_ ->> {}
+
+$[1] Expression ::= BoolExpr | Expression 'and' Expression | Expression 'or' Expression | '('Expression')' | 'not''('Expression')'
+
+  <Expression> -> <BoolExpr> ->> {}
+  <Expression> -> <Expression> and <Expression> ->> {print("expr_and");}
+  <Expression> -> <Expression> or <Expression> ->> {print("expr_or");}
+  <Expression> -> lr_br <Expression> rr_br ->> {}
+  <Expression> -> not lr_br <Expression> rr_br ->> {print("expr_not");}
+
+$[2] BoolExpr ::= 'boolean''('PathExpr')' | 'contains''(' ElementPath ',' '"' String '"' ')'
+
+  <BoolExpr> -> eval_boolean lr_br <PathExpr> rr_br ->> {}
+  <BoolExpr> -> eval_contains lr_br <double_slash> <ElementPath> comma string rr_br ->> {print("eval_contains: "..rule_body(5));}
+
+  <double_slash> -> slash slash ->> {}
+
+$[3] PathExpr ::= '//SimpleItem' NodeTest | '//ElementItem' NodeTest | ElementTest
+
+  <PathExpr> -> <double_slash> <PathExpr_item> <NodeTest> ->> {}
+  <PathExpr> -> <double_slash> <ElementTest> ->> {}
+
+  <PathExpr_item> -> item_simple ->> {print("item_simple");}
+  <PathExpr_item> -> item_element ->> {print("item_element");}
+
+$[4] NodeTest ::= '['AttrExpr']'
+
+  <NodeTest> -> le_br <AttrExpr> re_br ->> {}
+
+$[5] AttrExpr ::= NameComp | ValueComp | AttrExpr 'and' AttrExpr | AttrExpr 'or' AttrExpr | 'not''(AttrExpr')'
+
+  <AttrExpr> -> <NameComp> ->> {}
+  <AttrExpr> -> <ValueComp> ->> {}
+  <AttrExpr> -> <AttrExpr> and <AttrExpr> ->> {print("attr_and");}
+  <AttrExpr> -> <AttrExpr> or <AttrExpr> ->> {print("attr_or");}
+  <AttrExpr> -> not lr_br <AttrExpr> rr_br ->> {print("attr_not");}
+
+$[6] NameComp ::= NameAttr'=''"' String '"'
+
+  <NameComp> -> attr_name equal string ->> {print("attr_name_equal: "..rule_body(2));}
+
+$[7] ValueComp ::= ValueAttr Operator '"' String '"'
+
+  <ValueComp> -> <ValueComp_value> <Operator> ->> {}
+
+  <ValueComp_value> -> attr_value ->> {}
+
+$[8] Operator ::= '=' | '!=' | '<' | '<=' | '>' | '>='
+
+  <Operator> -> equal string             ->> {print("oper_equal: "..rule_body(1));}
+  <Operator> -> exclamation_equal string ->> {print("oper_exclamation_equal: "..rule_body(1));}
+  <Operator> -> ls_br string             ->> {print("oper_ls_br: "..rule_body(1));}
+  <Operator> -> ls_br_equal string       ->> {print("oper_ls_br_equal: "..rule_body(1));}
+  <Operator> -> rs_br string             ->> {print("oper_rs_br: "..rule_body(1));}
+  <Operator> -> rs_br_equal string       ->> {print("oper_rs_br_equal: "..rule_body(1));}
+
+$[9] NameAttr ::= '@Name'
+$[10] ValueAttr ::= '@Value'
+$[11] ElementTest ::= '/' ElementPath '['NodeComp']'
+
+  <ElementTest> -> <ElementPath> le_br <NodeComp> re_br ->> {}
+
+$[12] ElementPath ::= ElementName ElementName*
+
+  <ElementPath> -> <ElementPath> slash <ElementName> ->> {}
+  <ElementPath> -> <ElementName> ->> {}
+
+$[13] ElementName ::= '/' IdString
+
+  <ElementName> -> id_string ->> {print("element: "..rule_body(0));}
+
+$[14] NodeComp ::= NodeName Operator '"' String '"'
+
+  <NodeComp> -> <NodeName> <Operator> ->> {}
+
+$[15] NodeName ::= '@' IdString | IdString
+
+  <NodeName> -> at id_string ->> {print("attr: "..rule_body(1));}
+  <NodeName> -> id_string ->> {print("node: "..rule_body(0));}
+
