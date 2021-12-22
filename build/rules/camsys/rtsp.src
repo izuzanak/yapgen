@@ -151,4 +151,12 @@ User-Agent: ONVIF RTSP Client 18.06
 Transport: RTP/AVP;unicast;client_port=52848-52849
 Require: onvif-replay
 Range: clock=20211213T123508.480Z-
+Connection: close
+Cache-Control: no-store
+Pragma: no-cache
+Content-Type: application/x-rtsp-tunnelled
+Date: Tue, Dec 21 2021 11:38:36 GMT
+CSeq: 2
+User-Agent: ONVIF RTSP Client 18.06
+Transport: RTP/AVP;multicast;port=59140-59141
 

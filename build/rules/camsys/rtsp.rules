@@ -49,11 +49,11 @@ terminals:
 
   key_timeout {"timeout="}
   key_npt {"npt="}
-  key_unicast {"unicast"}
+  key_datacast {"unicast"+"multicast"}
   key_destination {"destination="}
   key_source {"source="}
   key_interleaved {"interleaved="}
-  key_client_port {"client_port="}
+  key_port {("client_port"+"port")."="}
 
   key_value_ssrc {"ssrc=".(d+<af>+<AF>).(d+<af>+<AF>)*}
   key_value_mode {"mode=".'"'.|"|*.'"'}
@@ -148,11 +148,11 @@ rules:
 
   <key> -> key_timeout number    ->> {print("timeout: "..rule_body(1))}
   <key> -> key_npt range         ->> {print("npt: "..rule_body(1))}
-  <key> -> key_unicast           ->> {print("unicast")}
+  <key> -> key_datacast          ->> {print("datacast: "..rule_body(0))}
   <key> -> key_destination ip    ->> {print("destination: "..rule_body(1))}
   <key> -> key_source ip         ->> {print("source: "..rule_body(1))}
   <key> -> key_interleaved range ->> {print("interleaved: "..rule_body(1))}
-  <key> -> key_client_port range ->> {print("client_port: "..rule_body(1))}
+  <key> -> key_port range        ->> {print("client_port: "..rule_body(1))}
 
   <key> -> key_value_ssrc        ->> {print("ssrc: "..rule_body(0))}
   <key> -> key_value_mode        ->> {print("mode: "..rule_body(0))}

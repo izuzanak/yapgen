@@ -54,7 +54,6 @@ nonterminals:
   <AttrExpr>
   <NameComp>
   <ValueComp>
-  <ValueComp_value>
   <Operator>
   <ElementTest>
   <ElementPath>
@@ -111,9 +110,7 @@ $[6] NameComp ::= NameAttr'=''"' String '"'
 
 $[7] ValueComp ::= ValueAttr Operator '"' String '"'
 
-  <ValueComp> -> <ValueComp_value> <Operator> ->> {}
-
-  <ValueComp_value> -> attr_value ->> {}
+  <ValueComp> -> attr_value <Operator> ->> {}
 
 $[8] Operator ::= '=' | '!=' | '<' | '<=' | '>' | '>='
 
