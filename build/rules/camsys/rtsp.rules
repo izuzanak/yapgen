@@ -18,6 +18,7 @@ terminals:
   header_ping      {"Ping: Pong"}
   header_range     {"Range: ".|\r|*}
   header_require   {"Require: ".|\r|*}
+  header_xscookie  {"x-sessioncookie: ".|\r|*}
   header_ignore    {(
       "Date"+
       "User-Agent"+
@@ -38,7 +39,6 @@ terminals:
       "Pragma"+
       "Expires"+
       "X-Server-IP-Address"+
-      "x-sessioncookie"+
       "x-Accept-Retransmit"+
       "x-Accept-Dynamic-Rate"
   ).":".|\r|*}
@@ -66,6 +66,7 @@ terminals:
   value_trans_udp {"RTP/AVP".("/UDP"+e)}
 
   command_get {"GET"}
+  command_post {"POST"}
   command_options {"OPTIONS"}
   command_describe {"DESCRIBE"}
   command_announce {"ANNOUNCE"}
@@ -121,6 +122,7 @@ rules:
   <header> -> header_ping ->> {print("Ping")}
   <header> -> header_range ->> {print("Range: "..rule_body(0))}
   <header> -> header_require ->> {print("Require: "..rule_body(0))}
+  <header> -> header_xscookie ->> {print("x-sessioncookie: "..rule_body(0))}
   <header> -> header_ignore ->> {print("Ignore: "..rule_body(0))}
 
   <cont_type> -> value_cont_x_rtsp_tunnelled ->> {}
@@ -130,6 +132,7 @@ rules:
   <pubcmd_list> -> <pubcmd> ->> {}
 
   <pubcmd> -> command_get           ->> {print("Public: "..rule_body(0))}
+  <pubcmd> -> command_post          ->> {print("Public: "..rule_body(0))}
   <pubcmd> -> command_options       ->> {print("Public: "..rule_body(0))}
   <pubcmd> -> command_describe      ->> {print("Public: "..rule_body(0))}
   <pubcmd> -> command_announce      ->> {print("Public: "..rule_body(0))}

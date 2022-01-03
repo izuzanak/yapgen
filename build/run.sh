@@ -117,6 +117,10 @@
 #echo "gps_time.rules" 1>&2
 #./yapgen --parser_descr rules/camsys/gps_time.rules --source rules/camsys/gps_time.src
 
+# -  xpath1-
+#echo "xpath1.rules" 1>&2
+#./yapgen --parser_descr rules/camsys/xpath1.rules --source rules/camsys/xpath1.src
+
 # - http_request -
 #echo "http_request.rules" 1>&2
 #./yapgen --parser_descr rules/http/http_request.rules --source rules/http/http_request.src

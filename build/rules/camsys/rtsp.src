@@ -1,4 +1,4 @@
-RTSP/1.0 200 OK
+POST /local/recorder/56043003/last/all/single HTTP/1.1
 User-Agent: mpv 0.29.1
 Accept: */*
 Range: bytes=0-
@@ -159,4 +159,13 @@ Date: Tue, Dec 21 2021 11:38:36 GMT
 CSeq: 2
 User-Agent: ONVIF RTSP Client 18.06
 Transport: RTP/AVP;multicast;port=59140-59141
+CSeq: 1
+User-Agent: ONVIF RTSP Client 18.06
+Host: 192.168.3.2
+x-sessioncookie: ab9ad38b9de01b2d33118a8
+Content-Type: application/x-rtsp-tunnelled
+Pragma: no-cache
+Cache-Control: no-cache
+Content-Length: 32767
+Expires: Sun, 9 Jan 1972 00:00:00 GMT
 
