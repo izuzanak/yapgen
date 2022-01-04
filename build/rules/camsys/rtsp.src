@@ -168,4 +168,23 @@ Pragma: no-cache
 Cache-Control: no-cache
 Content-Length: 32767
 Expires: Sun, 9 Jan 1972 00:00:00 GMT
+CSeq: 3
+User-Agent: ONVIF RTSP Client 18.06
+Session: 1641187467397623
+Require: onvif-replay
+Range: clock=20210715T113712.704Z-
+Rate-Control: no
+CSeq: 4
+User-Agent: ONVIF RTSP Client 18.06
+Session: 1641187996355469
+Require: onvif-replay
+Range: clock=20210715T114956.640Z-
+Rate-Control: no
+Immediate: yes
+CSeq: 3
+User-Agent: ONVIF RTSP Client 18.06
+Session: 1641270306598453
+Require: onvif-replay
+Range: clock=20211222T070124.471Z-
+Frames: intra
 

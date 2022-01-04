@@ -20,27 +20,30 @@ terminals:
   header_require   {"Require: ".|\r|*}
   header_xscookie  {"x-sessioncookie: ".|\r|*}
   header_ignore    {(
-      "Date"+
-      "User-Agent"+
       "Accept"+
       "Accept-Language"+
+      "Cache-Control"+
+      "ClientChallenge"+
+      "ClientID"+
+      "CompanyID"+
+      "Connection"+
+      "Date"+
+      "Expires"+
+      "Frames"+
+      "GUID"+
       "Host"+
       "Icy-MetaData"+
-      "Server"+
-      "Cache-Control"+
-      "RTP-Info"+
-      "ClientChallenge"+
+      "Immediate"+
       "PlayerStarttime"+
-      "CompanyID"+
-      "GUID"+
-      "RegionData"+
-      "ClientID"+
-      "Connection"+
       "Pragma"+
-      "Expires"+
+      "RTP-Info"+
+      "Rate-Control"+
+      "RegionData"+
+      "Server"+
+      "User-Agent"+
       "X-Server-IP-Address"+
-      "x-Accept-Retransmit"+
-      "x-Accept-Dynamic-Rate"
+      "x-Accept-Dynamic-Rate"+
+      "x-Accept-Retransmit"
   ).":".|\r|*}
 
   number {d.d*.('.'+e).d*}
