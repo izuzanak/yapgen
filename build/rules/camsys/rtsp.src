@@ -1,4 +1,4 @@
-POST /local/recorder/56043003/last/all/single HTTP/1.1
+RTSP/1.0 401 Unauthorized
 User-Agent: mpv 0.29.1
 Accept: */*
 Range: bytes=0-
@@ -187,4 +187,8 @@ Session: 1641270306598453
 Require: onvif-replay
 Range: clock=20211222T070124.471Z-
 Frames: intra
+Authorization: Digest username="devel", realm="NVR Streaming Server", nonce="76bfe6986d3e766424de9bd6e7d3ccc1", uri="rtsp://127.0.0.1:8006/local/http_0/56043006/24950/all/single", response="a1e50a5e33ba08f392822aa9b84f999f"
+WWW-Authenticate: Digest realm="AXIS_ACCC8E978F43", nonce="00029fffY67231876c4be4fc22e49a44c054a350e063c71", stale=FALSE
+Server: GStreamer RTSP server
+Date: Wed, 02 Oct 2019 10:28:08 GMT
 

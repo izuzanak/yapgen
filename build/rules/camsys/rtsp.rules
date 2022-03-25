@@ -3,22 +3,24 @@
 init_code: {}
 
 terminals:
-  resp_ok {("RTSP/1.0"+("HTTP/1.".[01]))." 200 OK"}
+  resp_ok {("RTSP/1.0"+("HTTP/1.".[01])).(" 200 OK" + " 401 Unauthorized")}
 
   http_ver1 {"HTTP/1.".[01]}
   rtsp_ver1 {"RTSP/1.0"}
 
-  header_cseq      {"C".[sS]."eq:"}
-  header_public    {"Public:"}
-  header_ct_base   {"Content-Base:"}
-  header_ct_type   {"Content-Type:"}
-  header_ct_length {"Content-".[lL]."ength:"}
-  header_transport {"Transport:"}
-  header_session   {"Session: ".(l+d+[$-_.+])*}
-  header_ping      {"Ping: Pong"}
-  header_range     {"Range: ".|\r|*}
-  header_require   {"Require: ".|\r|*}
-  header_xscookie  {"x-sessioncookie: ".|\r|*}
+  header_cseq          {"C".[sS]."eq:"}
+  header_public        {"Public:"}
+  header_ct_base       {"Content-Base:"}
+  header_ct_type       {"Content-Type:"}
+  header_ct_length     {"Content-".[lL]."ength:"}
+  header_transport     {"Transport:"}
+  header_session       {"Session: ".(l+d+[$-_.+])*}
+  header_ping          {"Ping: Pong"}
+  header_range         {"Range: ".|\r|*}
+  header_require       {"Require: ".|\r|*}
+  header_xscookie      {"x-sessioncookie: ".|\r|*}
+  header_authorization {"Authorization:"}
+  header_authenticate  {"WWW-Authenticate:"}
   header_ignore    {(
       "Accept"+
       "Accept-Language"+
@@ -49,6 +51,7 @@ terminals:
   number {d.d*.('.'+e).d*}
   range {d.d*.('.'+e).d*.'-'.((d.d*.('.'+e).d*)+e)}
   ip {d.d*.'.'.d.d*.'.'.d.d*.'.'.d.d*}
+  string {'"'.!'"'*.'"'}
 
   key_timeout {"timeout="}
   key_npt {"npt="}
@@ -81,6 +84,14 @@ terminals:
   command_set_parameter {"SET_PARAMETER"}
   command_get_parameter {"GET_PARAMETER"}
 
+  auth_digest {"Digest"}
+  auth_username {"username="}
+  auth_realm {"realm="}
+  auth_nonce {"nonce="}
+  auth_uri {"uri="}
+  auth_response {"response="}
+  auth_stale {"stale=".|,\r|*}
+
   separator {[,;]}
 
   _SKIP_ {("\r\n"+' ').("\r\n"+' ')*}
@@ -99,6 +110,8 @@ nonterminals:
   <key_list>
   <key>
   <session>
+  <auth_list>
+  <auth>
 
 rules:
   <start> -> <message> _END_ ->> {}
@@ -126,6 +139,8 @@ rules:
   <header> -> header_range ->> {print("Range: "..rule_body(0))}
   <header> -> header_require ->> {print("Require: "..rule_body(0))}
   <header> -> header_xscookie ->> {print("x-sessioncookie: "..rule_body(0))}
+  <header> -> header_authorization auth_digest <auth_list> ->> {print("Digest authorization")}
+  <header> -> header_authenticate auth_digest <auth_list> ->> {print("Digest authenticate")}
   <header> -> header_ignore ->> {print("Ignore: "..rule_body(0))}
 
   <cont_type> -> value_cont_x_rtsp_tunnelled ->> {}
@@ -162,4 +177,14 @@ rules:
 
   <key> -> key_value_ssrc        ->> {print("ssrc: "..rule_body(0))}
   <key> -> key_value_mode        ->> {print("mode: "..rule_body(0))}
+
+  <auth_list> -> <auth_list> separator <auth> ->> {}
+  <auth_list> -> <auth> ->> {}
+
+  <auth> -> auth_username string ->> {print("username: "..rule_body(1))}
+  <auth> -> auth_realm string    ->> {print("realm: "..rule_body(1))}
+  <auth> -> auth_nonce string    ->> {print("nonce: "..rule_body(1))}
+  <auth> -> auth_uri string      ->> {print("uri: "..rule_body(1))}
+  <auth> -> auth_response string ->> {print("response: "..rule_body(1))}
+  <auth> -> auth_stale           ->> {print("stale: "..string.sub(rule_body(0),7,-1))}
 
