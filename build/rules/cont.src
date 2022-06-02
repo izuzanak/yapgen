@@ -9,7 +9,13 @@
    struct
    <
    unsigned:ui_first
+#ifdef FIRST
    pointer:ptr_second
+#ifndef SECOND
+   unsigned:ui_third
+#else
+#endif
+#endif
    >
 
    options ( no_init no_clear no_swap no_copy )

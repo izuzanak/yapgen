@@ -18,6 +18,11 @@ terminals:
    dynamic {"dynamic"}
    flushable {"flushable"}
 
+   ifdef {"#ifdef"}
+   ifndef {"#ifndef"}
+   else {"#else"}
+   endif {"#endif"}
+
    str {'"'.!'"'*.'"'}
    additions_body {'{'.!'\}'*.'\}'}
    id {('_'+l).('_'+l+d)*}
@@ -107,16 +112,25 @@ rules:
    <element> -> id colon id ->> {print("type and name: "..rule_body(0)..":"..rule_body(2))}
 
    $22
-   <attr> -> options <option_list> rr_br ->> {}
-
+   <element> -> ifdef id ->> {print("ifdef: "..rule_body(1))}
    $23
-   <option_list> -> <option_list> id  ->> {print("option: "..rule_body(1))}
+   <element> -> ifndef id ->> {print("ifndef: "..rule_body(1))}
    $24
-   <option_list> -> lr_br ->> {}
-
+   <element> -> else ->> {print("else")}
    $25
-   <attr> -> additions additions_body ->> {print("additions: "..rule_body(1))}
+   <element> -> endif ->> {print("endif")}
 
    $26
+   <attr> -> options <option_list> rr_br ->> {}
+
+   $27
+   <option_list> -> <option_list> id  ->> {print("option: "..rule_body(1))}
+   $28
+   <option_list> -> lr_br ->> {}
+
+   $29
+   <attr> -> additions additions_body ->> {print("additions: "..rule_body(1))}
+
+   $30
    <attr> -> id ->> {print("name: "..rule_body(0))}
 
