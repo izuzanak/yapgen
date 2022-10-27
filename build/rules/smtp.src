@@ -1,0 +1,14 @@
+EHLO relay.example.org
+HELO relay.example.org
+MAIL FROM:<bob@example.org>
+MAIL FROM:<jirka@localhost>
+MAIL From:<camera>
+RCPT TO:<alice@example.com>
+RCPT TO:<theboss@example.com>
+RCPT To:<nvr>
+DATA
+QUIT
+RSET
+VRFY someone
+NOOP
+

@@ -1,0 +1,49 @@
+#vim: set syntax=rules:
+
+init_code: {}
+
+terminals:
+  ehlo      {"EHLO ".|\r\n|*.[\r\n].[\r\n]*}
+  helo      {"HELO ".|\r\n|*.[\r\n].[\r\n]*}
+  mail_from {"MAIL ".("FROM"+"From").":".|\r\n|*.[\r\n].[\r\n]*}
+  rcpt_to   {"RCPT ".("TO"+"To").":".|\r\n|*.[\r\n].[\r\n]*}
+  data      {"DATA".|\r\n|*.[\r\n].[\r\n]*}
+  quit      {"QUIT".|\r\n|*.[\r\n].[\r\n]*}
+  rset      {"RSET".|\r\n|*.[\r\n].[\r\n]*}
+  vrfy      {"VRFY ".|\r\n|*.[\r\n].[\r\n]*}
+  noop      {"NOOP".|\r\n|*.[\r\n].[\r\n]*}
+
+  $ !!! FIXME comment this terminal before production
+  _SKIP_ {'\n'}
+  _END_ {'\0'}
+
+nonterminals:
+  <start>
+  <end_check>
+  <program>
+  <term_list>
+  <term>
+
+rules:
+
+  <start> -> <end_check> ->> {}
+
+  $ !!! FIXME comment these two rules before production
+  <end_check> -> <program> _END_ ->> {}
+  <end_check> -> _END_ ->> {}
+
+  <program> -> <term_list> ->> {}
+
+  <term_list> -> <term_list> <term> ->> {}
+  <term_list> -> <term> ->> {}
+
+  <term> -> ehlo      ->> {print("ehlo");}
+  <term> -> helo      ->> {print("helo");}
+  <term> -> mail_from ->> {print("mail_from");}
+  <term> -> rcpt_to   ->> {print("rcpt_to");}
+  <term> -> data      ->> {print("data");}
+  <term> -> quit      ->> {print("quit");}
+  <term> -> rset      ->> {print("rset");}
+  <term> -> vrfy      ->> {print("vrfy");}
+  <term> -> noop      ->> {print("noop");}
+
