@@ -85,12 +85,14 @@ terminals:
   command_get_parameter {"GET_PARAMETER"}
 
   auth_digest {"Digest"}
+  auth_basic {"Basic"}
   auth_username {"username="}
   auth_realm {"realm="}
   auth_nonce {"nonce="}
   auth_uri {"uri="}
   auth_response {"response="}
   auth_stale {"stale=".|,\r|*}
+  auth_qop {"qop="}
 
   separator {[,;]}
 
@@ -141,6 +143,7 @@ rules:
   <header> -> header_xscookie ->> {print("x-sessioncookie: "..rule_body(0))}
   <header> -> header_authorization auth_digest <auth_list> ->> {print("Digest authorization")}
   <header> -> header_authenticate auth_digest <auth_list> ->> {print("Digest authenticate")}
+  <header> -> header_authenticate auth_basic <auth_list> ->> {print("Basic authenticate")}
   <header> -> header_ignore ->> {print("Ignore: "..rule_body(0))}
 
   <cont_type> -> value_cont_x_rtsp_tunnelled ->> {}
@@ -187,4 +190,5 @@ rules:
   <auth> -> auth_uri string      ->> {print("uri: "..rule_body(1))}
   <auth> -> auth_response string ->> {print("response: "..rule_body(1))}
   <auth> -> auth_stale           ->> {print("stale: "..string.sub(rule_body(0),7,-1))}
+  <auth> -> auth_qop string      ->> {print("qop: "..rule_body(1))}
 

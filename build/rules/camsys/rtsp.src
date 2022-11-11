@@ -191,4 +191,14 @@ Authorization: Digest username="devel", realm="NVR Streaming Server", nonce="76b
 WWW-Authenticate: Digest realm="AXIS_ACCC8E978F43", nonce="00029fffY67231876c4be4fc22e49a44c054a350e063c71", stale=FALSE
 Server: GStreamer RTSP server
 Date: Wed, 02 Oct 2019 10:28:08 GMT
+CSeq: 1
+Date: Fri, 11 Nov 2022 09:55:54 GMT
+Expires: Fri, 11 Nov 2022 09:55:54 GMT
+Cache-Control: must-revalidate
+WWW-Authenticate: Digest realm="iPOLiS", nonce="4D900846DE52BF800EA60ACDC2E58278", qop="auth"
+CSeq: 1
+WWW-Authenticate: Digest realm="AXIS_B8A44F33FD88", nonce="00005672Y628100c90f156da660a871ee9dc5c0804d2613", stale=FALSE
+WWW-Authenticate: Basic realm="AXIS_B8A44F33FD88"
+Server: GStreamer RTSP server
+Date: Fri, 11 Nov 2022 12:40:54 GMT
 
