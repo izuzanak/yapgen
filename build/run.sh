@@ -52,6 +52,10 @@
 #echo "validator.rules" 1>&2
 #./yapgen --parser_descr rules/validator.rules --source rules/validator.src
 
+# - uclang_validator -
+#echo "uclang_validator.rules" 1>&2
+#./yapgen --parser_descr rules/uclang_validator.rules --source rules/uclang_validator.src
+
 # - gcg_msg_head -
 #echo "gcg_msg_head.rules" 1>&2
 #./yapgen --parser_descr rules/gcg_msg_head.rules --source rules/gcg_msg_head.src
