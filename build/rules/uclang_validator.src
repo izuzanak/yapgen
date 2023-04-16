@@ -12,6 +12,7 @@ length >
 length <=
 length >=
 ref
+ref-if
 ref-type
 regex
 test
