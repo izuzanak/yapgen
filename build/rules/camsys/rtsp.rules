@@ -68,6 +68,7 @@ terminals:
   value_url_rtsp {("rtsp".('s'+e)."://".(l+d+[:/._-+]).((l+d+[:/._-+=]))*)+'*'}
   value_cont_x_rtsp_tunnelled {"application/x-rtsp-tunnelled"}
   value_cont_sdp {"application/sdp"}
+  value_cont_text_params {"text/parameters"}
   value_trans_tcp {"RTP/AVP/TCP"}
   value_trans_udp {"RTP/AVP".("/UDP"+e)}
 
@@ -148,6 +149,7 @@ rules:
 
   <cont_type> -> value_cont_x_rtsp_tunnelled ->> {}
   <cont_type> -> value_cont_sdp ->> {}
+  <cont_type> -> value_cont_text_params ->> {}
 
   <pubcmd_list> -> <pubcmd_list> separator <pubcmd> ->> {}
   <pubcmd_list> -> <pubcmd> ->> {}

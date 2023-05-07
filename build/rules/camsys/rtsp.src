@@ -201,4 +201,8 @@ WWW-Authenticate: Digest realm="AXIS_B8A44F33FD88", nonce="00005672Y628100c90f15
 WWW-Authenticate: Basic realm="AXIS_B8A44F33FD88"
 Server: GStreamer RTSP server
 Date: Fri, 11 Nov 2022 12:40:54 GMT
+CSeq: 4
+Content-Type: text/parameters
+Server: gortsplib
+Session: 28ddf1ec-9514-4178-a92a-42ba993d64f6
 
