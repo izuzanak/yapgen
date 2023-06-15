@@ -8,12 +8,15 @@
 
    struct
    <
+#if TEST && (TEST1 || TEST2)
    unsigned:ui_first
-#ifdef FIRST
+#endif
+#if FIRST
    pointer:ptr_second
-#ifndef SECOND
+#if !SECOND
    unsigned:ui_third
 #else
+   unsigned:ui_fourth
 #endif
 #endif
    >
