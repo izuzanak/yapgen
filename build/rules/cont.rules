@@ -18,9 +18,9 @@ terminals:
    dynamic {"dynamic"}
    flushable {"flushable"}
 
-   if {"#if"}
-   else {"#else"}
-   endif {"#endif"}
+   if {"#if".w}
+   else {"#else".w}
+   endif {"#endif".w}
 
    str {'"'.!'"'*.'"'}
    additions_body {'{'.!'\}'*.'\}'}
