@@ -24,6 +24,8 @@ terminals:
   header_ignore    {(
       "Accept"+
       "Accept-Language"+
+      "Bandwidth"+
+      "Blocksize"+
       "Cache-Control"+
       "ClientChallenge"+
       "ClientID"+
@@ -36,6 +38,7 @@ terminals:
       "Host"+
       "Icy-MetaData"+
       "Immediate"+
+      "MS-Reason" +
       "PlayerStarttime"+
       "Pragma"+
       "RTP-Info"+
@@ -93,7 +96,7 @@ terminals:
   auth_uri {"uri="}
   auth_response {"response="}
   auth_stale {"stale=".|,\r|*}
-  auth_qop {"qop="}
+  auth_ignore {("qop"+"algorithm").'='}
 
   separator {[,;]}
 
@@ -192,5 +195,5 @@ rules:
   <auth> -> auth_uri string      ->> {print("uri: "..rule_body(1))}
   <auth> -> auth_response string ->> {print("response: "..rule_body(1))}
   <auth> -> auth_stale           ->> {print("stale: "..string.sub(rule_body(0),7,-1))}
-  <auth> -> auth_qop string      ->> {print("qop: "..rule_body(1))}
+  <auth> -> auth_ignore string   ->> {print("ignore: "..rule_body(1))}
 

@@ -779,7 +779,7 @@ inline unsigned short reg_parser_s::process_char(char *&c_ptr)
   }
   else
   {
-    return *c_ptr++;
+    return (unsigned char)*c_ptr++;
   }
 }/*}}}*/
 

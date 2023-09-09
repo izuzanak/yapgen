@@ -205,4 +205,23 @@ CSeq: 4
 Content-Type: text/parameters
 Server: gortsplib
 Session: 28ddf1ec-9514-4178-a92a-42ba993d64f6
+CSeq: 1
+Accept: application/sdp
+User-Agent: CmRtspClient 12.7a.949
+Bandwidth: 384000
+CSeq: 2
+Accept: application/sdp
+User-Agent: CmRtspClient 12.7a.949
+Bandwidth: 384000
+Authorization: Digest username="jirka", realm="NVR Streaming Server", nonce="07461e6de4682cfe4cf745fe75631ad961e79b80", algorithm="MD5", uri="rtsp://172.19.19.155:8006/onvif/recorder/57043005/last/all/burst", response="84965d9774604696c5470245c601819b"
+CSeq: 3
+User-Agent: CmRtspClient 12.7a.949
+Transport: RTP/AVP/TCP;unicast;interleaved=0-1
+Blocksize: 65535
+Authorization: Digest username="jirka", realm="NVR Streaming Server", nonce="03a691999166fbea20a2465629f201fda442bce0", algorithm="MD5", uri="rtsp://192.168.3.2:8006/onvif/recorder/56043003/last/all/single/", response="8d96331b4ceb98e6601c28f7b2852c7f"
+Session: 1692080269358517
+CSeq: 22
+User-Agent: CmRtspClient 12.7a.949
+Authorization: Digest username="jirka", realm="NVR Streaming Server", nonce="022693850ea2e9dd325b61a2e87a9872b9e284cd", algorithm="MD5", uri="rtsp://192.168.3.2:8006/onvif/recorder/56043003/last/all/single/", response="f28182a8dce0411a24f7fa485480849a"
+MS-Reason: [741]RtspDisconnect/[889]FailedDescribe(401)/
 
