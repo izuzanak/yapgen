@@ -1,0 +1,18 @@
+{
+  "devices": [
+    "${DEVICE}",
+    "$${DEVICE}",
+    "$$${DEVICE}",
+    "$x{DEVICE}",
+    "$xx{DEVICE}",
+    "${DEVICEdefault}",
+    "${DEVICE:}",
+    "${DEVICE:default}",
+    "${DEVICE:-}",
+    "${DEVICE:-default}",
+    "${DEVICE:x-}",
+    "${DEVICE:x-default}",
+    "${DEVICE:}-}",
+    "${DEVICE:}-default}",
+  ]
+}

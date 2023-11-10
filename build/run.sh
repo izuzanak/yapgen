@@ -125,6 +125,10 @@
 #echo "xpath1.rules" 1>&2
 #./yapgen --parser_descr rules/camsys/xpath1.rules --source rules/camsys/xpath1.src
 
+# - envs -
+#echo "envs.rules" 1>&2
+#./yapgen --parser_descr rules/envs.rules --source rules/envs.src
+
 # - smtp -
 #echo "smtp.rules" 1>&2
 #./yapgen --parser_descr rules/smtp.rules --source rules/smtp.src

@@ -1,0 +1,38 @@
+#vim: set syntax=rules:
+
+init_code: {}
+
+terminals:
+  var {"${".(|:\}| + (':'.(|-\}| + e)))*.'\}'}
+  var_def {"${".|:\}|*.":-".|\}|*.'\}'}
+  escape {"$$"}
+  data {(|$| + ('$'.|${|)).|$|*}
+
+  $ !!! FIXME comment this terminal before production
+  _END_ {'\0'}
+
+nonterminals:
+  <start>
+  <end_check>
+  <program>
+  <term_list>
+  <term>
+
+rules:
+
+  <start> -> <end_check> ->> {}
+
+  $ !!! FIXME comment these two rules before production
+  <end_check> -> <program> _END_ ->> {}
+  <end_check> -> _END_ ->> {}
+
+  <program> -> <term_list> ->> {}
+
+  <term_list> -> <term_list> <term> ->> {}
+  <term_list> -> <term> ->> {}
+
+  <term> -> var  ->> {print("var: '"..rule_body(0).."'");}
+  <term> -> var_def ->> {print("var_def: '"..rule_body(0).."'");}
+  <term> -> escape ->> {print("escape: '"..rule_body(0).."'");}
+  <term> -> data ->> {print("data: '"..rule_body(0).."'");}
+
