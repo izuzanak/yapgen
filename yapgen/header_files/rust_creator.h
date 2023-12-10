@@ -26,7 +26,7 @@ PUSH_CODE(
 
 PUSH_FORMAT_CODE(
 "const RULE_CNT:usize = %d;\n"
-"const RULE_HEAD_IDXS:[u32;RULE_CNT] = ["
+"static RULE_HEAD_IDXS:[u32;RULE_CNT] = ["
   ,rule_descrs.used);
 
 if (rule_descrs.used != 0)
@@ -46,7 +46,7 @@ PUSH_CODE(
 );
 
 PUSH_CODE(
-"const RULE_BODY_LENGTHS:[usize;RULE_CNT] = ["
+"static RULE_BODY_LENGTHS:[usize;RULE_CNT] = ["
 );
 
 if (rule_descrs.used != 0)
@@ -67,7 +67,7 @@ PUSH_CODE(
 );
 
 PUSH_FORMAT_CODE(
-"// - lalr parse table - \n"
+"// - lalr parse table -\n"
 "const BLANK:u32 = IDX_NOT_EXIST;\n"
 "macro_rules! shift  { ($e:expr) => ($e) }\n"
 "macro_rules! reduce { ($e:expr) => (LALR_TABLE_REDUCE_BASE + $e) }\n"
@@ -77,8 +77,8 @@ PUSH_FORMAT_CODE(
 "const TERMINAL_PLUS_NONTERMINAL_CNT:u32 = %d;\n"
 "const LALR_STATE_CNT:usize = %d;\n"
 "\n"
-"const LALR_TABLE:[u32;LALR_STATE_CNT*(TERMINAL_PLUS_NONTERMINAL_CNT as usize)] =\n"
-"[/*{{{*/\n"
+"static LALR_TABLE:[u32;LALR_STATE_CNT*(TERMINAL_PLUS_NONTERMINAL_CNT as usize)] =\n"
+"[//{{{\n"
   ,MPAR(MPAR(c_lalr_table_reduce_base,lalr_table.x_size),lalr_table.y_size));
 
 {
@@ -130,7 +130,7 @@ PUSH_FORMAT_CODE(
 }
 
 PUSH_CODE(
-"];/*}}}*/\n"
+"];//}}}\n"
 "\n"
 );
 
@@ -154,39 +154,39 @@ PUSH_CODE(
 );
 
 PUSH_CODE(
+"struct TermSource<'a> {\n"
+"    input_idx:usize,\n"
+"    source:&'a[u8],\n"
+"    in_char:u8,\n"
+"    start:bool,\n"
+"}\n"
+"\n"
 "macro_rules! get_next_char {\n"
 "    ($s:expr) => (\n"
-"        $s.in_char = if $s.input_idx < $s.data.len() { $s.data[$s.input_idx] } else { 0 }\n"
+"        $s.in_char = if $s.input_idx < $s.source.len() { $s.source[$s.input_idx] } else { 0 }\n"
 "    )\n"
 "}\n"
 "\n"
 "macro_rules! close_char {\n"
 "    ($s:expr,$e:expr) => (\n"
 "        if $s.in_char == 0 {\n"
-"            return $e;\n"
+"            return $e\n"
 "        }\n"
 "\n"
 "        $s.input_idx += 1;\n"
 "    )\n"
 "}\n"
 "\n"
-"struct TermSource<'a> {\n"
-"    input_idx:usize,\n"
-"    data:&'a[u8],\n"
-"    in_char:u8,\n"
-"    start:bool,\n"
-"}\n"
-"\n"
 "impl<'a> TermSource<'a> {\n"
-"\n"
 "    fn new(source:&[u8]) -> TermSource {\n"
-"        TermSource{input_idx:0,data:source,in_char:0,start:true}\n"
+"        TermSource{input_idx:0,source:source,in_char:0,start:true}\n"
 "    }\n"
 "\n"
-"    fn recognize_terminal(&mut self) -> u32 {\n"
+"    fn recognize_terminal(&mut self) -> u32\n"
+"    {//{{{\n"
 "        self.start = true;\n"
 "        self.state_0()\n"
-"    }\n"
+"    }//}}}\n"
 "\n"
 );
 
@@ -356,7 +356,7 @@ PUSH_CODE(
 PUSH_CODE(
 "// - parse source string -\n"
 "fn parse_source_string(source:&[u8])\n"
-"{/*{{{*/\n"
+"{//{{{\n"
 "    let mut term_source = TermSource::new(&source);\n"
 "    let mut lalr_stack = vec![LalrStackElement::new_state(0)];\n"
 "\n"
@@ -435,7 +435,7 @@ PUSH_CODE(
 "        }\n"
 "\n"
 "    }\n"
-"}/*}}}*/\n"
+"}//}}}\n"
 "\n"
 );
 
@@ -444,7 +444,7 @@ PUSH_CODE(
 PUSH_CODE(
 "// - program entry function -\n"
 "fn main()\n"
-"{/*{{{*/\n"
+"{//{{{\n"
 "    let args: Vec<_> = std::env::args().collect();\n"
 "\n"
 "    let mut file = File::open(&args[1]).unwrap();\n"
@@ -455,7 +455,7 @@ PUSH_CODE(
 "    file.read_exact(buffer.as_mut_slice()).unwrap();\n"
 "\n"
 "    parse_source_string(&buffer);\n"
-"}/*}}}*/\n"
+"}//}}}\n"
 "\n"
 );
 
