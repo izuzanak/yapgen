@@ -1,0 +1,13 @@
+
+-- SELECT * FROM data
+-- SELECT value1,value2 FROM data
+-- SELECT value1,value2 FROM data WHERE type = 'reading' and cpid = 'CZ_UNIDO_9154738305851'
+
+-- SELECT * FROM data WHERE type = 'reading' AND
+-- cpid = 'DE_CD_9180619398751' AND time >= 946684800000000000 AND time <= 946684849000000000 LIMIT 50
+
+-- SELECT * FROM data WHERE type = 'reading' AND
+-- cpid = 'DE_CD_9180619398751' AND time >= 946684800000000000 AND time <= 946684849000000000 LIMIT 50;
+
+SELECT * FROM cpids WHERE trace = 'reading' limit 10;
+

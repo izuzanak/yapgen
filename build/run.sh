@@ -4,6 +4,10 @@
 #echo "uclang_parser.rules" 1>&2
 ./yapgen --parser_descr rules/uclang_parser.rules --source rules/uclang_parser.src
 
+# - psql -
+#echo "psql.rules" 1>&2
+#./yapgen --parser_descr rules/psql.rules --source rules/psql.src
+
 # - momas_log parser-
 #echo "momas_log.rules" 1>&2
 #./yapgen --parser_descr rules/momas_log.rules --source rules/momas_log.src

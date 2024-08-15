@@ -2,6 +2,16 @@
 import sys;
 import containers;
 
+class Main
+{
+  static TEST_NUM = :(x) {x_type = type x;return x_type == type Integer || x_type == type Float;};
+  static SCHEMA = new Dict(
+  [
+    "date-time",[
+      "test",:(x) {x_type = type x;return x_type == type Integer || x_type == type Float;}]
+  ]);
+}
+
 namespace First->Second->Third
 {
   namespace Second

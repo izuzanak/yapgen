@@ -1,0 +1,89 @@
+#vim: set syntax=rules:
+
+init_code: {}
+
+terminals:
+  string {'\''.|'|*.'\''}
+  integer {('-'+e).('0'+(<19>.d*))}
+  float {('-'+e).('0'+(<19>.d*)).(('.'.d*)+e).(([eE].([+-]+e).d.d*)+e)}
+
+  id {('_'+l).('_'+l+d)*}
+
+  comma {','}
+  asterisk {'*'}
+
+  select {"select"+"SELECT"}
+  from {"from"+"FROM"}
+  where {"where"+"WHERE"}
+  limit {"limit"+"LIMIT"}
+  and {"and"+"AND"}
+
+  equal {"="}
+  exclamation_equal {"!="}
+  rs_br {'>'}
+  ls_br {'<'}
+  rs_br_equal {">="}
+  ls_br_equal {"<="}
+
+  _SKIP_ {w.w*}
+  _SKIP__ {"--".!'\n'*.'\n'}
+  _END_ {[\0;]}
+
+nonterminals:
+  <start>
+
+  <select_step>
+  <from_step>
+  <where_step>
+  <limit_step>
+
+  <select>
+  <from>
+  <where>
+  <limit>
+
+  <id_list>
+  <id>
+
+  <cond_list>
+  <cond>
+  <const>
+
+rules:
+  <start> -> <select_step> ->> {}
+
+  <select_step> -> <select> <from_step> ->> {}
+  <select> -> select asterisk ->> {print("select *")} 
+  <select> -> select <id_list> ->> {print("select ids")} 
+
+  <from_step> -> <from> <where_step> ->> {}
+  <from> -> from <id> ->> {print("from")}
+
+  <where_step> -> <where> <limit_step> ->> {}
+  <where_step> -> <limit_step> ->> {}
+  <where> -> where <cond_list> ->> {print("where")}
+
+  <limit_step> -> <limit> _END_ ->> {}
+  <limit_step> -> _END_ ->> {}
+  <limit> -> limit integer ->> {print("limit: "..rule_body(1))}
+
+  <id_list> -> <id_list> comma <id> ->> {}
+  <id_list> -> <id> ->> {}
+
+  <id> -> id ->> {print("id: "..rule_body(0))}
+
+  $ -- exp operators --
+  <cond_list> -> <cond_list> and <cond> ->> {}
+  <cond_list> -> <cond> ->> {}
+
+  <cond> -> <id> equal <const> ->> {print("operator =")}
+  <cond> -> <id> exclamation_equal <const> ->> {print("operator !=")}
+  <cond> -> <id> rs_br <const> ->> {print("operator >")}
+  <cond> -> <id> ls_br <const> ->> {print("operator <")}
+  <cond> -> <id> rs_br_equal <const> ->> {print("operator >=")}
+  <cond> -> <id> ls_br_equal <const> ->> {print("operator <=")}
+
+  <const> -> string ->> {print("string: "..rule_body(0))}
+  <const> -> integer ->> {print("integer: "..rule_body(0))}
+  <const> -> float ->> {print("float: "..rule_body(0))}
+
