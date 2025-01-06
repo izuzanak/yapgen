@@ -19,6 +19,7 @@ terminals:
 
   and {"&&"+"and"+"AND"}
   or {"||"+"or"+"OR"}
+  not {"!"+"not"+"NOT"}
 
   lr_br {'('}
   rr_br {')'}
@@ -30,18 +31,23 @@ terminals:
 nonterminals:
   <start>
 
-  <cond_list>
+  <B>
+  <A>
+
   <cond>
   <const>
   <id>
 
 rules:
-  <start> -> <cond_list> _END_ ->> {}
+  <start> -> <B> _END_ ->> {}
 
   $ -- exp operators --
-  <cond_list> -> <cond_list> and <cond> ->> {print("operator and")}
-  <cond_list> -> <cond_list> or <cond> ->> {print("operator or")}
-  <cond_list> -> <cond> ->> {}
+  <B> -> <B> and <A> ->> {print("logical and")}
+  <B> -> <B> or <A> ->> {print("logical or")}
+  <B> -> <A> ->> {}
+
+  <A> -> not <A> ->> {print("logical not")}
+  <A> -> <cond> ->> {}
 
   <cond> -> <id> equal <const> ->> {print("operator =")}
   <cond> -> <id> exclamation_equal <const> ->> {print("operator !=")}
@@ -51,7 +57,7 @@ rules:
   <cond> -> <id> ls_br_equal <const> ->> {print("operator <=")}
   <cond> -> <id> contains <const> ->> {print("operator contains")}
 
-  <cond> -> lr_br <cond_list> rr_br ->> {}
+  <cond> -> lr_br <B> rr_br ->> {}
 
   <const> -> string ->> {print("string: "..rule_body(0))}
   <const> -> integer ->> {print("integer: "..rule_body(0))}

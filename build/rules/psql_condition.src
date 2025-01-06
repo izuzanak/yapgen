@@ -7,5 +7,9 @@
 -- carrier == 10
 -- carrier <> 10 OR carrier != 9
 -- system has '1' OR system contains '1' OR system like '%1%'
-system HAS '1' OR system CONTAINS '1' OR system LIKE '%1%'
+-- system HAS '1' OR system CONTAINS '1' OR system LIKE '%1%'
+-- system HAS '1' OR system CONTAINS '1' OR !!! system LIKE '%1%'
+-- system HAS '1' OR ! not NOT (system CONTAINS '1' OR system LIKE '%1%')
+! not NOT (system HAS '1' OR system CONTAINS '1' OR system LIKE '%1%')
+-- ! not NOT system HAS '1' OR system CONTAINS '1' OR system LIKE '%1%'
 
