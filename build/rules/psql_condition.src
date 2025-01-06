@@ -3,5 +3,9 @@
 -- system = '03' or system = '02' and carrier = 10
 -- carrier = 10 and (system = '03' or system = '02')
 -- carrier = 10 AND (system = '03' OR system = '02')
-carrier = 10 && (system = '03' || system = '02')
+-- carrier = 10 && (system = '03' || system = '02')
+-- carrier == 10
+-- carrier <> 10 OR carrier != 9
+-- system has '1' OR system contains '1' OR system like '%1%'
+system HAS '1' OR system CONTAINS '1' OR system LIKE '%1%'
 

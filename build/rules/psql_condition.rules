@@ -9,12 +9,13 @@ terminals:
 
   id {('_'+l).('_'+l+d)*}
 
-  equal {"="}
-  exclamation_equal {"!="}
+  equal {"="+"=="}
+  exclamation_equal {"!="+"<>"}
   rs_br {'>'}
   ls_br {'<'}
   rs_br_equal {">="}
   ls_br_equal {"<="}
+  contains {"has"+"contains"+"like"+"HAS"+"CONTAINS"+"LIKE"}
 
   and {"&&"+"and"+"AND"}
   or {"||"+"or"+"OR"}
@@ -48,6 +49,7 @@ rules:
   <cond> -> <id> ls_br <const> ->> {print("operator <")}
   <cond> -> <id> rs_br_equal <const> ->> {print("operator >=")}
   <cond> -> <id> ls_br_equal <const> ->> {print("operator <=")}
+  <cond> -> <id> contains <const> ->> {print("operator contains")}
 
   <cond> -> lr_br <cond_list> rr_br ->> {}
 
