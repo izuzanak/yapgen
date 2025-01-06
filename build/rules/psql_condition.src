@@ -1,0 +1,7 @@
+
+-- system = '03'
+-- system = '03' or system = '02' and carrier = 10
+-- carrier = 10 and (system = '03' or system = '02')
+-- carrier = 10 AND (system = '03' OR system = '02')
+carrier = 10 && (system = '03' || system = '02')
+

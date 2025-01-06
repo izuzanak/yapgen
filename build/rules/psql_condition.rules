@@ -1,0 +1,59 @@
+#vim: set syntax=rules:
+
+init_code: {}
+
+terminals:
+  string {'\''.|'|*.'\''}
+  integer {('-'+e).('0'+(<19>.d*))}
+  float {('-'+e).('0'+(<19>.d*)).(('.'.d*)+e).(([eE].([+-]+e).d.d*)+e)}
+
+  id {('_'+l).('_'+l+d)*}
+
+  equal {"="}
+  exclamation_equal {"!="}
+  rs_br {'>'}
+  ls_br {'<'}
+  rs_br_equal {">="}
+  ls_br_equal {"<="}
+
+  and {"&&"+"and"+"AND"}
+  or {"||"+"or"+"OR"}
+
+  lr_br {'('}
+  rr_br {')'}
+
+  _SKIP_ {w.w*}
+  _SKIP__ {"--".!'\n'*.'\n'}
+  _END_ {[\0;]}
+
+nonterminals:
+  <start>
+
+  <cond_list>
+  <cond>
+  <const>
+  <id>
+
+rules:
+  <start> -> <cond_list> _END_ ->> {}
+
+  $ -- exp operators --
+  <cond_list> -> <cond_list> and <cond> ->> {print("operator and")}
+  <cond_list> -> <cond_list> or <cond> ->> {print("operator or")}
+  <cond_list> -> <cond> ->> {}
+
+  <cond> -> <id> equal <const> ->> {print("operator =")}
+  <cond> -> <id> exclamation_equal <const> ->> {print("operator !=")}
+  <cond> -> <id> rs_br <const> ->> {print("operator >")}
+  <cond> -> <id> ls_br <const> ->> {print("operator <")}
+  <cond> -> <id> rs_br_equal <const> ->> {print("operator >=")}
+  <cond> -> <id> ls_br_equal <const> ->> {print("operator <=")}
+
+  <cond> -> lr_br <cond_list> rr_br ->> {}
+
+  <const> -> string ->> {print("string: "..rule_body(0))}
+  <const> -> integer ->> {print("integer: "..rule_body(0))}
+  <const> -> float ->> {print("float: "..rule_body(0))}
+
+  <id> -> id ->> {print("id: "..rule_body(0))}
+

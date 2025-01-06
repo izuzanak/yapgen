@@ -8,6 +8,10 @@
 #echo "psql.rules" 1>&2
 #./yapgen --parser_descr rules/psql.rules --source rules/psql.src
 
+# - psql_condition -
+#echo "psql_condition.rules" 1>&2
+./yapgen --parser_descr rules/psql_condition.rules --source rules/psql_condition.src
+
 # - momas_log parser-
 #echo "momas_log.rules" 1>&2
 #./yapgen --parser_descr rules/momas_log.rules --source rules/momas_log.src
