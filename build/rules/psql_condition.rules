@@ -15,7 +15,7 @@ terminals:
   ls_br {'<'}
   rs_br_equal {">="}
   ls_br_equal {"<="}
-  contains {"has"+"contains"+"like"+"HAS"+"CONTAINS"+"LIKE"}
+  match {"match"+"MATCH"+"like"+"LIKE"}
 
   and {"&&"+"and"+"AND"}
   or {"||"+"or"+"OR"}
@@ -31,37 +31,35 @@ terminals:
 nonterminals:
   <start>
 
+  <D>
+  <C>
   <B>
   <A>
 
-  <cond>
-  <const>
-  <id>
-
 rules:
-  <start> -> <B> _END_ ->> {}
+  <start> -> <D> _END_ ->> {}
 
   $ -- exp operators --
-  <B> -> <B> and <A> ->> {print("logical and")}
-  <B> -> <B> or <A> ->> {print("logical or")}
-  <B> -> <A> ->> {}
+  <D> -> <D> and <C> ->> {print("logical and")}
+  <D> -> <D> or <C> ->> {print("logical or")}
+  <D> -> <C> ->> {}
 
-  <A> -> not <A> ->> {print("logical not")}
-  <A> -> <cond> ->> {}
+  <C> -> not <C> ->> {print("logical not")}
+  <C> -> <B> ->> {}
 
-  <cond> -> <id> equal <const> ->> {print("operator =")}
-  <cond> -> <id> exclamation_equal <const> ->> {print("operator !=")}
-  <cond> -> <id> rs_br <const> ->> {print("operator >")}
-  <cond> -> <id> ls_br <const> ->> {print("operator <")}
-  <cond> -> <id> rs_br_equal <const> ->> {print("operator >=")}
-  <cond> -> <id> ls_br_equal <const> ->> {print("operator <=")}
-  <cond> -> <id> contains <const> ->> {print("operator contains")}
+  <B> -> <A> equal <A> ->> {print("operator =")}
+  <B> -> <A> exclamation_equal <A> ->> {print("operator !=")}
+  <B> -> <A> rs_br <A> ->> {print("operator >")}
+  <B> -> <A> ls_br <A> ->> {print("operator <")}
+  <B> -> <A> rs_br_equal <A> ->> {print("operator >=")}
+  <B> -> <A> ls_br_equal <A> ->> {print("operator <=")}
+  <B> -> <A> match <A> ->> {print("operator match")}
 
-  <cond> -> lr_br <B> rr_br ->> {}
+  <B> -> lr_br <D> rr_br ->> {}
 
-  <const> -> string ->> {print("string: "..rule_body(0))}
-  <const> -> integer ->> {print("integer: "..rule_body(0))}
-  <const> -> float ->> {print("float: "..rule_body(0))}
+  <A> -> string ->> {print("string: "..rule_body(0))}
+  <A> -> integer ->> {print("integer: "..rule_body(0))}
+  <A> -> float ->> {print("float: "..rule_body(0))}
 
-  <id> -> id ->> {print("id: "..rule_body(0))}
+  <A> -> id ->> {print("id: "..rule_body(0))}
 

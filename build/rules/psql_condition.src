@@ -6,10 +6,12 @@
 -- carrier = 10 && (system = '03' || system = '02')
 -- carrier == 10
 -- carrier <> 10 OR carrier != 9
--- system has '1' OR system contains '1' OR system like '%1%'
--- system HAS '1' OR system CONTAINS '1' OR system LIKE '%1%'
--- system HAS '1' OR system CONTAINS '1' OR !!! system LIKE '%1%'
--- system HAS '1' OR ! not NOT (system CONTAINS '1' OR system LIKE '%1%')
-! not NOT (system HAS '1' OR system CONTAINS '1' OR system LIKE '%1%')
--- ! not NOT system HAS '1' OR system CONTAINS '1' OR system LIKE '%1%'
+-- system match '1' OR system like '%1%'
+-- system MATCH '1' OR system LIKE '%1%'
+-- system MATCH '1' OR !!! system LIKE '%1%'
+-- ! not NOT (system MATCH '1' OR system LIKE '%1%')
+-- ! not NOT (system MATCH '1' OR system LIKE '%1%')
+-- ! not NOT system MATCH '1' OR system LIKE '%1%'
+-- '03' == system OR 1 < carrier OR system LIKE '%1%'
+A_pos < A_neg and A_pos > 1.0
 
