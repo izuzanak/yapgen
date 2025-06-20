@@ -9,5 +9,12 @@
 -- SELECT * FROM data WHERE type = 'reading' AND
 -- cpid = 'DE_CD_9180619398751' AND time >= 946684800000000000 AND time <= 946684849000000000 LIMIT 50;
 
-SELECT * FROM cpids WHERE trace = 'reading' limit 10;
+-- SELECT * FROM cpids WHERE trace = 'reading' limit 10;
+
+-- SELECT * FROM etas_all_week_sum WHERE
+-- time >= 946684800000000000 AND time <= 946684849000000000 LIMIT 50;
+
+SELECT * FROM etas_cpid_sum WHERE period = 'week' AND
+cpid = ANY(ARRAY['CZ_UNIDO_9154738305771','CZ_UNIDO_9154738305851']) AND
+time >= 946684800000000000 AND time <= 946684849000000000 LIMIT 50;
 

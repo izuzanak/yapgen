@@ -24,6 +24,8 @@ terminals:
   ls_br {'<'}
   rs_br_equal {">="}
   ls_br_equal {"<="}
+  any_array {"ANY(ARRAY["}
+  array_end {"])"}
 
   _SKIP_ {w.w*}
   _SKIP__ {"--".!'\n'*.'\n'}
@@ -47,6 +49,8 @@ nonterminals:
 
   <cond_list>
   <cond>
+
+  <const_list>
   <const>
 
 rules:
@@ -83,7 +87,11 @@ rules:
   <cond> -> <id> rs_br_equal <const> ->> {print("operator >=")}
   <cond> -> <id> ls_br_equal <const> ->> {print("operator <=")}
 
+  <const_list> -> <const_list> comma <const> ->> {print("list next")}
+  <const_list> -> <const> ->> {print("list first")}
+
   <const> -> string ->> {print("string: "..rule_body(0))}
   <const> -> integer ->> {print("integer: "..rule_body(0))}
   <const> -> float ->> {print("float: "..rule_body(0))}
+  <const> -> any_array <const_list> array_end ->> {print("any array")}
 
