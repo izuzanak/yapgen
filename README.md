@@ -1,6 +1,5 @@
 # yapgen - parser generator
 
-[![Build Status](https://travis-ci.com/izuzanak/yapgen.svg?branch=master)](https://travis-ci.com/izuzanak/yapgen)
 ![CI](https://github.com/izuzanak/yapgen/workflows/CI/badge.svg)
 
 Rapid prototyping parser generator.
@@ -17,7 +16,7 @@ Follows list of parser generator features.
 * Generated parser can be immediately tested on source string.
 * Semantic rules of language can be tested by Lua scripts, that are binded to
   each rule reduction.
-* Debugged and fine tuned parser can be generated in form of C/C++ code.
+* Debugged and fine tuned parser can be generated in form of C/C++, JavaScript, Rust, PHP, or AWK code.
 
 ## Motivation
 
@@ -161,16 +160,20 @@ for compilation of parser generator.
 Enter build directory [`build`](https://github.com/izuzanak/yapgen/tree/master/build).
 ```
 cd build
+cmake -DCMAKE_BUILD_TYPE="Release" ..
+make
 ```
 
-Process cmake source.
-```sh
-cmake ..
-```
+### Usage
 
-Build yapgen.
-```sh
-make -j$(nproc)
+```
+yapgen --parser_descr <file>     - create parser from description file
+       --parser_save_cc <file>   - save parser source in language C to file
+       --parser_save_js <file>   - save parser source in JavaScript to file
+       --parser_save_rust <file> - save parser source in Rust to file
+       --parser_save_awk <file>  - save parser source in AWK to file
+       --parser_save_php <file>  - save parser source in PHP to file
+       --source <file>           - load and parse source file
 ```
 
 ### Linux example parsers
