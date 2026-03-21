@@ -4098,12 +4098,91 @@ bool p_creat_descr_s::compute_kernels()
               // - if kernel with same set rule_dots does not exists, store new kernel -
               if (tmp_k_idx == c_idx_not_exist)
               {
-                kernels.push_blank();
-                kernels.last().swap(new_kernel);
+                // - check if there is already a kernel reachable from same
+                // source state via same symbol, if so merge rule_dots -
+                unsigned goto_sym = element_first[ef_idx];
+                unsigned merge_k_idx = c_idx_not_exist;
 
-                // - retrieve pointers after possible reallocation -
-                rule_dots = &kernels[k_idx].rule_dots;
-                rule_dot = rule_dots->data + rd_idx;
+                {
+                  unsigned ck_idx = 0;
+
+                  do
+                  {
+                    p_kernel_gotos_s &ck_gotos = kernels[ck_idx].gotos;
+
+                    if (ck_gotos.used != 0)
+                    {
+                      unsigned cg_idx = 0;
+
+                      do
+                      {
+                        if (ck_gotos[cg_idx].ui_first == k_idx && ck_gotos[cg_idx].ui_second == goto_sym)
+                        {
+                          merge_k_idx = ck_idx;
+                          break;
+                        }
+                      }
+                      while(++cg_idx < ck_gotos.used);
+                    }
+
+                    if (merge_k_idx != c_idx_not_exist)
+                    {
+                      break;
+                    }
+                  }
+                  while(++ck_idx < kernels.used);
+                }
+
+                // - only merge into kernels not yet processed by outer loop -
+                if (merge_k_idx != c_idx_not_exist && merge_k_idx >= k_idx)
+                {
+                  // - merge new rule_dots into existing target kernel -
+                  p_kernel_rule_dots_s &merge_rds = kernels[merge_k_idx].rule_dots;
+                  p_kernel_rule_dots_s &new_rds = new_kernel.rule_dots;
+
+                  if (new_rds.used != 0)
+                  {
+                    unsigned n_idx = 0;
+
+                    do
+                    {
+                      bool exists = false;
+
+                      if (merge_rds.used != 0)
+                      {
+                        unsigned m_idx = 0;
+
+                        do
+                        {
+                          if (merge_rds[m_idx].ui_first == new_rds[n_idx].ui_first &&
+                              merge_rds[m_idx].ui_second == new_rds[n_idx].ui_second)
+                          {
+                            exists = true;
+                            break;
+                          }
+                        }
+                        while(++m_idx < merge_rds.used);
+                      }
+
+                      if (!exists)
+                      {
+                        merge_rds.push(new_rds[n_idx]);
+                      }
+                    }
+                    while(++n_idx < new_rds.used);
+                  }
+
+                  kernels[merge_k_idx].gotos.push(gotos[0]);
+                }
+                else
+                {
+                  kernels.push_blank();
+                  kernels.last().swap(new_kernel);
+
+                  // - retrieve pointers after possible reallocation -
+                  rule_dots = &kernels[k_idx].rule_dots;
+                  rule_dot = rule_dots->data + rd_idx;
+                }
               }
 
               // - if such kernel does exist, add generated transition to its set gotos -
@@ -4162,12 +4241,18 @@ bool p_creat_descr_s::create_lalr_table(p_lalr_table_s &lalr_table)
           // - ERROR -
           if (value != c_idx_not_exist)
           {
-            error_s &error = ((parser_s *)parser_ptr)->error;
-            error.type = c_error_PARSER_CREATE_SLR1_PARSE_TABLE_CONFLICT;
-            return false;
+            // - allow duplicate gotos to the same target state -
+            if (value != k_idx)
+            {
+              error_s &error = ((parser_s *)parser_ptr)->error;
+              error.type = c_error_PARSER_CREATE_SLR1_PARSE_TABLE_CONFLICT;
+              return false;
+            }
           }
-
-          value = k_idx;
+          else
+          {
+            value = k_idx;
+          }
         }
         while(++g_idx < gotos.used);
       }
