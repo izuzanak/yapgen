@@ -62,6 +62,10 @@ namespace First->Second->Third
           }
         };
 
+        //dlg = main.on_callback(#3);
+        //this.on_comm_time_event(#3).papply([comm_id]);
+        //dlg_range = xxx[main.cb(#1):main.cb(#2):main.cb(#3)];
+
         for (val <- new Range(0,100,10))
         {
         }

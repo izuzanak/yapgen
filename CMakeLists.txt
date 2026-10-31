@@ -11,14 +11,21 @@ file(MAKE_DIRECTORY ${PROC_DIR})
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 enable_testing()
 
+# - find process binary -
+find_program(PROCESS_BIN cont)
+
+if(NOT PROCESS_BIN)
+  message(FATAL_ERROR "Cannot find container generator 'cont'")
+endif()
+
 # - process target source file -
 function(process_source TARGET)
-  execute_process(COMMAND cont --deps "${SOURCE_DIR}/${TARGET}.cc" ${COMP_HEADER_DIRS}
+  execute_process(COMMAND ${PROCESS_BIN} --deps "${SOURCE_DIR}/${TARGET}.cc" ${COMP_HEADER_DIRS}
       OUTPUT_VARIABLE DEPS
       ERROR_QUIET)
   add_custom_command(OUTPUT "${PROC_DIR}/p.${TARGET}.cc"
-      DEPENDS ${DEPS}
-      COMMAND cont --geninc "--output" "${PROC_DIR}/p.${TARGET}.cc" "${SOURCE_DIR}/${TARGET}.cc" ${COMP_HEADER_DIRS})
+      DEPENDS ${DEPS} ${PROCESS_BIN}
+      COMMAND ${PROCESS_BIN} --geninc "--output" "${PROC_DIR}/p.${TARGET}.cc" "${SOURCE_DIR}/${TARGET}.cc" ${COMP_HEADER_DIRS})
 endfunction()
 
 # - process component -

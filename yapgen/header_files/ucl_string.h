@@ -222,6 +222,7 @@ inline void string_s::create(unsigned a_length)
     return;
   }
 
+  cassert(a_length < UINT_MAX);
   data = (char *)cmalloc((a_length + 1)*sizeof(char));
 
   data[a_length] = '\0';
@@ -237,6 +238,7 @@ inline void string_s::set(unsigned a_length,const char *a_data)
     return;
   }
 
+  cassert(a_length < UINT_MAX);
   data = (char *)cmalloc((a_length + 1)*sizeof(char));
   memcpy(data,a_data,a_length*sizeof(char));
 
@@ -247,6 +249,8 @@ inline void string_s::set(unsigned a_length,const char *a_data)
 inline void string_s::conc_set(unsigned a_flength,const char *a_fdata,unsigned a_slength,const char *a_sdata)
 {/*{{{*/
   clear();
+
+  cassert(a_flength <= UINT_MAX - 1 && a_slength <= UINT_MAX - 1 - a_flength);
   data = (char *)cmalloc((a_flength + a_slength + 1)*sizeof(char));
 
   if (a_flength != 0)
@@ -329,12 +333,24 @@ inline bool string_s::load_text_file(const char *a_file)
     return false;
   }
 
-  fseek(f,0,SEEK_END);
-  unsigned file_size = ftell(f);
-  fseek(f,0,SEEK_SET);
+  long file_size;
+  if (fseek(f,0,SEEK_END) != 0 ||
+      (file_size = ftell(f)) == -1 ||
+      fseek(f,0,SEEK_SET) != 0)
+  {
+    fclose(f);
+    return false;
+  }
+
+  if ((unsigned long)file_size >= UINT_MAX)
+  {
+    fclose(f);
+    return false;
+  }
 
   clear();
-  data = (char *)cmalloc((file_size + 1)*sizeof(char));
+
+  data = (char *)cmalloc(file_size + 1);
   if (fread(data,file_size,1,f) != 1)
   {
     clear();
